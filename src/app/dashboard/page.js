@@ -138,9 +138,10 @@ const App = () => {
   };
 
   const handleActiveUser = () => {
-     setjobs(false)
+    setjobs(false);
     setActiveUser(true);
     setShowUser(false);
+    setPendingjobs(false);
     setUserSubscription(false);
     setInactiveUser(false);
     setAddPayment(false);
@@ -151,32 +152,47 @@ const App = () => {
   };
   const handleInactiveUser = () => {
     setActiveUser(false);
-    setjobs(false)
+    setjobs(false);
     setInactiveUser(true);
     setPaymentCard(false);
     setShowUser(false);
     setUserSubscription(false);
     setAddPayment(false);
-
+    setPendingjobs(false);
     setProfileView(false);
     setProfileEdit(false);
     setCard(false);
   };
   const handleAddPayment = () => {
     setAddPayment(true);
-    setjobs(false)
+    setjobs(false);
     setActiveUser(false);
     setPaymentCard(false);
     setInactiveUser(false);
     setShowUser(false);
     setUserSubscription(false);
-
+    setPendingjobs(false);
     setProfileView(false);
     setProfileEdit(false);
     setCard(false);
   };
-  const handleJobs= () => {
-    setjobs(true)
+  const handleJobs = () => {
+    setjobs(true);
+    setCard(false);
+    setAddPayment(false);
+    setPaymentCard(false);
+    setActiveUser(false);
+    setInactiveUser(false);
+    setShowUser(false);
+    setUserSubscription(false);
+    setPendingjobs(false);
+    setProfileView(false);
+    setProfileEdit(false);
+    setCard(false);
+  };
+  const handlePendingJobs = () => {
+    setPendingjobs(true);
+    setjobs(false);
     setCard(false);
     setAddPayment(false);
     setPaymentCard(false);
@@ -190,7 +206,7 @@ const App = () => {
     setCard(false);
   };
   const handlePaymentCard = () => {
-    setjobs(false)
+    setjobs(false);
     setAddPayment(false);
     setPaymentCard(true);
     setActiveUser(false);
@@ -204,7 +220,7 @@ const App = () => {
   };
 
   const handleSubscription = () => {
-    setjobs(false)
+    setjobs(false);
     setUserSubscription(true);
 
     setAddPayment(false);
@@ -220,7 +236,7 @@ const App = () => {
   const handleCard = () => {
     setCard(true);
     setUserSubscription(false);
-    setjobs(false)
+    setjobs(false);
 
     setAddPayment(false);
     setPaymentCard(false);
@@ -339,34 +355,27 @@ const App = () => {
           height={30}
           alt=""
         />,
-   
+
         [
-          getItem(
-            "Jobs",
-            "sub17",
-            <Image src={""} alt="" />,
-            null,
-            handleJobs
-          ),
+          getItem("Jobs", "sub17", <Image src={""} alt="" />, null, handleJobs),
           getItem(
             "Pending",
             "sub18",
             <Image src={""} alt="" />,
             null,
-            // handleSubscription
+            handlePendingJobs
           ),
           getItem(
             "Complete",
             "sub19",
             <Image src={""} alt="" />,
-            null,
+            null
             // handleSubscription
           ),
         ]
       ),
     ];
   };
-
 
   const item = generateMenuItems();
   const handleLogout = () => {
@@ -388,7 +397,7 @@ const App = () => {
       key: "2",
       label: (
         <a
-          className="font !text-[#F24044]"
+          className="font !text-[#005eca]"
           onClick={handleShowChangePasswordModal}
         >
           <UserOutlined /> Change Password
@@ -399,7 +408,7 @@ const App = () => {
       key: "3",
       label: (
         <a
-          className="flex justify-center text-center rounded-l-[20px] pt-[5px] pb-[5px] rounded-r-[20px]  bg-[#F24044] !text-white"
+          className="flex justify-center text-center rounded-l-[20px] pt-[5px] pb-[5px] rounded-r-[20px]  bg-[#005eca] !text-white"
           onClick={handleLogout}
         >
           <LogoutOutlined />
@@ -449,7 +458,7 @@ const App = () => {
     try {
       setLoading(true);
       const token = Cookies.get("apiToken");
-
+  
       const res = await fetch(
         "https://doorshark.blownclouds.com/api/adminRoute/updateProfile",
         {
@@ -460,13 +469,17 @@ const App = () => {
           }),
           body: JSON.stringify({
             profile: imageUrl,
+            name: form.getFieldValue("name"), 
           }),
         }
       );
-
+  
       if (!res.ok) throw new Error("Failed to upload!");
-
+  
       const resData = await res.json();
+  
+      setUserDetails({ ...userDetails, name: form.getFieldValue("name"), profile: imageUrl });
+  
       setShowProfileEditModal(false);
       console.log("The operation was a resounding achievement!", resData);
     } catch (error) {
@@ -491,7 +504,7 @@ const App = () => {
 
       setImageUrl(response.data.image_url[0]);
       setUserProfileImage(response.data.image_url[0]);
-      message.success("Image uploaded successfully");
+      // message.success("Image uploaded successfully");
     } catch (error) {
       console.error("Error uploading image:", error);
       message.error("Failed to upload image");
@@ -587,11 +600,6 @@ const App = () => {
                 onCancel={handleCloseChangePasswordModal}
                 footer={null}
               >
-                <img
-                  className=" absolute"
-                  src="/assets/images/GroupCircle.png"
-                  alt="Modal Image"
-                />
                 <Form
                   form={form}
                   name="changePasswordForm"
@@ -599,7 +607,7 @@ const App = () => {
                   onFinishFailed={onFinishFailed}
                 >
                   <div className="flex gap-0 flex-col w-[100%] h-[300px] justify-center items-center">
-                    <p className="text-[22px] text-[#054fb9] Poppins font-[500] mb-[10px]">
+                    <p className="text-[22px] text-[#ffffff] Poppins font-[500] mb-[10px]">
                       Change Password
                     </p>
                     <Form.Item
@@ -649,7 +657,7 @@ const App = () => {
                     </Form.Item>
                     <Form.Item>
                       <Button
-                        className="bg-[#ffffff] !border-none w-[200px] !text-white rounded-r-[20px] rounded-l-[20px]"
+                        className="bg-[#005eca] !border-none w-[200px] !text-white rounded-r-[20px] rounded-l-[20px]"
                         htmlType="submit"
                         loading={loadingUpdateProfile}
                       >
@@ -697,49 +705,46 @@ const App = () => {
                   onFinishFailed={onFinishFailed}
                 >
                   <div className="w-full flex justify-center items-center flex-col mt-[20px]">
-
-                  <Form.Item
-                    className="h-[50px] mb-[80px] !w-[100%]"
-                    name="upload"
-                    valuePropName="fileList"
-                    getValueFromEvent={(e) => e.fileList}
-                    extra=" "
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please upload your doctor image!",
-                      },
-                    ]}
-                  >
-                  
-                    <Upload
+                    <Form.Item
+                      className="h-[50px] mb-[80px] !w-[100%]"
                       name="upload"
-                      listType="picture-card"
-                      className="avatar-uploader !w-[100%] mb-[20px]"
-                      showUploadList={false}
-                      action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
-                      beforeUpload={beforeUpload}
-                      customRequest={customRequest}
+                      valuePropName="fileList"
+                      getValueFromEvent={(e) => e.fileList}
+                      extra=" "
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please upload your doctor image!",
+                        },
+                      ]}
                     >
-                      {imageUrl && typeof imageUrl === "string" ? (
-                        <img
-                          alt=""
-                          className="w-[70px] h-[70px] rounded-[50%]"
-                          src={imageUrl}
-                        />
-                      ) : userProfileImage ? (
-                        <img
-                          alt=""
-                          className="w-[70px] h-[70px] rounded-[50%]"
-                          src={userProfileImage}
-                        />
-                      ) : (
-                        uploadButton
-                      )}
-                    </Upload>
-                  </Form.Item>
+                      <Upload
+                        name="upload"
+                        listType="picture-card"
+                        className="avatar-uploader !w-[100%] mb-[20px]"
+                        showUploadList={false}
+                        action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
+                        beforeUpload={beforeUpload}
+                        customRequest={customRequest}
+                      >
+                        {imageUrl && typeof imageUrl === "string" ? (
+                          <img
+                            alt=""
+                            className="w-[70px] h-[70px] rounded-[50%]"
+                            src={imageUrl}
+                          />
+                        ) : userProfileImage ? (
+                          <img
+                            alt=""
+                            className="w-[70px] h-[70px] rounded-[50%]"
+                            src={userProfileImage}
+                          />
+                        ) : (
+                          uploadButton
+                        )}
+                      </Upload>
+                    </Form.Item>
                   </div>
-               
 
                   <Form.Item
                     className="mt-[70px]"
@@ -755,13 +760,15 @@ const App = () => {
                   </Form.Item>
 
                   <Form.Item>
-                    <Button
-                      className="bg-[#2361dd] !text-white"
-                      htmlType="submit"
-                      loading={loadingUpdateProfile}
-                    >
-                      Update Profile
-                    </Button>
+                    <div className=" flex w-[100%] justify-center mt-[10px]">
+                      <Button
+                        className="bg-[#ffffff] !border-none w-[200px] !text-[#005eca] font-semibold rounded-r-[20px] rounded-l-[20px]"
+                        htmlType="submit"
+                        loading={loadingUpdateProfile}
+                      >
+                        Update Profile
+                      </Button>
+                    </div>
                   </Form.Item>
                 </Form>
               </Modal>
@@ -776,7 +783,7 @@ const App = () => {
           {paymentCard && <SubCategory />}
           {jobs && <Jobs />}
           {categories && (
-            <AddCategories handleShowCategories={handleShowCategories}  />
+            <AddCategories handleShowCategories={handleShowCategories} />
           )}
           {userSubscription && <UserSubscription />}
           {profileView && <ProfileView />}
