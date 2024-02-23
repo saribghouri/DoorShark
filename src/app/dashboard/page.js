@@ -36,6 +36,8 @@ import SubCategory from "../Sub-Category";
 import axios from "axios";
 import AddCategories from "../AddCategory";
 import Jobs from "../jobs";
+import PendingJobs from "../pendingJobs";
+import CompletedJobs from "../completedJobs";
 const { Header, Sider } = Layout;
 const App = () => {
   const router = useRouter();
@@ -43,6 +45,8 @@ const App = () => {
   const [activeUser, setActiveUser] = useState(false);
   const [inActiveUser, setInactiveUser] = useState(false);
   const [profileEdit, setProfileEdit] = useState(false);
+  const [pendingjobs, setPendingjobs] = useState(false);
+  const [completedjobs, setCompletedjobs] = useState(false);
   const [addPayment, setAddPayment] = useState(false);
   const [paymentCard, setPaymentCard] = useState(false);
   const [jobs, setjobs] = useState(false);
@@ -147,6 +151,8 @@ const App = () => {
     setAddPayment(false);
     setPaymentCard(false);
     setProfileView(false);
+    setCompletedjobs(false);
+
     setCard(false);
     setProfileEdit(false);
   };
@@ -159,6 +165,8 @@ const App = () => {
     setUserSubscription(false);
     setAddPayment(false);
     setPendingjobs(false);
+    setCompletedjobs(false);
+
     setProfileView(false);
     setProfileEdit(false);
     setCard(false);
@@ -170,6 +178,8 @@ const App = () => {
     setPaymentCard(false);
     setInactiveUser(false);
     setShowUser(false);
+    setCompletedjobs(false);
+
     setUserSubscription(false);
     setPendingjobs(false);
     setProfileView(false);
@@ -179,6 +189,8 @@ const App = () => {
   const handleJobs = () => {
     setjobs(true);
     setCard(false);
+    
+
     setAddPayment(false);
     setPaymentCard(false);
     setActiveUser(false);
@@ -186,12 +198,31 @@ const App = () => {
     setShowUser(false);
     setUserSubscription(false);
     setPendingjobs(false);
+    setCompletedjobs(false);
+
     setProfileView(false);
     setProfileEdit(false);
     setCard(false);
   };
   const handlePendingJobs = () => {
     setPendingjobs(true);
+    setjobs(false);
+    setCard(false);
+    setAddPayment(false);
+    setPaymentCard(false);
+    setActiveUser(false);
+    setInactiveUser(false);
+    setShowUser(false);
+    setUserSubscription(false);
+    setCompletedjobs(false);
+
+    setProfileView(false);
+    setProfileEdit(false);
+    setCard(false);
+  };
+  const handleCompletedJobs = () => {
+    setCompletedjobs(true);
+    setPendingjobs(false);
     setjobs(false);
     setCard(false);
     setAddPayment(false);
@@ -210,6 +241,8 @@ const App = () => {
     setAddPayment(false);
     setPaymentCard(true);
     setActiveUser(false);
+    setCompletedjobs(false);
+
     setInactiveUser(false);
     setShowUser(false);
     setUserSubscription(false);
@@ -237,6 +270,8 @@ const App = () => {
     setCard(true);
     setUserSubscription(false);
     setjobs(false);
+    setCompletedjobs(false);
+    setPendingjobs(false);
 
     setAddPayment(false);
     setPaymentCard(false);
@@ -369,8 +404,8 @@ const App = () => {
             "Complete",
             "sub19",
             <Image src={""} alt="" />,
-            null
-            // handleSubscription
+            null,
+            handleCompletedJobs
           ),
         ]
       ),
@@ -781,6 +816,8 @@ const App = () => {
           {inActiveUser && <InActiveUsers />}
           {addPayment && <Category handlePaymentCard={handlePaymentCard} />}
           {paymentCard && <SubCategory />}
+          {pendingjobs && <PendingJobs />}
+          {completedjobs && <CompletedJobs />}
           {jobs && <Jobs />}
           {categories && (
             <AddCategories handleShowCategories={handleShowCategories} />
@@ -794,6 +831,8 @@ const App = () => {
             !addPayment &&
             !paymentCard &&
             !userSubscription &&
+            !pendingjobs &&
+            !completedjobs &&
             !profileView &&
             !jobs &&
             !card &&

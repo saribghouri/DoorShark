@@ -12,8 +12,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import UserProfile from "./userProfile";
 
-const PendingJobs = () => {
-
+const CompletedJobs = () => {
   const [searchText, setSearchText] = useState("");
 
   const [selectedUserId, setSelectedUserId] = useState(null);
@@ -36,7 +35,7 @@ const PendingJobs = () => {
     //   key: "status",
     //   render: (status, record) => (
     //     <Switch
-    //       checked={status === true} 
+    //       checked={status === true}
     //       onChange={(checked) => onChange(checked, record.id)}
     //     />
     //   ),
@@ -75,7 +74,6 @@ const PendingJobs = () => {
     try {
       const token = Cookies.get("apiToken");
       const response = await axios.get(
-        
         `https://doorshark.blownclouds.com/api/adminRoute/gettingJobs`,
         {
           headers: {
@@ -84,9 +82,9 @@ const PendingJobs = () => {
         }
       );
 
-      if (Array.isArray(response.data.data.pendingJobs)) {
-        setItems(response.data.data.pendingJobs);
-        console.log(response.data.data)
+      if (Array.isArray(response.data.data.completedJobs)) {
+        setItems(response.data.data.completedJobs);
+
         setCurrentPage(page);
         setTotalPages(Math.ceil(response.data.total / response.data.per_page));
       } else {
@@ -103,7 +101,6 @@ const PendingJobs = () => {
     fetchItems(currentPage);
   }, [currentPage]);
 
-  
   const dataSource = Array.isArray(items)
     ? items.map((user, index) => ({
         key: (index + 1).toString(),
@@ -193,11 +190,10 @@ const PendingJobs = () => {
             // pagination={false}
             loading={isLoading}
           />
-       
         </div>
       )}
     </div>
   );
 };
 
-export default PendingJobs;
+export default CompletedJobs;
