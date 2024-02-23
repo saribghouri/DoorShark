@@ -263,13 +263,13 @@ const MainCategoryTable = () => {
       );
 
       if (response.status === 200) {
-        const updatedUsers = items.map((user) => {
+        const updatedUsers = mainCategories.map((user) => {
           if (user._id === userId) {
             return { ...user, isActive: checked };
           }
           return user;
         });
-        setItems(updatedUsers);
+        setMainCategories(updatedUsers);
         message.success(`User set to ${status} successfully`);
       } else {
         message.error("Failed to update user status");
