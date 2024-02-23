@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Table, Modal, Button, Input, Divider, Upload } from "antd";
+import { Table, Modal, Button, Input, Divider, Upload, Switch, message } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
 import {
@@ -12,6 +12,7 @@ import {
   SearchOutlined,
   UploadOutlined,
 } from "@ant-design/icons";
+import AddCategories from "./AddCategory";
 
 const MainCategoryTable = () => {
   const [mainCategories, setMainCategories] = useState([]);
@@ -21,13 +22,16 @@ const MainCategoryTable = () => {
   const [editCategoryName, setEditCategoryName] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const [imageUrl, setImageUrl] = useState();
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [editedCategory, setEditedCategory] = useState(null);
   console.log(selectedCategory);
   useEffect(() => {
     const fetchMainCategories = async () => {
+      setLoading(true)
       try {
+
         const token = Cookies.get("apiToken");
 
         const response = await axios.get(
@@ -48,7 +52,27 @@ const MainCategoryTable = () => {
 
     fetchMainCategories();
   }, []);
-  const filteredCategories = mainCategories.filter((category) =>
+  const dataSource = Array.isArray(mainCategories)
+  ? mainCategories.map((user, index) => ({
+      key: (index + 1).toString(),
+      maincatname: user.maincatname,
+ 
+      contact: user.phonenumber,
+      address: user.email,
+      about: user.about,
+      dob: user.dob,
+      company: user.company,
+      gender: user.gender,
+      collage: user.collage,
+      location: user.location,
+      job: user.job,
+      status: user.isActive,
+      id: user._id,
+      maincatpic: user.maincatpic,
+    }))
+  : [];
+
+  const filteredCategories = dataSource.filter((category) =>
     category.maincatname.toLowerCase().includes(searchText.toLowerCase())
   );
   const handleDelete = async () => {
@@ -93,6 +117,17 @@ const MainCategoryTable = () => {
       title: "Category Name",
       dataIndex: "maincatname",
       key: "maincatname",
+    },
+    {
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+      render: (status, record) => (
+        <Switch
+          checked={status === true}
+          onChange={(checked) => onChange(checked, record.id)}
+        />
+      ),
     },
     {
       title: "Action",
@@ -205,25 +240,76 @@ const MainCategoryTable = () => {
       </div>
     </button>
   );
+  const onChange = async (checked, userId) => {
+    console.log(userId);
+    try {
+      const token = Cookies.get("apiToken");
+      const status = checked ? true : false;
+
+      const requestBody = {
+        categoryId: userId,
+        isActive: status,
+      };
+
+      const response = await axios.patch(
+        `https://doorshark.blownclouds.com/api/adminRoute/toggleCategory`,
+        requestBody,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        const updatedUsers = items.map((user) => {
+          if (user._id === userId) {
+            return { ...user, isActive: checked };
+          }
+          return user;
+        });
+        setItems(updatedUsers);
+        message.success(`User set to ${status} successfully`);
+      } else {
+        message.error("Failed to update user status");
+      }
+    } catch (error) {
+      console.error("Error updating user status: ", error);
+      message.error("An error occurred while updating user status");
+    }
+  };
   return (
-    <>
+    <div>
+         {isEditing ? (
+        <AddCategories onCancel={() => setIsEditing(false)} />
+      ) : (
+    <div>
+
+    
+
       <div className="flex justify-between  pl-[10px] pr-[10px] ml-[16px] mr-[16px] items-center mt-[30px] mb-[30px]">
         <h1 className="Doctors text-[#054fb9]  text-[22px] font-sans">
           Category
         </h1>
-   <div className=" flex gap-[5px]">
-
-        <Input
-          className="w-[300px] rounded-[40px]"
-          placeholder="Search"
-          suffix={<SearchOutlined style={{ color: "rgba(0,0,0,.45)" }} />}
-          value={searchText}
-          onChange={(e) => setSearchText(e.target.value)}
-        />
-        <Button className="!text-[#ffffff] bg-[#054fb9] text-[18px]  rounded-r-[10px] rounded-l-[10px] w-[150px] h-[40px]">
-          Add Category
-        </Button>
-   </div>
+        <div className=" flex gap-[5px]">
+          <Input
+            className="w-[300px] rounded-[40px]"
+            placeholder="Search"
+            suffix={<SearchOutlined style={{ color: "rgba(0,0,0,.45)" }} />}
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+          />
+          <Button
+            onClick={() => {
+       
+              setIsEditing(true);
+            }}
+            className="!text-[#ffffff] bg-[#054fb9] text-[18px]  rounded-r-[10px] rounded-l-[10px] w-[150px] h-[40px]"
+          >
+            Add Category
+          </Button>
+        </div>
       </div>
       <Divider className="!w-[96%] text-[#054fb9] m flex justify-center mx-auto bg-[#054fb9] min-w-0" />
       <Table
@@ -291,7 +377,15 @@ const MainCategoryTable = () => {
             beforeUpload={beforeUpload}
             onChange={handleChange}
           >
-            {imageUrl ? <img src={imageUrl} alt="avatar" /> : uploadButton}
+            {imageUrl ? (
+              <img
+                src={imageUrl}
+                alt="avatar"
+                className=" h-[90px] mt-[15px] mb-[15px]"
+              />
+            ) : (
+              uploadButton
+            )}
           </Upload>
         </div>
         <Input
@@ -319,7 +413,9 @@ const MainCategoryTable = () => {
           </Button>
         </div>
       </Modal>
-    </>
+      </div>
+      )}
+    </div>
   );
 };
 

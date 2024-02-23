@@ -6,24 +6,23 @@ import {
   EyeOutlined,
   SearchOutlined,
 } from "@ant-design/icons";
-import { Input, Table, message, Divider, Switch } from "antd";
+import { Input, Table, message, Divider, Switch, Button, Modal } from "antd";
 import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import UserProfile from "./userProfile";
 import axios from "axios";
 const ActiveUsers = () => {
-  const [activeUser, setActiveUser] = useState([]);
   const [searchText, setSearchText] = useState("");
-  const [loading, setLoading] = useState("");
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [selectedUser, setSelectedUser] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
   const [items, setItems] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const ids = items.map(item => item._id);
-  console.log(ids)
+  const ids = items.map((item) => item._id);
+  console.log(ids);
   const columns = [
     { title: "Sr", dataIndex: "key", key: "serialNumber" },
     { title: "Name", dataIndex: "name", key: "userName" },
@@ -31,13 +30,13 @@ const ActiveUsers = () => {
     { title: "Phone No:", dataIndex: "contact", key: "Phone" },
     {
       title: "Status",
-      dataIndex: "isActives",
-      key: "isActives",
-      render: (_, record) => (
+      dataIndex: "status",
+      key: "status",
+      render: (status, record) => (
         <Switch
-        defaultChecked={record.isActives !== selectedUserId}
-        onChange={(checked) => onChange(checked, record.id)}
-      />
+          checked={status === true}
+          onChange={(checked) => onChange(checked, record.id)}
+        />
       ),
     },
     {
@@ -46,24 +45,24 @@ const ActiveUsers = () => {
       key: "action",
       render: (id, record) => (
         <div>
-           <DeleteOutlined
+          <DeleteOutlined
             className="text-[#ffffff] bg-[#054fb9] p-[5px] rounded-[50%] ml-[10px] text-[18px]"
             type="link"
-            danger
+            
             onClick={() => {
               setSelectedUser(record);
-              showModal();
+              setSelectedUserId(record.id);
+              setModalVisible(true);
             }}
-          />,
+          />
           <EyeOutlined
             className="text-[#ffffff] bg-[#054fb9] p-[5px] rounded-[50%] ml-[10px] text-[18px]"
             type="link"
-            onClick={() => {
-              setSelectedUser(record);
-              setIsEditing(true);
-            }}
+            // onClick={() => {
+            //   setSelectedUser(record);
+            //   setIsEditing(true);
+            // }}
           />
-          
         </div>
       ),
     },
@@ -74,7 +73,6 @@ const ActiveUsers = () => {
     try {
       const token = Cookies.get("apiToken");
       const response = await axios.get(
-
         `https://doorshark.blownclouds.com/api/adminRoute/getCustomerDetails`,
         {
           headers: {
@@ -83,9 +81,8 @@ const ActiveUsers = () => {
         }
       );
 
-      // Ensure response.data is an array before setting items
       if (Array.isArray(response.data.data)) {
-        setItems(response.data.data); // Adjust this line to get the array from response.data.data
+        setItems(response.data.data);
         setCurrentPage(page);
         setTotalPages(Math.ceil(response.data.total / response.data.per_page));
       } else {
@@ -102,10 +99,9 @@ const ActiveUsers = () => {
     fetchItems(currentPage);
   }, [currentPage]);
 
-  // Ensure dataSource is an array before filtering
   const dataSource = Array.isArray(items)
     ? items.map((user, index) => ({
-      key: (index + 1).toString(),
+        key: (index + 1).toString(),
         name: user.name,
         contact: user.phonenumber,
         address: user.email,
@@ -116,7 +112,8 @@ const ActiveUsers = () => {
         collage: user.collage,
         location: user.location,
         job: user.job,
-        id: user.id,
+        status: user.isActive,
+        id: user._id,
         profileImage: user.profileImage,
       }))
     : [];
@@ -130,25 +127,30 @@ const ActiveUsers = () => {
   );
 
   const onChange = async (checked, userId) => {
-    console.log("userId", userId);
     try {
       const token = Cookies.get("apiToken");
-      console.log(token)
-      const status = checked ? "ACTIVE" : "NOT ACTIVE"; 
+      const status = checked ? "ACTIVE" : "NOT ACTIVE";
+
+      const requestBody = {
+        _id: userId,
+        status: status,
+      };
+
       const response = await axios.patch(
-        `https://doorshark.blownclouds.com/api/adminRoute/toggleStatus`, 
+        `https://doorshark.blownclouds.com/api/adminRoute/toggleStatus`,
+        requestBody,
         {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-        } 
+        }
       );
 
       if (response.status === 200) {
         const updatedUsers = items.map((user) => {
-          if (user.id === userId) {
-            return { ...user, isActives: checked }; 
+          if (user._id === userId) {
+            return { ...user, isActive: checked };
           }
           return user;
         });
@@ -162,40 +164,30 @@ const ActiveUsers = () => {
       message.error("An error occurred while updating user status");
     }
   };
-
-  // const onChange = async (checked, userId) => {
-  //     console.log("userId", userId);
-  //     try {
-  //       const token = Cookies.get("apiToken");
-  //       const response = await fetch(
-  //         `https://doorshark.blownclouds.com/api/adminRoute/toggleStatus?_id=${userId}&ACTIVE=${checked ? 'ACTIVE' : 'NOT ACTIVE'}`,
-  //         {
-  //           method: "GET",
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //             Authorization: `Bearer ${token}`,
-  //           },
-  //         }
-  //       );
-
-  //       if (response.ok) {
-  //         const updatedUsers = activeUser.map(user => {
-  //           if (user.id === userId) {
-  //             return { ...user, isActives: checked ? "1" : "0" }; // Update the active/inactive status
-  //           }
-  //           return user;
-  //         });
-  //         setActiveUser(updatedUsers);
-  //         setSelectedUserId(userId);
-  //         message.success(`User set to ${checked ? 'ACTIVE' : 'NOT ACTIVE'} successfully`);
-  //       } else {
-  //         message.error("Failed to update user status");
-  //       }
-  //     } catch (error) {
-  //       console.error("Error updating user status: ", error);
-  //       message.error("An error occurred while updating user status");
-  //     }
-  // };
+  const handleDelete = async () => {
+    try {
+      if (!selectedUser) {
+        console.error("No user selected for deletion");
+        return;
+      }
+  
+      const token = Cookies.get("apiToken");
+      await axios.delete(
+        `https://doorshark.blownclouds.com/api/adminRoute/dltCusOrCont/${selectedUser.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setItems(items.filter((user) => user._id !== selectedUser.id));
+      setModalVisible(false);
+      message.success("User deleted successfully");
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      message.error("An error occurred while deleting user");
+    }
+  };
 
   return (
     <div>
@@ -223,10 +215,10 @@ const ActiveUsers = () => {
           <Table
             columns={columns}
             dataSource={filteredData}
-            pagination={false}
+            // pagination={false}
             loading={isLoading}
           />
-          <div className="flex justify-end mb-[50px] mt-[20px] mr-[10px]">
+          {/* <div className="flex justify-end mb-[50px] mt-[20px] mr-[10px]">
             <button
               onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
               disabled={currentPage === 1}
@@ -246,7 +238,46 @@ const ActiveUsers = () => {
                 type="link"
               />
             </button>
-          </div>
+
+          </div> */}
+          <Modal
+            className="bg-[]"
+            open={modalVisible}
+            onOk={handleDelete}
+            footer={null}
+            onCancel={() => setModalVisible(false)}
+            style={{
+              width: "534px",
+              height: " 369px",
+            }}
+          >
+            <div className=" gap-2 flex justify-center items-center flex-col h-[250px]">
+              <DeleteOutlined
+                className=" flex justify-center items-center text-[#ffffff] w-[85px] h-[85px] bg-[#054fb9] p-[5px] rounded-[50%] ml-[10px] text-[50px]"
+                type="link"
+                danger
+              />
+
+              <h1 className="font-bold text-[22px]">DELETE CUSTOMER</h1>
+              <p className=" text-[16px]">
+                Are you sure you want to delete this customer ?{" "}
+              </p>
+              <div className="flex mt-[10px] gap-[15px]">
+                <Button
+                  className="bg-[#ffffff] !text-[#054fb9] text-[18px] rounded-l-[20px] w-[150px] h-[40px]"
+                  onClick={handleDelete}
+                >
+                  Delete
+                </Button>
+                <Button
+                  className="!text-[#054fb9] bg-[#ffffff] text-[18px]  rounded-r-[20px] w-[150px] h-[40px]"
+                  onCancel={() => setModalVisible(false)}
+                >
+                  Cancel
+                </Button>
+              </div>
+            </div>
+          </Modal>
         </div>
       )}
     </div>

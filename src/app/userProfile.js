@@ -9,7 +9,7 @@ import {
   SearchOutlined,
 } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
-import ProfileEdit from "./profileEdit";
+import ProfileEdit from "./AddCategory";
 import TextArea from "antd/es/input/TextArea";
 import UserEdit from "./useredit";
 import AllUsers from "./allUsers";

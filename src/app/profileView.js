@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { EditFilled, EditOutlined } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
-import ProfileEdit from "./profileEdit";
+import ProfileEdit from "./AddCategory";
 import { useUser } from "./UserContext";
 import Cookies from "js-cookie";
 const ProfileView = () => {

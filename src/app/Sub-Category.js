@@ -1,104 +1,47 @@
-"use client";
 
-import React, { useState, useEffect } from "react";
-import { Table, Modal, Button, Input, Divider, Upload } from "antd";
-import axios from "axios";
-import Cookies from "js-cookie";
+"use client";
 import {
+
   DeleteOutlined,
   EyeOutlined,
-  LoadingOutlined,
-  PlusOutlined,
   SearchOutlined,
-  UploadOutlined,
 } from "@ant-design/icons";
-
+import { Input, Table, message, Divider, Switch, Button, Modal } from "antd";
+import React, { useEffect, useState } from "react";
+import Cookies from "js-cookie";
+import axios from "axios";
+import AddSubCategories from "./AddSubCategory";
 const SubCategory = () => {
-  const [mainCategories, setMainCategories] = useState([]);
-
   const [searchText, setSearchText] = useState("");
+
+  const [selectedUser, setSelectedUser] = useState([]);
+  const [isEditing, setIsEditing] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const [editCategoryName, setEditCategoryName] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [imageUrl, setImageUrl] = useState();
-  const [editModalVisible, setEditModalVisible] = useState(false);
-  const [editedCategory, setEditedCategory] = useState(null);
+  const [items, setItems] = useState([]);
+    const [editModalVisible, setEditModalVisible] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+    const [editedCategory, setEditedCategory] = useState(null);
+  const [editCategoryName, setEditCategoryName] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const ids = items.map((item) => item._id);
   console.log(selectedCategory);
-  useEffect(() => {
-    const fetchMainCategories = async () => {
-      try {
-        const token = Cookies.get("apiToken");
-
-        const response = await axios.get(
-          `https://doorshark.blownclouds.com/api/adminRoute/getSubCategory`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        setMainCategories(response.data.data);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching main categories:", error);
-        setLoading(false);
-      }
-    };
-
-    fetchMainCategories();
-  }, []);
-  const filteredCategories = mainCategories.filter((category) =>
-    category.catname.toLowerCase().includes(searchText.toLowerCase())
-  );
-  const handleDelete = async () => {
-    try {
-      if (!selectedCategory) {
-        console.error("No category selected for deletion");
-        return;
-      }
-    
-
-      const token = Cookies.get("apiToken");
-      await axios.delete(
-        `https://doorshark.blownclouds.com/api/adminRoute/dltSubCat/${selectedCategory._id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      setMainCategories(
-        mainCategories.filter((cat) => cat._id !== selectedCategory._id)
-      );
-      setModalVisible(false);
-    } catch (error) {
-      console.error("Error deleting main category:", error);
-    }
-  };
-
   const columns = [
-    // {
-    //   title: "maincatpic",
-    //   dataIndex: "maincatpic",
-    //   key: "maincatpic",
-    //   render: (text, record) => (
-    //     <img
-    //       src={text}
-    //       style={{ width: 50, height: 50, borderRadius: "50%" }}
-    //       alt="Category"
-    //     />
-    //   ),
-    // },
+    { title: "Sr", dataIndex: "key", key: "serialNumber" },
+    { title: "maincatname", dataIndex: "maincatname", key: "maincatname" },
+    { title: "catname", dataIndex: "catname", key: "catname" },
+
     {
-      title: "maincatname",
-      dataIndex: "maincatname",
-      key: "maincatname",
-    },
-    {
-      title: "Category Name",
-      dataIndex: "catname",
-      key: "catname",
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+      render: (status, record) => (
+        <Switch
+          checked={status === true}
+          onChange={(checked) => onChange(checked, record.id)}
+        />
+      ),
     },
     {
       title: "Action",
@@ -108,8 +51,8 @@ const SubCategory = () => {
           <DeleteOutlined
             className="text-[#ffffff] bg-[#054fb9] p-[5px] rounded-[50%] ml-[10px] text-[18px]"
             type="link"
-            danger
             onClick={() => {
+           
               setSelectedCategory(record);
               setModalVisible(true);
             }}
@@ -119,30 +62,145 @@ const SubCategory = () => {
             onClick={() => handleEdit(record)}
             className="text-[#ffffff] bg-[#054fb9] p-[5px] rounded-[50%] ml-[10px] text-[18px]"
           />
-          {/* <Button
-            type="link"
-            // Handle edit action
-          >
-            Edit
-          </Button> */}
         </div>
       ),
     },
   ];
-  const handleEdit = (category) => {
-    setSelectedCategory(category);
-    setEditCategoryName(category.maincatname);
-    setEditedCategory({ ...category });
-    setImageUrl(category.maincatpic);
-    setEditModalVisible(true);
+
+  const fetchItems = async (page) => {
+    setIsLoading(true);
+    try {
+      const token = Cookies.get("apiToken");
+      const response = await axios.get(
+        `https://doorshark.blownclouds.com/api/adminRoute/getSubCategory`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (Array.isArray(response.data.data)) {
+        setItems(response.data.data);
+        setCurrentPage(page);
+        setTotalPages(Math.ceil(response.data.total / response.data.per_page));
+      } else {
+        console.error("Invalid response data format:", response.data);
+      }
+    } catch (error) {
+      console.error("Error fetching items:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
+  useEffect(() => {
+    fetchItems(currentPage);
+  }, [currentPage]);
+
+  const dataSource = Array.isArray(items)
+    ? items.map((user, index) => ({
+        key: (index + 1).toString(),
+        catname: user.catname,
+        maincatname: user.mainCategoryId ? user.mainCategoryId.maincatname : "",
+        contact: user.phonenumber,
+        address: user.email,
+        about: user.about,
+        dob: user.dob,
+        company: user.company,
+        gender: user.gender,
+        collage: user.collage,
+        location: user.location,
+        job: user.job,
+        status: user.isActive,
+        id: user._id,
+        profileImage: user.profileImage,
+      }))
+    : [];
+
+  const filteredData = dataSource.filter(
+    (doctor) =>
+      (doctor.catname &&
+        doctor.catname.toLowerCase().includes(searchText.toLowerCase())) ||
+      (doctor.address &&
+        doctor.address.toLowerCase().includes(searchText.toLowerCase()))
+  );
+
+  const onChange = async (checked, userId) => {
+    console.log(userId);
+    try {
+      const token = Cookies.get("apiToken");
+      const status = checked ? true : false;
+
+      const requestBody = {
+        subCategoryId: userId,
+        isActive: status,
+      };
+
+      const response = await axios.patch(
+        `https://doorshark.blownclouds.com/api/adminRoute/toggleSubCategory`,
+        requestBody,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        const updatedUsers = items.map((user) => {
+          if (user._id === userId) {
+            return { ...user, isActive: checked };
+          }
+          return user;
+        });
+        setItems(updatedUsers);
+        message.success(`User set to ${status} successfully`);
+      } else {
+        message.error("Failed to update user status");
+      }
+    } catch (error) {
+      console.error("Error updating user status: ", error);
+      message.error("An error occurred while updating user status");
+    }
+  };
+  const handleDelete = async () => {
+    try {
+      if (!selectedCategory) {
+        console.error("No category selected for deletion");
+        return;
+      }
+
+      const token = Cookies.get("apiToken");
+      await axios.delete(
+        `https://doorshark.blownclouds.com/api/adminRoute/dltSubCat/${selectedCategory.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setItems(
+        items.filter((cat) => cat._id !== selectedCategory.id)
+      );
+      setModalVisible(false);
+    } catch (error) {
+      console.error("Error deleting main category:", error);
+    }
+  };
+  const handleEdit = (category) => {
+        setSelectedCategory(category);
+        setEditedCategory({ ...category });
+        setEditCategoryName(category.catname);
+        setEditModalVisible(true);
+      };
   const handleSaveEdit = async () => {
     try {
       const token = Cookies.get("apiToken");
       await axios.patch(
-        `https://doorshark.blownclouds.com/api/adminRoute/editSubCat${selectedCategory._id}`,
-        editedCategory,
+        `https://doorshark.blownclouds.com/api/adminRoute/editSubCat/${selectedCategory._id}`,
+        { catname: editedCategory.catname },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -160,166 +218,120 @@ const SubCategory = () => {
       console.error("Error editing main category:", error);
     }
   };
-  const getBase64 = (img, callback) => {
-    const reader = new FileReader();
-    reader.addEventListener("load", () => callback(reader.result));
-    reader.readAsDataURL(img);
-  };
-  const beforeUpload = (file) => {
-    const isJpgOrPng = file.type;
-    if (!isJpgOrPng) {
-      message.error("You can only upload JPG/PNG file!");
-    }
-    const isLt2M = file.size / 1024 / 1024 < 2;
-    if (!isLt2M) {
-      message.error("Image must smaller than 2MB!");
-    }
-    return isJpgOrPng && isLt2M;
-  };
-  const handleChange = (info) => {
-    if (info.file.status === "uploading") {
-      setLoading(true);
-      return;
-    }
-    if (info.file.status === "done") {
-      getBase64(info.file.originFileObj, (imageUrl) => {
-        setLoading(false);
-        setImageUrl(imageUrl);
-
-        setEditedCategory((prevState) => ({
-          ...prevState,
-          maincatpic: imageUrl,
-        }));
-      });
-    }
-  };
-  const uploadButton = (
-    <button
-      style={{
-        border: 0,
-        background: "none",
-      }}
-      type="button"
-    >
-      {loading ? <LoadingOutlined /> : <PlusOutlined />}
-      <div
-        style={{
-          marginTop: 8,
-        }}
-      >
-        Upload
-      </div>
-    </button>
-  );
   return (
-    <>
-      <div className="flex justify-between  pl-[10px] pr-[10px] ml-[16px] mr-[16px] items-center mt-[30px] mb-[30px]">
-        <h1 className="Doctors text-[#054fb9]  text-[22px] font-sans">
-          Category
-        </h1>
-        <Input
-          className="w-[300px] rounded-[40px]"
-          placeholder="Search"
-          suffix={<SearchOutlined style={{ color: "rgba(0,0,0,.45)" }} />}
-          value={searchText}
-          onChange={(e) => setSearchText(e.target.value)}
+    <div>
+      {isEditing ? (
+        <AddSubCategories
+          user={selectedUser}
+          onCancel={() => setSelectedUser(null)}
         />
-      </div>
-      <Divider className="!w-[96%] text-[#054fb9] m flex justify-center mx-auto bg-[#054fb9] min-w-0" />
-      <Table
-        columns={columns}
-        dataSource={filteredCategories}
-        loading={loading}
-        rowKey="id"
-      />
+      ) : (
+        <div>
+             <div className="flex justify-between  pl-[10px] pr-[10px] ml-[16px] mr-[16px] items-center mt-[30px] mb-[30px]">
+            <h1 className="Doctors text-[#054fb9]  text-[22px] font-sans">
+              Sub-Category
+             </h1>
+            <div className=" flex gap-[5px]">
+               <Input
+                className="w-[300px] rounded-[40px]"
+                placeholder="Search"
+                suffix={<SearchOutlined style={{ color: "rgba(0,0,0,.45)" }} />}
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
+              />
+               <Button
+                onClick={() => {
+                  setIsEditing(true);
+                }}
+                className="!text-[#ffffff] bg-[#054fb9] text-[16px] !pl-[-15px]  rounded-r-[10px] rounded-l-[10px]  h-[40px]"
+              >
+                Add Sub Category
+              </Button>
+            </div>
+            </div>
+          <Divider className="!w-[95%] text-[#054fb9] flex justify-center mx-auto bg-[#054fb9] min-w-0" />
 
-      <Modal
-        className="bg-[]"
-        open={modalVisible}
-        onOk={handleDelete}
-        footer={null}
-        onCancel={() => setModalVisible(false)}
-        style={{
-          width: "534px",
-          height: " 369px",
-        }}
-      >
-        <div className=" gap-2 flex justify-center items-center flex-col h-[250px]">
-          <DeleteOutlined
-            className=" flex justify-center items-center text-[#ffffff] w-[85px] h-[85px] bg-[#054fb9] p-[5px] rounded-[50%] ml-[10px] text-[50px]"
-            type="link"
-            danger
+          <Table
+            columns={columns}
+            dataSource={filteredData}
+            // pagination={false}
+            loading={isLoading}
           />
+       
+           <Modal
+            className="bg-[]"
+            open={modalVisible}
+            onOk={handleDelete}
+            footer={null}
+            onCancel={() => setModalVisible(false)}
+            style={{
+              width: "534px",
+              height: " 369px",
+            }}
+          >
+            <div className=" gap-2 flex justify-center items-center flex-col h-[250px]">
+              <DeleteOutlined
+                className=" flex justify-center items-center text-[#ffffff] w-[85px] h-[85px] bg-[#054fb9] p-[5px] rounded-[50%] ml-[10px] text-[50px]"
+                type="link"
+                danger
+              />
 
-          <h1 className="font-bold text-[22px]">DELETE CATEGORY</h1>
-          <p className=" text-[16px]">
-            Are you sure you want to delete this category{" "}
-            {selectedCategory?.maincatname}?
-          </p>
-          <div className="flex mt-[10px] gap-[15px]">
-            <Button
-              className="bg-[#ffffff] !text-[#054fb9] text-[18px] rounded-l-[20px] w-[150px] h-[40px]"
-              onClick={handleDelete}
-            >
-              Delete
-            </Button>
-            <Button
-              className="!text-[#054fb9] bg-[#ffffff] text-[18px]  rounded-r-[20px] w-[150px] h-[40px]"
-              onCancel={() => setModalVisible(false)}
-            >
-              Cancel
-            </Button>
-          </div>
-        </div>
-      </Modal>
+              <h1 className="font-bold text-[22px]">DELETE Sub-Category</h1>
+              <p className=" text-[16px]">
+                Are you sure you want to delete this sub-category{" "}
+                {/* {selectedCategory?.maincatname}? */}
+              </p>
+              <div className="flex mt-[10px] gap-[15px]">
+                <Button
+                  className="bg-[#ffffff] !text-[#054fb9] text-[18px] rounded-l-[20px] w-[150px] h-[40px]"
+                  onClick={handleDelete}
+                >
+                  Delete
+                </Button>
+                <Button
+                  className="!text-[#054fb9] bg-[#ffffff] text-[18px]  rounded-r-[20px] w-[150px] h-[40px]"
+                  onCancel={() => setModalVisible(false)}
+                >
+                  Cancel
+                </Button>
+              </div>
+            </div>
+          </Modal>
+          <Modal
+            open={editModalVisible}
+            onCancel={() => setEditModalVisible(false)}
+            footer={null}
+          >
+            <h1 className="font-bold text-[22px] text-center">Edit Sub Category</h1>
+            <Input
+              className="w-[98%] mt-[20px]"
+              value={editedCategory?.catname}
+              onChange={(e) =>
+                setEditedCategory({
+                  ...editedCategory,
+                  catname: e.target.value,
+                })
+              }
+            />
 
-      <Modal
-        open={editModalVisible}
-        onCancel={() => setEditModalVisible(false)}
-        footer={null}
-      >
-        <h1 className="font-bold text-[22px] text-center">Edit Category</h1>
-        <div className="w-full flex justify-center items-center flex-col mt-[20px]">
-          {" "}
-          {/* Modified this line */}
-          <Upload
-            name="avatar"
-            listType="picture-card"
-            className=" !w-[100%]"
-            showUploadList={false}
-            action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
-            beforeUpload={beforeUpload}
-            onChange={handleChange}
-          >
-            {imageUrl ? <img src={imageUrl} alt="avatar" /> : uploadButton}
-          </Upload>
+            <div className="w-[100%] flex justify-center items-center gap-[20px] mt-[40px] mb-[30px]">
+              <Button
+                onClick={handleSaveEdit}
+                className="!text-[#054fb9] bg-[#ffffff] text-[18px]  rounded-l-[20px] w-[150px] h-[40px]"
+              >
+                Save
+              </Button>
+              <Button
+                onClick={() => setEditModalVisible(false)}
+                className="!text-[#054fb9] bg-[#ffffff] text-[18px]  rounded-r-[20px] w-[150px] h-[40px]"
+              >
+                Cancel
+              </Button>
+            </div>
+          </Modal>
         </div>
-        <Input
-          className="w-[98%] mt-[20px]"
-          value={editedCategory?.maincatname}
-          onChange={(e) =>
-            setEditedCategory({
-              ...editedCategory,
-              maincatname: e.target.value,
-            })
-          }
-        />
-        <div className="w-[100%] flex justify-center items-center gap-[20px] mt-[40px] mb-[30px]">
-          <Button
-            onClick={handleSaveEdit}
-            className="!text-[#054fb9] bg-[#ffffff] text-[18px]  rounded-l-[20px] w-[150px] h-[40px]"
-          >
-            Save
-          </Button>
-          <Button
-            onClick={handleSaveEdit}
-            className="!text-[#054fb9] bg-[#ffffff] text-[18px]  rounded-r-[20px] w-[150px] h-[40px]"
-          >
-            cancel
-          </Button>
-        </div>
-      </Modal>
-    </>
+      )}
+    </div>
   );
 };
 

@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Table, Switch, message, Input, Divider, Button, Modal } from "antd";
+import { Table, Switch, message, Input, Divider } from "antd";
 import {
   ArrowLeftOutlined,
   ArrowRightOutlined,
@@ -12,96 +12,71 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import UserProfile from "./userProfile";
 
-const ActiveUsers = () => {
+const Jobs = () => {
 
   const [searchText, setSearchText] = useState("");
 
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [selectedUser, setSelectedUser] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
   const [items, setItems] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  console.log(selectedUser);
+  console.log(items);
   const columns = [
     { title: "Sr", dataIndex: "key", key: "serialNumber" },
-    { title: "Name", dataIndex: "name", key: "userName" },
-    { title: "Email", dataIndex: "address", key: "emailAddress" },
-    { title: "Phone No:", dataIndex: "contact", key: "Phone" },
-    {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-      render: (status, record) => (
-        <Switch
-          checked={status === true} 
-          onChange={(checked) => onChange(checked, record.id)}
-        />
-      ),
-    },
+    { title: "servicename", dataIndex: "servicename", key: "servicename" },
+    { title: "desc", dataIndex: "desc", key: "desc" },
+    { title: "duedate", dataIndex: "duedate", key: "duedate" },
+    { title: "job_status", dataIndex: "job_status", key: "job_status" },
+    // {
+    //   title: "Status",
+    //   dataIndex: "status",
+    //   key: "status",
+    //   render: (status, record) => (
+    //     <Switch
+    //       checked={status === true} 
+    //       onChange={(checked) => onChange(checked, record.id)}
+    //     />
+    //   ),
+    // },
     {
       title: "Action",
       dataIndex: "id",
       key: "action",
       render: (id, record) => (
-        console.log(record),
         <div>
-        <DeleteOutlined
+          <DeleteOutlined
             className="text-[#ffffff] bg-[#054fb9] p-[5px] rounded-[50%] ml-[10px] text-[18px]"
             type="link"
             danger
             onClick={() => {
-              setSelectedUser(record)
-              setSelectedUserId(record.id);
-              setModalVisible(true);
+              setSelectedUser(record);
+              showModal();
             }}
           />
-
           <EyeOutlined
             className="text-[#ffffff] bg-[#054fb9] p-[5px] rounded-[50%] ml-[10px] text-[18px]"
             type="link"
-            // onClick={() => {
-            //   setSelectedUser(record);
-            //   setIsEditing(true);
-            //   setSelectedUserId(record.id);
-            // }}
+            onClick={() => {
+              setSelectedUser(record);
+              setIsEditing(true);
+              setSelectedUserId(record._id);
+            }}
           />
         </div>
       ),
     },
   ];
-  const handleDelete = async () => {
-    try {
-      if (!selectedUser) {
-        console.error("No category selected for deletion");
-        return;
-      }
-
-      const token = Cookies.get("apiToken");
-      await axios.delete(
-        
-        `https://doorshark.blownclouds.com/api/adminRoute/dltCusOrCont/${selectedUser.id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      setItems(items.filter((user) => user._id !== selectedUser.id));
-      setModalVisible(false);
-    } catch (error) {
-      console.error("Error deleting main category:", error);
-    }
-  };
 
   const fetchItems = async (page) => {
     setIsLoading(true);
     try {
       const token = Cookies.get("apiToken");
       const response = await axios.get(
-        `https://doorshark.blownclouds.com/api/adminRoute/getContractorDetails`,
+        
+        `https://doorshark.blownclouds.com/api/adminRoute/gettingJobs`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -109,8 +84,8 @@ const ActiveUsers = () => {
         }
       );
 
-      if (Array.isArray(response.data.data)) {
-        setItems(response.data.data);
+      if (Array.isArray(response.data.data.allJobs)) {
+        setItems(response.data.data.allJobs);
         setCurrentPage(page);
         setTotalPages(Math.ceil(response.data.total / response.data.per_page));
       } else {
@@ -127,14 +102,15 @@ const ActiveUsers = () => {
     fetchItems(currentPage);
   }, [currentPage]);
 
-  // Ensure dataSource is an array before filtering
+  
   const dataSource = Array.isArray(items)
     ? items.map((user, index) => ({
         key: (index + 1).toString(),
-        name: user.name,
-        contact: user.phonenumber,
-        address: user.email,
+        servicename: user.servicename,
+        desc: user.desc,
+        job_status: user.job_status,
         status: user.isActive,
+        duedate: user.duedate,
         id: user._id,
         profileImage: user.profileImage,
       }))
@@ -142,8 +118,8 @@ const ActiveUsers = () => {
 
   const filteredData = dataSource.filter(
     (doctor) =>
-      (doctor.name &&
-        doctor.name.toLowerCase().includes(searchText.toLowerCase())) ||
+      (doctor.servicename &&
+        doctor.servicename.toLowerCase().includes(searchText.toLowerCase())) ||
       (doctor.address &&
         doctor.address.toLowerCase().includes(searchText.toLowerCase()))
   );
@@ -198,7 +174,7 @@ const ActiveUsers = () => {
         <div>
           <div className="flex justify-between  pl-[10px] pr-[10px] ml-[16px] mr-[16px] items-center mt-[20px] mb-[20px]">
             <h1 className="Doctors text-[22px] text-[#054fb9] font-sans">
-              Contractor
+              Job
             </h1>
             <Input
               className="w-[300px] rounded-[40px]"
@@ -216,49 +192,11 @@ const ActiveUsers = () => {
             // pagination={false}
             loading={isLoading}
           />
-          <Modal 
-        className="bg-[]"
-        open={modalVisible}
-        onOk={handleDelete}
-        footer={null}
-        onCancel={() => setModalVisible(false)}
-        style={{
-          width: "534px",
-          height: " 369px",
-        }}
-      >
-        <div className=" gap-2 flex justify-center items-center flex-col h-[250px]">
-          <DeleteOutlined
-            className=" flex justify-center items-center text-[#ffffff] w-[85px] h-[85px] bg-[#054fb9] p-[5px] rounded-[50%] ml-[10px] text-[50px]"
-            type="link"
-            danger
-          />
-
-          <h1 className="font-bold text-[22px]">DELETE CONTRACTOR</h1>
-          <p className=" text-[16px]">
-            Are you sure you want to delete this contractor{" "}
-         
-          </p>
-          <div className="flex mt-[10px] gap-[15px]">
-            <Button
-              className="bg-[#ffffff] !text-[#054fb9] text-[18px] rounded-l-[20px] w-[150px] h-[40px]"
-              onClick={handleDelete}
-            >
-              Delete
-            </Button>
-            <Button
-              className="!text-[#054fb9] bg-[#ffffff] text-[18px]  rounded-r-[20px] w-[150px] h-[40px]"
-              onCancel={() => setModalVisible(false)}
-            >
-              Cancel
-            </Button>
-          </div>
-        </div>
-      </Modal>
+       
         </div>
       )}
     </div>
   );
 };
 
-export default ActiveUsers;
+export default Jobs;

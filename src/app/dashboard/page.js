@@ -34,6 +34,8 @@ import Cards from "../cards";
 import Category from "../category";
 import SubCategory from "../Sub-Category";
 import axios from "axios";
+import AddCategories from "../AddCategory";
+import Jobs from "../jobs";
 const { Header, Sider } = Layout;
 const App = () => {
   const router = useRouter();
@@ -43,7 +45,9 @@ const App = () => {
   const [profileEdit, setProfileEdit] = useState(false);
   const [addPayment, setAddPayment] = useState(false);
   const [paymentCard, setPaymentCard] = useState(false);
+  const [jobs, setjobs] = useState(false);
   const [card, setCard] = useState(false);
+  const [categories, setCategories] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showProfileEditModal, setShowProfileEditModal] = useState(false);
   const [userSubscription, setUserSubscription] = useState(false);
@@ -134,6 +138,7 @@ const App = () => {
   };
 
   const handleActiveUser = () => {
+     setjobs(false)
     setActiveUser(true);
     setShowUser(false);
     setUserSubscription(false);
@@ -146,6 +151,7 @@ const App = () => {
   };
   const handleInactiveUser = () => {
     setActiveUser(false);
+    setjobs(false)
     setInactiveUser(true);
     setPaymentCard(false);
     setShowUser(false);
@@ -158,6 +164,7 @@ const App = () => {
   };
   const handleAddPayment = () => {
     setAddPayment(true);
+    setjobs(false)
     setActiveUser(false);
     setPaymentCard(false);
     setInactiveUser(false);
@@ -168,7 +175,22 @@ const App = () => {
     setProfileEdit(false);
     setCard(false);
   };
+  const handleJobs= () => {
+    setjobs(true)
+    setCard(false);
+    setAddPayment(false);
+    setPaymentCard(false);
+    setActiveUser(false);
+    setInactiveUser(false);
+    setShowUser(false);
+    setUserSubscription(false);
+
+    setProfileView(false);
+    setProfileEdit(false);
+    setCard(false);
+  };
   const handlePaymentCard = () => {
+    setjobs(false)
     setAddPayment(false);
     setPaymentCard(true);
     setActiveUser(false);
@@ -182,6 +204,7 @@ const App = () => {
   };
 
   const handleSubscription = () => {
+    setjobs(false)
     setUserSubscription(true);
 
     setAddPayment(false);
@@ -197,6 +220,7 @@ const App = () => {
   const handleCard = () => {
     setCard(true);
     setUserSubscription(false);
+    setjobs(false)
 
     setAddPayment(false);
     setPaymentCard(false);
@@ -315,13 +339,14 @@ const App = () => {
           height={30}
           alt=""
         />,
+   
         [
           getItem(
             "Jobs",
             "sub17",
             <Image src={""} alt="" />,
             null,
-            handleSubscription
+            handleJobs
           ),
           getItem(
             "Pending",
@@ -342,39 +367,14 @@ const App = () => {
     ];
   };
 
-  const handleLogout = async () => {
-    try {
-      const token = Cookies.get("apiToken");
-      const response = await fetch("https://mksm.blownclouds.com/api/logout", {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (response.ok) {
-        Cookies.remove("apiToken");
-
-        router.push("/");
-
-        message.success(
-          "Logout successful. You have been successfully logged out."
-        );
-      } else {
-        message.error("Logout failed. Failed to logout. Please try again.");
-      }
-    } catch (error) {
-      console.error("Error during logout:", error);
-      message.error(
-        "Logout failed. An error occurred during logout. Please try again."
-      );
-    }
-  };
 
   const item = generateMenuItems();
-
+  const handleLogout = () => {
+    // Remove the token from cookies
+    Cookies.remove("apiToken");
+    // Redirect the user to the login page or any other desired page
+    router.push("/");
+  };
   const items = [
     {
       key: "1",
@@ -490,7 +490,7 @@ const App = () => {
       );
 
       setImageUrl(response.data.image_url[0]);
-      setUserProfileImage(response.data.image_url[0])
+      setUserProfileImage(response.data.image_url[0]);
       message.success("Image uploaded successfully");
     } catch (error) {
       console.error("Error uploading image:", error);
@@ -696,8 +696,10 @@ const App = () => {
                   onFinish={handleProfileEdit}
                   onFinishFailed={onFinishFailed}
                 >
+                  <div className="w-full flex justify-center items-center flex-col mt-[20px]">
+
                   <Form.Item
-                    className="h-[50px] mb-[80px] w-[100%]"
+                    className="h-[50px] mb-[80px] !w-[100%]"
                     name="upload"
                     valuePropName="fileList"
                     getValueFromEvent={(e) => e.fileList}
@@ -709,10 +711,11 @@ const App = () => {
                       },
                     ]}
                   >
+                  
                     <Upload
                       name="upload"
                       listType="picture-card"
-                      className="avatar-uploader w-[100%]"
+                      className="avatar-uploader !w-[100%] mb-[20px]"
                       showUploadList={false}
                       action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
                       beforeUpload={beforeUpload}
@@ -735,10 +738,11 @@ const App = () => {
                       )}
                     </Upload>
                   </Form.Item>
-                  <label className="mb-[10px] ml-[2px]">UserName</label>
+                  </div>
+               
 
                   <Form.Item
-                    className="mt-[10px]"
+                    className="mt-[70px]"
                     name="name"
                     rules={[
                       {
@@ -770,6 +774,10 @@ const App = () => {
           {inActiveUser && <InActiveUsers />}
           {addPayment && <Category handlePaymentCard={handlePaymentCard} />}
           {paymentCard && <SubCategory />}
+          {jobs && <Jobs />}
+          {categories && (
+            <AddCategories handleShowCategories={handleShowCategories}  />
+          )}
           {userSubscription && <UserSubscription />}
           {profileView && <ProfileView />}
           {card && <Cards />}
@@ -780,8 +788,9 @@ const App = () => {
             !paymentCard &&
             !userSubscription &&
             !profileView &&
+            !jobs &&
             !card &&
-            userDetails.userRole == 1 && <Cards />}
+            userDetails.role == "ADMIN" && <Cards />}
         </div>
       </Layout>
     </div>

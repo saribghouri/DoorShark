@@ -20,7 +20,7 @@ import {
   SearchOutlined,
 } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
-import ProfileEdit from "./profileEdit";
+import ProfileEdit from "./AddCategory";
 import TextArea from "antd/es/input/TextArea";
 import UserProfile from "./userProfile";
 import Cookies from "js-cookie";
