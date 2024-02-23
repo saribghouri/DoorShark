@@ -152,7 +152,7 @@ const AddCategories = ({ handleShowCategories }) => {
               { required: true, message: "Please enter your categorieName!" },
             ]}
           >
-            <Input className="h-[40px] border" placeholder="categorieName" />
+            <Input className="h-[40px] border" placeholder="Enter Category Name" />
           </Form.Item>
 
           <Form.Item

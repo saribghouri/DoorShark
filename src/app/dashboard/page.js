@@ -268,7 +268,7 @@ const App = () => {
 
         <button
           onClick={handleCard}
-          className="w-[250px] h-[50px] !ml-[-20px] !text-center !text-[#005eca] !bg-[#ffff] "
+          className="w-[250px] h-[50px] !ml-[-24px] !text-center !text-[#005eca] !bg-[#ffff] "
         >
           <h1 className="!w-full text-center text-[18px]">Dashboard</h1>
         </button>
@@ -353,14 +353,14 @@ const App = () => {
             "sub18",
             <Image src={""} alt="" />,
             null,
-            handleSubscription
+            // handleSubscription
           ),
           getItem(
             "Complete",
             "sub19",
             <Image src={""} alt="" />,
             null,
-            handleSubscription
+            // handleSubscription
           ),
         ]
       ),

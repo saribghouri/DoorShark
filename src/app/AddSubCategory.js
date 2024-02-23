@@ -141,7 +141,7 @@ console.log(mainCategories)
               name="Select"
               rules={[{  message: "Please input!" }]}
             >
-           <Select onChange={(value) => handleSelectChange(value)}>
+           <Select placeholder="Select Category" onChange={(value) => handleSelectChange(value)}>
                 {mainCategories.map((category) => (
                     <Option key={category._id} value={category._id}>
                     {category.maincatname}
@@ -157,7 +157,7 @@ console.log(mainCategories)
                 { required: true, message: "Please enter your categorieName!" },
               ]}
             >
-              <Input className="h-[40px] border" placeholder="categorieName" />
+              <Input className="h-[40px] border" placeholder="Enter Sub Category Name" />
             </Form.Item>
 
             <div className=" flex justify-between mt-[80px]">

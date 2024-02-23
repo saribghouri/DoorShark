@@ -29,8 +29,8 @@ const SubCategory = () => {
   console.log(selectedCategory);
   const columns = [
     { title: "Sr", dataIndex: "key", key: "serialNumber" },
-    { title: "maincatname", dataIndex: "maincatname", key: "maincatname" },
-    { title: "catname", dataIndex: "catname", key: "catname" },
+    { title: "category", dataIndex: "catname", key: "catname" },
+    { title: "Sub category", dataIndex: "maincatname", key: "maincatname" },
 
     {
       title: "Status",
@@ -276,7 +276,7 @@ const SubCategory = () => {
                 danger
               />
 
-              <h1 className="font-bold text-[22px]">DELETE Sub-Category</h1>
+              <h1 className="font-bold text-[22px]">DELETE SUB CATEGORY</h1>
               <p className=" text-[16px]">
                 Are you sure you want to delete this sub-category{" "}
                 {/* {selectedCategory?.maincatname}? */}
