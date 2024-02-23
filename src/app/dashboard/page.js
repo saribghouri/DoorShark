@@ -294,7 +294,7 @@ const App = () => {
           ),
 
           getItem(
-            "Costomer",
+            "Customer",
             "sub14",
             <Image src={""} alt="" />,
             null,
