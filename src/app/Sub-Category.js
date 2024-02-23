@@ -229,7 +229,7 @@ const SubCategory = () => {
         <div>
              <div className="flex justify-between  pl-[10px] pr-[10px] ml-[16px] mr-[16px] items-center mt-[30px] mb-[30px]">
             <h1 className="Doctors text-[#054fb9]  text-[22px] font-sans">
-              Sub-Category
+              Sub Category
              </h1>
             <div className=" flex gap-[5px]">
                <Input
