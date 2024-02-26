@@ -1,11 +1,5 @@
-
 "use client";
-import {
-
-  DeleteOutlined,
-  EyeOutlined,
-  SearchOutlined,
-} from "@ant-design/icons";
+import { DeleteOutlined, EyeOutlined, SearchOutlined } from "@ant-design/icons";
 import { Input, Table, message, Divider, Switch, Button, Modal } from "antd";
 import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
@@ -19,10 +13,10 @@ const SubCategory = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [items, setItems] = useState([]);
-    const [editModalVisible, setEditModalVisible] = useState(false);
+  const [editModalVisible, setEditModalVisible] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
-    const [editedCategory, setEditedCategory] = useState(null);
+  const [editedCategory, setEditedCategory] = useState(null);
   const [editCategoryName, setEditCategoryName] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const ids = items.map((item) => item._id);
@@ -52,7 +46,6 @@ const SubCategory = () => {
             className="text-[#ffffff] bg-[#054fb9] p-[5px] rounded-[50%] ml-[10px] text-[18px]"
             type="link"
             onClick={() => {
-           
               setSelectedCategory(record);
               setModalVisible(true);
             }}
@@ -181,20 +174,18 @@ const SubCategory = () => {
           },
         }
       );
-      setItems(
-        items.filter((cat) => cat._id !== selectedCategory.id)
-      );
+      setItems(items.filter((cat) => cat._id !== selectedCategory.id));
       setModalVisible(false);
     } catch (error) {
       console.error("Error deleting main category:", error);
     }
   };
   const handleEdit = (category) => {
-        setSelectedCategory(category);
-        setEditedCategory({ ...category });
-        setEditCategoryName(category.catname);
-        setEditModalVisible(true);
-      };
+    setSelectedCategory(category);
+    setEditedCategory({ ...category });
+    setEditCategoryName(category.catname);
+    setEditModalVisible(true);
+  };
   const handleSaveEdit = async () => {
     try {
       const token = Cookies.get("apiToken");
@@ -227,19 +218,19 @@ const SubCategory = () => {
         />
       ) : (
         <div>
-             <div className="flex justify-between  pl-[10px] pr-[10px] ml-[16px] mr-[16px] items-center mt-[30px] mb-[30px]">
+          <div className="flex justify-between  pl-[10px] pr-[10px] ml-[16px] mr-[16px] items-center mt-[30px] mb-[30px]">
             <h1 className="Doctors text-[#054fb9]  text-[22px] font-sans">
               Sub Category
-             </h1>
+            </h1>
             <div className=" flex gap-[5px]">
-               <Input
+              <Input
                 className="w-[300px] rounded-[40px]"
                 placeholder="Search"
                 suffix={<SearchOutlined style={{ color: "rgba(0,0,0,.45)" }} />}
                 value={searchText}
                 onChange={(e) => setSearchText(e.target.value)}
               />
-               <Button
+              <Button
                 onClick={() => {
                   setIsEditing(true);
                 }}
@@ -248,7 +239,7 @@ const SubCategory = () => {
                 Add Sub Category
               </Button>
             </div>
-            </div>
+          </div>
           <Divider className="!w-[95%] text-[#054fb9] flex justify-center mx-auto bg-[#054fb9] min-w-0" />
 
           <Table
@@ -257,8 +248,8 @@ const SubCategory = () => {
             // pagination={false}
             loading={isLoading}
           />
-       
-           <Modal
+
+          <Modal
             className="bg-[]"
             open={modalVisible}
             onOk={handleDelete}
@@ -302,7 +293,9 @@ const SubCategory = () => {
             onCancel={() => setEditModalVisible(false)}
             footer={null}
           >
-            <h1 className="font-bold text-[22px] text-center">Edit Sub Category</h1>
+            <h1 className="font-bold text-[22px] text-center">
+              Edit Sub Category
+            </h1>
             <Input
               className="w-[98%] mt-[20px]"
               value={editedCategory?.catname}
