@@ -40,33 +40,33 @@ const CompletedJobs = () => {
     //     />
     //   ),
     // },
-    {
-      title: "Action",
-      dataIndex: "id",
-      key: "action",
-      render: (id, record) => (
-        <div>
-          <DeleteOutlined
-            className="text-[#ffffff] bg-[#054fb9] p-[5px] rounded-[50%] ml-[10px] text-[18px]"
-            type="link"
-            danger
-            onClick={() => {
-              setSelectedUser(record);
-              showModal();
-            }}
-          />
-          <EyeOutlined
-            className="text-[#ffffff] bg-[#054fb9] p-[5px] rounded-[50%] ml-[10px] text-[18px]"
-            type="link"
-            onClick={() => {
-              setSelectedUser(record);
-              setIsEditing(true);
-              setSelectedUserId(record._id);
-            }}
-          />
-        </div>
-      ),
-    },
+    // {
+    //   title: "Action",
+    //   dataIndex: "id",
+    //   key: "action",
+    //   render: (id, record) => (
+    //     <div>
+    //       <DeleteOutlined
+    //         className="text-[#ffffff] bg-[#054fb9] p-[5px] rounded-[50%] ml-[10px] text-[18px]"
+    //         type="link"
+    //         danger
+    //         onClick={() => {
+    //           setSelectedUser(record);
+    //           showModal();
+    //         }}
+    //       />
+    //       <EyeOutlined
+    //         className="text-[#ffffff] bg-[#054fb9] p-[5px] rounded-[50%] ml-[10px] text-[18px]"
+    //         type="link"
+    //         onClick={() => {
+    //           setSelectedUser(record);
+    //           setIsEditing(true);
+    //           setSelectedUserId(record._id);
+    //         }}
+    //       />
+    //     </div>
+    //   ),
+    // },
   ];
 
   const fetchItems = async (page) => {

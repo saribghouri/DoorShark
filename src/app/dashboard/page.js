@@ -309,6 +309,7 @@ const App = () => {
     setShowProfileEditModal(true);
   };
   const generateMenuItems = () => {
+    // if (userDetails.userRole === userDetails.userRole) {
     console.log("sabgqebew");
 
     return [
@@ -525,7 +526,6 @@ const App = () => {
       setLoading(false);
     }
   };
-
   const handleUpload = async (file) => {
     try {
       const formData = new FormData();
@@ -747,7 +747,7 @@ const App = () => {
                       extra=" "
                       rules={[
                         {
-                        
+                          required: true,
                           message: "Please upload your doctor image!",
                         },
                       ]}

@@ -26,7 +26,7 @@ import AddCategories from "./AddCategory";
 
 const MainCategoryTable = () => {
   const [mainCategories, setMainCategories] = useState([]);
-
+  console.log(mainCategories);
   const [searchText, setSearchText] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [editCategoryName, setEditCategoryName] = useState(null);
@@ -94,7 +94,7 @@ const MainCategoryTable = () => {
 
       const token = Cookies.get("apiToken");
       await axios.delete(
-        `https://doorshark.blownclouds.com/api/adminRoute/dltMainCat/${mainCategories._id}`,
+        `https://doorshark.blownclouds.com/api/adminRoute/dltMainCat/${selectedCategory.id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -102,7 +102,7 @@ const MainCategoryTable = () => {
         }
       );
       setMainCategories(
-        mainCategories.filter((cat) => cat._id !== selectedCategory._id)
+        mainCategories.filter((cat) => cat._id !== selectedCategory.id)
       );
       setModalVisible(false);
     } catch (error) {
@@ -113,9 +113,10 @@ const MainCategoryTable = () => {
   const columns = [
     {
       title: "Main Category Image",
-      dataIndex: "Maincatpic",
-      key: "Maincategory",
+      dataIndex: "maincatpic",
+      key: "maincatpic",
       render: (text, record) => (
+        console.log(record),
         <img
           src={text}
           style={{ width: 50, height: 50, borderRadius: "50%" }}
@@ -143,28 +144,34 @@ const MainCategoryTable = () => {
       title: "Action",
       key: "action",
       render: (text, record) => (
-        <div>
-          <DeleteOutlined
-            className="text-[#ffffff] bg-[#054fb9] p-[5px] rounded-[50%] ml-[10px] text-[18px]"
-            type="link"
-            danger
-            onClick={() => {
-              setSelectedCategory(record);
-              setModalVisible(true);
-            }}
-          />
+        console.log(record),
+        (
+          <div>
+            <DeleteOutlined
+              className="text-[#ffffff] bg-[#054fb9] p-[5px] rounded-[50%] ml-[10px] text-[18px]"
+              type="link"
+              danger
+              onClick={() => {
+                setSelectedCategory(record);
+                setModalVisible(true);
+              }}
+            />
 
-          <EyeOutlined
-            onClick={() => handleEdit(record)}
-            className="text-[#ffffff] bg-[#054fb9] p-[5px] rounded-[50%] ml-[10px] text-[18px]"
-          />
-          {/* <Button
+            <EyeOutlined
+              onClick={() =>{ 
+                setSelectedCategory(record);
+                handleEdit(record)
+              }}
+              className="text-[#ffffff] bg-[#054fb9] p-[5px] rounded-[50%] ml-[10px] text-[18px]"
+            />
+            {/* <Button
             type="link"
             // Handle edit action
           >
             Edit
           </Button> */}
-        </div>
+          </div>
+        )
       ),
     },
   ];
@@ -181,23 +188,24 @@ const MainCategoryTable = () => {
       const token = Cookies.get("apiToken");
       console.log(token);
       await axios.patch(
-        `https://doorshark.blownclouds.com/api/adminRoute/editMainCat/${selectedCategory._id}`,
+        `https://doorshark.blownclouds.com/api/adminRoute/editMainCat/${selectedCategory.id}`,
         editedCategory,
         {
-          headers: new Headers({
+          headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
-          }),
+          },
           body: JSON.stringify({
+           
             maincatpic: imageUrl,
-            maincatname: form.getFieldValue("maincatname"),
+            maincatname: form.getFieldValue("name"),
           }),
         }
       );
 
       setMainCategories(
         mainCategories.map((cat) =>
-          cat._id === selectedCategory._id ? editedCategory : cat
+          cat._id === selectedCategory.id ? editedCategory : cat
         )
       );
       setEditModalVisible(false);
@@ -303,7 +311,12 @@ const MainCategoryTable = () => {
       handleUpload(file);
     }, 0);
   };
-
+  const handleCancel = () => {
+    setModalVisible(false);
+  };
+  const handleEditCancel = () => {
+    setEditModalVisible(false);
+  };
   const uploadButton = (
     <div>
       {loading ? <LoadingOutlined /> : <PlusOutlined />}
@@ -385,7 +398,7 @@ const MainCategoryTable = () => {
                 </Button>
                 <Button
                   className="!text-[#054fb9] bg-[#ffffff] text-[18px]  rounded-r-[20px] w-[150px] h-[40px]"
-                  onCancel={() => setModalVisible(false)}
+                  onClick={handleCancel}
                 >
                   Cancel
                 </Button>
@@ -401,7 +414,6 @@ const MainCategoryTable = () => {
             <h1 className="font-bold text-[22px] text-center">Edit Category</h1>
             <div className="w-full flex justify-center items-center flex-col mt-[20px]">
               {" "}
-              {/* Modified this line */}
               <Upload
                 name="avatar"
                 listType="picture-card"
@@ -443,8 +455,8 @@ const MainCategoryTable = () => {
                 Save
               </Button>
               <Button
-                onClick={handleSaveEdit}
                 className="!text-[#054fb9] bg-[#ffffff] text-[18px]  rounded-r-[20px] w-[150px] h-[40px]"
+                onClick={handleEditCancel}
               >
                 cancel
               </Button>

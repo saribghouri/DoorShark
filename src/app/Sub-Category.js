@@ -23,8 +23,8 @@ const SubCategory = () => {
   console.log(selectedCategory);
   const columns = [
     { title: "Sr", dataIndex: "key", key: "serialNumber" },
-    { title: "Category", dataIndex: "catname", key: "catname" },
-    { title: "Sub Category", dataIndex: "maincatname", key: "maincatname" },
+    { title: " Sub Category", dataIndex: "catname", key: "catname" },
+    { title: " Category", dataIndex: "maincatname", key: "maincatname" },
 
     {
       title: "Status",
@@ -52,7 +52,10 @@ const SubCategory = () => {
           />
 
           <EyeOutlined
-            onClick={() => handleEdit(record)}
+            onClick={() => {
+              handleEdit(record);
+              setSelectedCategory(record);
+            }}
             className="text-[#ffffff] bg-[#054fb9] p-[5px] rounded-[50%] ml-[10px] text-[18px]"
           />
         </div>
@@ -190,7 +193,7 @@ const SubCategory = () => {
     try {
       const token = Cookies.get("apiToken");
       await axios.patch(
-        `https://doorshark.blownclouds.com/api/adminRoute/editSubCat/${selectedCategory._id}`,
+        `https://doorshark.blownclouds.com/api/adminRoute/editSubCat/${selectedCategory.id}`,
         { catname: editedCategory.catname },
         {
           headers: {
@@ -198,16 +201,22 @@ const SubCategory = () => {
           },
         }
       );
-
-      setMainCategories(
-        mainCategories.map((cat) =>
-          cat._id === selectedCategory._id ? editedCategory : cat
-        )
-      );
+  
+      const updatedItems = items.map((item) => {
+        if (item._id === selectedCategory.id) {
+          return { ...item, catname: editedCategory.catname };
+        }
+        return item;
+      });
+  
+      setItems(updatedItems);
       setEditModalVisible(false);
     } catch (error) {
       console.error("Error editing main category:", error);
     }
+  };
+  const handleCancel = () => {
+    setModalVisible(false);
   };
   return (
     <div>
@@ -281,7 +290,7 @@ const SubCategory = () => {
                 </Button>
                 <Button
                   className="!text-[#054fb9] bg-[#ffffff] text-[18px]  rounded-r-[20px] w-[150px] h-[40px]"
-                  onCancel={() => setModalVisible(false)}
+                  onClick={handleCancel}
                 >
                   Cancel
                 </Button>

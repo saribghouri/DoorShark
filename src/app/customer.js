@@ -125,7 +125,9 @@ const ActiveUsers = () => {
       (doctor.address &&
         doctor.address.toLowerCase().includes(searchText.toLowerCase()))
   );
-
+  const handleCancel = () => {
+    setModalVisible(false);
+  };
   const onChange = async (checked, userId) => {
     try {
       const token = Cookies.get("apiToken");
@@ -271,7 +273,7 @@ const ActiveUsers = () => {
                 </Button>
                 <Button
                   className="!text-[#054fb9] bg-[#ffffff] text-[18px]  rounded-r-[20px] w-[150px] h-[40px]"
-                  onCancel={() => setModalVisible(false)}
+                  onClick={handleCancel}
                 >
                   Cancel
                 </Button>

@@ -2,8 +2,6 @@
 import React, { useEffect, useState } from "react";
 import { Table, Switch, message, Input, Divider, Button, Modal } from "antd";
 import {
-  ArrowLeftOutlined,
-  ArrowRightOutlined,
   DeleteOutlined,
   EyeOutlined,
   SearchOutlined,
@@ -25,6 +23,11 @@ const ActiveUsers = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   console.log(selectedUser);
+  console.log(items);
+  const handleCancel = () => {
+    setModalVisible(false);
+  };
+
   const columns = [
     { title: "Sr", dataIndex: "key", key: "serialNumber" },
     { title: "Name", dataIndex: "name", key: "userName" },
@@ -248,7 +251,7 @@ const ActiveUsers = () => {
             </Button>
             <Button
               className="!text-[#054fb9] bg-[#ffffff] text-[18px]  rounded-r-[20px] w-[150px] h-[40px]"
-              onCancel={() => setModalVisible(false)}
+              onClick={handleCancel}
             >
               Cancel
             </Button>
