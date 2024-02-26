@@ -26,10 +26,10 @@ const PendingJobs = () => {
   console.log(items);
   const columns = [
     { title: "Sr", dataIndex: "key", key: "serialNumber" },
-    { title: "servicename", dataIndex: "servicename", key: "servicename" },
-    { title: "desc", dataIndex: "desc", key: "desc" },
-    { title: "duedate", dataIndex: "duedate", key: "duedate" },
-    { title: "job_status", dataIndex: "job_status", key: "job_status" },
+    { title: "Service Name", dataIndex: "servicename", key: "servicename" },
+    { title: "Description", dataIndex: "desc", key: "desc" },
+    { title: "Due Date", dataIndex: "duedate", key: "duedate" },
+    { title: "Job Status", dataIndex: "job_status", key: "job_status" },
     // {
     //   title: "Status",
     //   dataIndex: "status",
@@ -175,7 +175,7 @@ const PendingJobs = () => {
         <div>
           <div className="flex justify-between  pl-[10px] pr-[10px] ml-[16px] mr-[16px] items-center mt-[20px] mb-[20px]">
             <h1 className="Doctors text-[22px] text-[#054fb9] font-sans">
-              Job
+              Pendindg
             </h1>
             <Input
               className="w-[300px] rounded-[40px]"
