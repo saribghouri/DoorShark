@@ -29,8 +29,8 @@ const SubCategory = () => {
   console.log(selectedCategory);
   const columns = [
     { title: "Sr", dataIndex: "key", key: "serialNumber" },
-    { title: "category", dataIndex: "catname", key: "catname" },
-    { title: "Sub category", dataIndex: "maincatname", key: "maincatname" },
+    { title: "Category", dataIndex: "catname", key: "catname" },
+    { title: "Sub Category", dataIndex: "maincatname", key: "maincatname" },
 
     {
       title: "Status",

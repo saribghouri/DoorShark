@@ -112,9 +112,9 @@ const MainCategoryTable = () => {
 
   const columns = [
     {
-      title: "main category image",
-      dataIndex: "maincatpic",
-      key: "maincategory",
+      title: "Main Category Image",
+      dataIndex: "Maincatpic",
+      key: "Maincategory",
       render: (text, record) => (
         <img
           src={text}
