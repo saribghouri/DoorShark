@@ -326,7 +326,7 @@ const App = () => {
       ),
 
       getItem(
-        "Authentication",
+        "Users",
         "sub1",
         <Image
           src={"/assets/icon/healthicons_miner-white.png"}
@@ -578,7 +578,7 @@ const App = () => {
         width="300px"
         style={siderStyle}
         collapsible
-        collapsed={collapsed}
+        collapsed={false}
         onCollapse={handleCollapse}
       >
         <div className="p-[30px] text-[22px]">
