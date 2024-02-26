@@ -309,7 +309,6 @@ const App = () => {
     setShowProfileEditModal(true);
   };
   const generateMenuItems = () => {
-    // if (userDetails.userRole === userDetails.userRole) {
     console.log("sabgqebew");
 
     return [

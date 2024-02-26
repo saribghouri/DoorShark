@@ -9,6 +9,7 @@ const Cards = () => {
   const [users, setUsers] = useState(false);
   const [contractor, setContractor] = useState(false);
   const [pendingJobs, setPendingJobs] = useState(false);
+  const [completedJobs, setCompleted] = useState(false);
   console.log(users)
   const cardData = [
     {
@@ -155,7 +156,7 @@ const Cards = () => {
           const data = await response.json();
           console.log("Doctors fetched successfully:", data);
         
-          setPendingJobs(data.data.completedJobs.length);
+          setCompleted(data.data.completedJobs.length);
 
         } else {
           console.error("Failed to fetch doctors");
@@ -209,7 +210,7 @@ const Cards = () => {
           <p className="flex text-white text-[24px] font-bold text-30">
             {/* {card.count} */}
           </p>
-          <p className="flex Receipt font-bold">{contractor}</p>
+          <p className="flex   Receipt font-bold">{contractor}</p>
         </div>
       </div>
       <div
@@ -218,7 +219,7 @@ const Cards = () => {
           width: "400px",
           height: "234px",
 
-          backgroundColor: "rgb(69, 129, 168)", // Updated background color
+          backgroundColor: "rgb(69, 129, 168)", 
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
         }}
@@ -290,7 +291,7 @@ const Cards = () => {
           <p className="flex text-white text-[24px] font-bold text-30">
             {/* {card.count} */}
           </p>
-          <p className="flex Receipt font-bold">{users}</p>
+          <p className="flex Receipt font-bold">{completedJobs}</p>
         </div>
       </div>
       

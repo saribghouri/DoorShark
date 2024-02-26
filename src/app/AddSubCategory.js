@@ -139,7 +139,9 @@ console.log(mainCategories)
              <Form.Item
         
               name="Select"
-              rules={[{  message: "Please input!" }]}
+              rules={[
+                { required: true, message: "Please select  category name!" },
+              ]}
             >
            <Select placeholder="Select Category" onChange={(value) => handleSelectChange(value)}>
                 {mainCategories.map((category) => (
@@ -154,7 +156,7 @@ console.log(mainCategories)
               className="w-[100%]"
               name="catname"
               rules={[
-                { required: true, message: "Please enter your categorieName!" },
+                { required: true, message: "Please enter your category name!" },
               ]}
             >
               <Input className="h-[40px] border" placeholder="Enter Sub Category Name" />

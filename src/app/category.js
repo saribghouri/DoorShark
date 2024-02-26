@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Table, Modal, Button, Input, Divider, Upload, Switch, message } from "antd";
+import { Table, Modal, Button, Input, Divider, Upload, Switch, message, Form } from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
 import {
@@ -27,6 +27,7 @@ const MainCategoryTable = () => {
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [editedCategory, setEditedCategory] = useState(null);
   console.log(selectedCategory);
+  const [form] = Form.useForm();
   useEffect(() => {
     const fetchMainCategories = async () => {
       setLoading(true)
@@ -84,7 +85,7 @@ const MainCategoryTable = () => {
 
       const token = Cookies.get("apiToken");
       await axios.delete(
-        `https://doorshark.blownclouds.com/api/adminRoute/dltMainCat/${selectedCategory._id}`,
+        `https://doorshark.blownclouds.com/api/adminRoute/dltMainCat/${mainCategories._id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -169,13 +170,19 @@ const MainCategoryTable = () => {
   const handleSaveEdit = async () => {
     try {
       const token = Cookies.get("apiToken");
+      console.log(token)
       await axios.patch(
         `https://doorshark.blownclouds.com/api/adminRoute/editMainCat/${selectedCategory._id}`,
         editedCategory,
         {
-          headers: {
+             headers: new Headers({
+            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
-          },
+          }),
+          body: JSON.stringify({
+            maincatpic: imageUrl,
+            maincatname: form.getFieldValue("maincatname"), 
+          }),
         }
       );
 
@@ -222,24 +229,7 @@ const MainCategoryTable = () => {
       });
     }
   };
-  const uploadButton = (
-    <button
-      style={{
-        border: 0,
-        background: "none",
-      }}
-      type="button"
-    >
-      {loading ? <LoadingOutlined /> : <PlusOutlined />}
-      <div
-        style={{
-          marginTop: 8,
-        }}
-      >
-        Upload
-      </div>
-    </button>
-  );
+ 
   const onChange = async (checked, userId) => {
     console.log(userId);
     try {
@@ -279,6 +269,45 @@ const MainCategoryTable = () => {
       message.error("An error occurred while updating user status");
     }
   };
+
+  const handleUpload = async (file) => {
+    try {
+      const formData = new FormData();
+      formData.append("image", file);
+
+      const response = await axios.post(
+        "https://doorshark.blownclouds.com/api/cloudinary/UploadDocumentToCloudinaryAndGetPublicUrl",
+        formData
+      );
+
+      setImageUrl(response.data.image_url[0]);
+      // setUserProfileImage(response.data.image_url[0]);
+      // message.success("Image uploaded successfully");
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      message.error("Failed to upload image");
+    }
+  };
+  const customRequest = ({ file, onSuccess }) => {
+    setTimeout(() => {
+      onSuccess("ok");
+      handleUpload(file);
+    }, 0);
+  };
+
+  const uploadButton = (
+    <div>
+      {loading ? <LoadingOutlined /> : <PlusOutlined />}
+      <div
+        className="w-[100%]"
+        style={{
+          marginTop: 8,
+        }}
+      >
+        Upload
+      </div>
+    </div>
+  );
   return (
     <div>
          {isEditing ? (
@@ -375,7 +404,7 @@ const MainCategoryTable = () => {
             showUploadList={false}
             action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
             beforeUpload={beforeUpload}
-            onChange={handleChange}
+            customRequest={customRequest}
           >
             {imageUrl ? (
               <img
@@ -391,6 +420,9 @@ const MainCategoryTable = () => {
         <Input
           className="w-[98%] mt-[20px]"
           value={editedCategory?.maincatname}
+          rules={[
+            { required: true, message: "Please enter your categorieName!" },
+          ]}
           onChange={(e) =>
             setEditedCategory({
               ...editedCategory,
