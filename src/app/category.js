@@ -1,7 +1,17 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Table, Modal, Button, Input, Divider, Upload, Switch, message, Form } from "antd";
+import {
+  Table,
+  Modal,
+  Button,
+  Input,
+  Divider,
+  Upload,
+  Switch,
+  message,
+  Form,
+} from "antd";
 import axios from "axios";
 import Cookies from "js-cookie";
 import {
@@ -30,9 +40,8 @@ const MainCategoryTable = () => {
   const [form] = Form.useForm();
   useEffect(() => {
     const fetchMainCategories = async () => {
-      setLoading(true)
+      setLoading(true);
       try {
-
         const token = Cookies.get("apiToken");
 
         const response = await axios.get(
@@ -54,24 +63,24 @@ const MainCategoryTable = () => {
     fetchMainCategories();
   }, []);
   const dataSource = Array.isArray(mainCategories)
-  ? mainCategories.map((user, index) => ({
-      key: (index + 1).toString(),
-      maincatname: user.maincatname,
- 
-      contact: user.phonenumber,
-      address: user.email,
-      about: user.about,
-      dob: user.dob,
-      company: user.company,
-      gender: user.gender,
-      collage: user.collage,
-      location: user.location,
-      job: user.job,
-      status: user.isActive,
-      id: user._id,
-      maincatpic: user.maincatpic,
-    }))
-  : [];
+    ? mainCategories.map((user, index) => ({
+        key: (index + 1).toString(),
+        maincatname: user.maincatname,
+
+        contact: user.phonenumber,
+        address: user.email,
+        about: user.about,
+        dob: user.dob,
+        company: user.company,
+        gender: user.gender,
+        collage: user.collage,
+        location: user.location,
+        job: user.job,
+        status: user.isActive,
+        id: user._id,
+        maincatpic: user.maincatpic,
+      }))
+    : [];
 
   const filteredCategories = dataSource.filter((category) =>
     category.maincatname.toLowerCase().includes(searchText.toLowerCase())
@@ -170,18 +179,18 @@ const MainCategoryTable = () => {
   const handleSaveEdit = async () => {
     try {
       const token = Cookies.get("apiToken");
-      console.log(token)
+      console.log(token);
       await axios.patch(
         `https://doorshark.blownclouds.com/api/adminRoute/editMainCat/${selectedCategory._id}`,
         editedCategory,
         {
-             headers: new Headers({
+          headers: new Headers({
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           }),
           body: JSON.stringify({
             maincatpic: imageUrl,
-            maincatname: form.getFieldValue("maincatname"), 
+            maincatname: form.getFieldValue("maincatname"),
           }),
         }
       );
@@ -229,7 +238,7 @@ const MainCategoryTable = () => {
       });
     }
   };
- 
+
   const onChange = async (checked, userId) => {
     console.log(userId);
     try {
@@ -310,142 +319,138 @@ const MainCategoryTable = () => {
   );
   return (
     <div>
-         {isEditing ? (
+      {isEditing ? (
         <AddCategories onCancel={() => setIsEditing(false)} />
       ) : (
-    <div>
-
-    
-
-      <div className="flex justify-between  pl-[10px] pr-[10px] ml-[16px] mr-[16px] items-center mt-[30px] mb-[30px]">
-        <h1 className="Doctors text-[#054fb9]  text-[22px] font-sans">
-          Category
-        </h1>
-        <div className=" flex gap-[5px]">
-          <Input
-            className="w-[300px] rounded-[40px]"
-            placeholder="Search"
-            suffix={<SearchOutlined style={{ color: "rgba(0,0,0,.45)" }} />}
-            value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
-          />
-          <Button
-            onClick={() => {
-       
-              setIsEditing(true);
-            }}
-            className="!text-[#ffffff] bg-[#054fb9] text-[18px]  rounded-r-[10px] rounded-l-[10px] w-[150px] h-[40px]"
-          >
-            Add Category
-          </Button>
-        </div>
-      </div>
-      <Divider className="!w-[96%] text-[#054fb9] m flex justify-center mx-auto bg-[#054fb9] min-w-0" />
-      <Table
-        columns={columns}
-        dataSource={filteredCategories}
-        loading={loading}
-        rowKey="id"
-      />
-
-      <Modal
-        className="bg-[]"
-        open={modalVisible}
-        onOk={handleDelete}
-        footer={null}
-        onCancel={() => setModalVisible(false)}
-        style={{
-          width: "534px",
-          height: " 369px",
-        }}
-      >
-        <div className=" gap-2 flex justify-center items-center flex-col h-[250px]">
-          <DeleteOutlined
-            className=" flex justify-center items-center text-[#ffffff] w-[85px] h-[85px] bg-[#054fb9] p-[5px] rounded-[50%] ml-[10px] text-[50px]"
-            type="link"
-            danger
-          />
-
-          <h1 className="font-bold text-[22px]">DELETE CATEGORY</h1>
-          <p className=" text-[16px]">
-            Are you sure you want to delete this category{" "}
-            {selectedCategory?.maincatname}?
-          </p>
-          <div className="flex mt-[10px] gap-[15px]">
-            <Button
-              className="bg-[#ffffff] !text-[#054fb9] text-[18px] rounded-l-[20px] w-[150px] h-[40px]"
-              onClick={handleDelete}
-            >
-              Delete
-            </Button>
-            <Button
-              className="!text-[#054fb9] bg-[#ffffff] text-[18px]  rounded-r-[20px] w-[150px] h-[40px]"
-              onCancel={() => setModalVisible(false)}
-            >
-              Cancel
-            </Button>
-          </div>
-        </div>
-      </Modal>
-
-      <Modal
-        open={editModalVisible}
-        onCancel={() => setEditModalVisible(false)}
-        footer={null}
-      >
-        <h1 className="font-bold text-[22px] text-center">Edit Category</h1>
-        <div className="w-full flex justify-center items-center flex-col mt-[20px]">
-          {" "}
-          {/* Modified this line */}
-          <Upload
-            name="avatar"
-            listType="picture-card"
-            className=" !w-[100%]"
-            showUploadList={false}
-            action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
-            beforeUpload={beforeUpload}
-            customRequest={customRequest}
-          >
-            {imageUrl ? (
-              <img
-                src={imageUrl}
-                alt="avatar"
-                className=" h-[90px] mt-[15px] mb-[15px]"
+        <div>
+          <div className="flex justify-between  pl-[10px] pr-[10px] ml-[16px] mr-[16px] items-center mt-[30px] mb-[30px]">
+            <h1 className="Doctors text-[#054fb9]  text-[22px] font-sans">
+              Category
+            </h1>
+            <div className=" flex gap-[5px]">
+              <Input
+                className="w-[300px] rounded-[40px]"
+                placeholder="Search"
+                suffix={<SearchOutlined style={{ color: "rgba(0,0,0,.45)" }} />}
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
               />
-            ) : (
-              uploadButton
-            )}
-          </Upload>
-        </div>
-        <Input
-          className="w-[98%] mt-[20px]"
-          value={editedCategory?.maincatname}
-          rules={[
-            { required: true, message: "Please enter your categorieName!" },
-          ]}
-          onChange={(e) =>
-            setEditedCategory({
-              ...editedCategory,
-              maincatname: e.target.value,
-            })
-          }
-        />
-        <div className="w-[100%] flex justify-center items-center gap-[20px] mt-[40px] mb-[30px]">
-          <Button
-            onClick={handleSaveEdit}
-            className="!text-[#054fb9] bg-[#ffffff] text-[18px]  rounded-l-[20px] w-[150px] h-[40px]"
+              <Button
+                onClick={() => {
+                  setIsEditing(true);
+                }}
+                className="!text-[#ffffff] bg-[#054fb9] text-[18px]  rounded-r-[10px] rounded-l-[10px] w-[150px] h-[40px]"
+              >
+                Add Category
+              </Button>
+            </div>
+          </div>
+          <Divider className="!w-[96%] text-[#054fb9] m flex justify-center mx-auto bg-[#054fb9] min-w-0" />
+          <Table
+            columns={columns}
+            dataSource={filteredCategories}
+            loading={loading}
+            rowKey="id"
+          />
+
+          <Modal
+            className="bg-[]"
+            open={modalVisible}
+            onOk={handleDelete}
+            footer={null}
+            onCancel={() => setModalVisible(false)}
+            style={{
+              width: "534px",
+              height: " 369px",
+            }}
           >
-            Save
-          </Button>
-          <Button
-            onClick={handleSaveEdit}
-            className="!text-[#054fb9] bg-[#ffffff] text-[18px]  rounded-r-[20px] w-[150px] h-[40px]"
+            <div className=" gap-2 flex justify-center items-center flex-col h-[250px]">
+              <DeleteOutlined
+                className=" flex justify-center items-center text-[#ffffff] w-[85px] h-[85px] bg-[#054fb9] p-[5px] rounded-[50%] ml-[10px] text-[50px]"
+                type="link"
+                danger
+              />
+
+              <h1 className="font-bold text-[22px]">DELETE CATEGORY</h1>
+              <p className=" text-[16px]">
+                Are you sure you want to delete this category{" "}
+                {selectedCategory?.maincatname}?
+              </p>
+              <div className="flex mt-[10px] gap-[15px]">
+                <Button
+                  className="bg-[#ffffff] !text-[#054fb9] text-[18px] rounded-l-[20px] w-[150px] h-[40px]"
+                  onClick={handleDelete}
+                >
+                  Delete
+                </Button>
+                <Button
+                  className="!text-[#054fb9] bg-[#ffffff] text-[18px]  rounded-r-[20px] w-[150px] h-[40px]"
+                  onCancel={() => setModalVisible(false)}
+                >
+                  Cancel
+                </Button>
+              </div>
+            </div>
+          </Modal>
+
+          <Modal
+            open={editModalVisible}
+            onCancel={() => setEditModalVisible(false)}
+            footer={null}
           >
-            cancel
-          </Button>
+            <h1 className="font-bold text-[22px] text-center">Edit Category</h1>
+            <div className="w-full flex justify-center items-center flex-col mt-[20px]">
+              {" "}
+              {/* Modified this line */}
+              <Upload
+                name="avatar"
+                listType="picture-card"
+                className=" !w-[100%]"
+                showUploadList={false}
+                action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
+                beforeUpload={beforeUpload}
+                customRequest={customRequest}
+              >
+                {imageUrl ? (
+                  <img
+                    src={imageUrl}
+                    alt="avatar"
+                    className=" h-[90px] mt-[15px] mb-[15px]"
+                  />
+                ) : (
+                  uploadButton
+                )}
+              </Upload>
+            </div>
+            <Input
+              className="w-[98%] mt-[20px]"
+              value={editedCategory?.maincatname}
+              rules={[
+                { required: true, message: "Please enter your categorieName!" },
+              ]}
+              onChange={(e) =>
+                setEditedCategory({
+                  ...editedCategory,
+                  maincatname: e.target.value,
+                })
+              }
+            />
+            <div className="w-[100%] flex justify-center items-center gap-[20px] mt-[40px] mb-[30px]">
+              <Button
+                onClick={handleSaveEdit}
+                className="!text-[#054fb9] bg-[#ffffff] text-[18px]  rounded-l-[20px] w-[150px] h-[40px]"
+              >
+                Save
+              </Button>
+              <Button
+                onClick={handleSaveEdit}
+                className="!text-[#054fb9] bg-[#ffffff] text-[18px]  rounded-r-[20px] w-[150px] h-[40px]"
+              >
+                cancel
+              </Button>
+            </div>
+          </Modal>
         </div>
-      </Modal>
-      </div>
       )}
     </div>
   );

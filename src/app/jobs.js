@@ -26,10 +26,10 @@ const Jobs = () => {
   console.log(items);
   const columns = [
     { title: "Sr", dataIndex: "key", key: "serialNumber" },
-    { title: "service name", dataIndex: "servicename", key: "servicename" },
-    { title: "description", dataIndex: "desc", key: "desc" },
-    { title: "duedate", dataIndex: "duedate", key: "duedate" },
-    { title: "job_status", dataIndex: "job_status", key: "job_status" },
+    { title: "Service Name", dataIndex: "servicename", key: "servicename" },
+    { title: "Description", dataIndex: "desc", key: "desc" },
+    { title: "Due Date", dataIndex: "duedate", key: "duedate" },
+    { title: "Job Status", dataIndex: "job_status", key: "job_status" },
     // {
     //   title: "Status",
     //   dataIndex: "status",

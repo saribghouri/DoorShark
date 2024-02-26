@@ -747,7 +747,7 @@ const App = () => {
                       extra=" "
                       rules={[
                         {
-                          required: true,
+                        
                           message: "Please upload your doctor image!",
                         },
                       ]}
