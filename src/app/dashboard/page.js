@@ -54,6 +54,7 @@ const App = () => {
   const [jobs, setjobs] = useState(false);
   const [card, setCard] = useState(false);
   const [categories, setCategories] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showProfileEditModal, setShowProfileEditModal] = useState(false);
   const [userSubscription, setUserSubscription] = useState(false);
@@ -327,14 +328,14 @@ const App = () => {
           height={30}
           alt=""
         />
-          <h1 className="!w-[83%] text-center text-[18px]">Dashboard</h1>
+          <h1 className="!w-[81%] text-center text-[18px]">Dashboard</h1>
         </button>
       ),
 
       getItem(
         "Users",
         "sub1",
-        <Image
+        <Image  onClick={() => setCollapsed(!collapsed)}
           src={"/assets/icon/healthicons_miner-white.png"}
           width={30}
           height={30}
@@ -362,7 +363,7 @@ const App = () => {
       getItem(
         "All Category",
         "sub2",
-        <Image
+        <Image  onClick={() => setCollapsed(!collapsed)}
           src={"/assets/icon/iconamoon_category-duotone.png"}
           width={30}
           height={30}
@@ -390,7 +391,7 @@ const App = () => {
       getItem(
         " Job ",
         "sub3",
-        <Image
+        <Image  onClick={() => setCollapsed(!collapsed)}
           src={"/assets/icon/carbon_batch-job.png"}
           width={30}
           height={30}
@@ -575,6 +576,30 @@ const App = () => {
       </div>
     </div>
   );
+  const renderMenu = () => {
+    if (collapsed) {
+      return (
+        <Menu
+          className=""
+          theme="dark"
+          defaultSelectedKeys={["1"]}
+          mode="inline"
+          items={item}
+          openKeys={menuOpen ? ["sub1", "sub2", "sub3"] : []}
+        />
+      );
+    } else {
+      return (
+        <Menu
+          className=""
+          theme="dark"
+          defaultSelectedKeys={["1"]}
+          mode="inline"
+          items={item}
+        />
+      );
+    }
+  };
 
   return (
     <div
@@ -584,15 +609,16 @@ const App = () => {
         width: "auto",
       }}
     >
-      <Sider
+        <Sider
         width="300px"
         style={siderStyle}
         collapsible
         collapsedWidth="110px"
         collapsed={collapsed}
         onCollapse={handleCollapse}
+  
       >
-        <div className="p-[30px] text-[22px] " onClick={handleCard}>
+        <div className="p-[20px] text-[22px] " onClick={handleCard}>
           <h1 className="text-white text-center cursor-pointer ">
             <Image
               onClick={() => handleCard()}
@@ -607,13 +633,7 @@ const App = () => {
 
         <div className="demo-logo-vertical bg-[#fff]" />
 
-        <Menu
-          className=""
-          theme="dark"
-          defaultSelectedKeys={["1"]}
-          mode="inline"
-          items={item}
-        />
+        {renderMenu()}
       </Sider>
 
       <Layout className="!bg-[#fff] ">
