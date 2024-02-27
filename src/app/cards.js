@@ -228,7 +228,7 @@ const Cards = ({ handlePendingJobs }) => {
           >
             <div
           
-              className="ml-[20px] mt-[25px] relative cursor-pointer"
+              className="ml-[20px] mt-[25px] relative "
             >
               <img
                 className=" absolute w-[200px] h-[160px]  right-0 bottom-[-117px] "
@@ -258,7 +258,7 @@ const Cards = ({ handlePendingJobs }) => {
           >
             <div
              
-              className="ml-[20px] mt-[25px] relative cursor-pointer"
+              className="ml-[20px] mt-[25px] relative "
             >
               <img
                 className=" absolute w-[200px] h-[160px]  right-0 bottom-[-117px] "

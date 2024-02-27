@@ -319,15 +319,15 @@ const App = () => {
 
         <button
           onClick={handleCard}
-          className="w-[250px] h-[50px] !ml-[-24px] flex item-center !text-center !text-[#005eca] !bg-[#ffff] "
+          className="w-[248px] h-[40px] !ml-[-24px] justify-center flex item-center pl-[10px] pr-[10px] !text-center !text-[#005eca] !bg-[#ffff] "
         >
-           <Image
+           <Image className=""
           src={"/assets/icon/dashboard-ic.png"}
           width={30}
           height={30}
           alt=""
         />
-          <h1 className="!w-full text-center text-[18px]">Dashboard</h1>
+          <h1 className="!w-[83%] text-center text-[18px]">Dashboard</h1>
         </button>
       ),
 
@@ -589,13 +589,13 @@ const App = () => {
         style={siderStyle}
         collapsible
         collapsedWidth="110px"
-        collapsed={false}
+        collapsed={collapsed}
         onCollapse={handleCollapse}
       >
         <div className="p-[30px] text-[22px] " onClick={handleCard}>
           <h1 className="text-white text-center cursor-pointer ">
             <Image
-              // onClick={() => handleCard()}
+              onClick={() => handleCard()}
               width={1000}
               height={1000}
               alt=""
