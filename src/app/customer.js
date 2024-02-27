@@ -11,7 +11,7 @@ import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import UserProfile from "./userProfile";
 import axios from "axios";
-const ActiveUsers = () => {
+const Customer = () => {
   const [searchText, setSearchText] = useState("");
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [selectedUser, setSelectedUser] = useState([]);
@@ -286,4 +286,4 @@ const ActiveUsers = () => {
   );
 };
 
-export default ActiveUsers;
+export default Customer;

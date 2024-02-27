@@ -2,15 +2,19 @@
 
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
+import PendingJobs from "./pendingJobs";
+import Customer from "./customer";
 
-const Cards = () => {
+const Cards = ({ handlePendingJobs }) => {
   // const [cardData, setCardData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState(false);
   const [contractor, setContractor] = useState(false);
   const [pendingJobs, setPendingJobs] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [isCustomer, setIsCustomer] = useState(false);
   const [completedJobs, setCompleted] = useState(false);
-  console.log(users)
+  console.log(isCustomer+"++++++isCustomer+++++");
   const cardData = [
     {
       backgroundImage: "/assets/images/Group.png",
@@ -59,9 +63,8 @@ const Cards = () => {
         if (response.ok) {
           const data = await response.json();
           console.log("Doctors fetched successfully:", data);
-        
-          setUsers(data.data.length);
 
+          setUsers(data.data.length);
         } else {
           console.error("Failed to fetch doctors");
         }
@@ -91,9 +94,8 @@ const Cards = () => {
         if (response.ok) {
           const data = await response.json();
           console.log("Doctors fetched successfully:", data);
-        
+
           setContractor(data.data.length);
-
         } else {
           console.error("Failed to fetch doctors");
         }
@@ -123,9 +125,8 @@ const Cards = () => {
         if (response.ok) {
           const data = await response.json();
           console.log("Doctors fetched successfully:", data);
-        
+
           setPendingJobs(data.data.pendingJobs.length);
-
         } else {
           console.error("Failed to fetch doctors");
         }
@@ -155,9 +156,8 @@ const Cards = () => {
         if (response.ok) {
           const data = await response.json();
           console.log("Doctors fetched successfully:", data);
-        
-          setCompleted(data.data.completedJobs.length);
 
+          setCompleted(data.data.completedJobs.length);
         } else {
           console.error("Failed to fetch doctors");
         }
@@ -171,8 +171,10 @@ const Cards = () => {
     fetchData();
   }, []);
   return (
-    <div className="flex flex-wrap gap-[20px] justify-center w-[100%] mt-[20px]">
-      {/* {cardData.map((card, index) => {
+    <div>
+     
+        <div className="flex flex-wrap gap-[20px] justify-center w-[100%] mt-[20px]">
+          {/* {cardData.map((card, index) => {
         let backgroundImage;
         switch (card.type) {
           case "standard":
@@ -185,118 +187,126 @@ const Cards = () => {
             backgroundImage = "/assets/images/Group.png";
             
         } */}
-      {/* return ( */}
-      <div
-        className="overflow-hidden w-[100%]  rounded-[20px] doorCards"
-        style={{
-          width: "400px",
-          height: "234px",
+          {/* return ( */}
 
-          backgroundColor: "rgb(69, 129, 168)", // Updated background color
-          backgroundSize: "cover",
-          backgroundRepeat: "no-repeat",
-        }}
-      >
-        <div className="ml-[20px] mt-[25px] relative">
-          <img
-            className=" absolute w-[200px] h-[160px]  right-0 bottom-[-117px] "
-            src="/assets/images/cardGroup.png"
-            alt=""
-          />
-          <p className="text-[#054fb9] w-[60%] p-[8px] font-medium text-[20px] bg-[#fff] rounded-r-[10px] rounded-l-[10px]">
-            All Contractor:
-           
-          </p>
-          <p className="flex text-white text-[24px] font-bold text-30">
-            {/* {card.count} */}
-          </p>
-          <p className="flex   Receipt font-bold">{contractor}</p>
-        </div>
-      </div>
-      <div
-        className="overflow-hidden w-[100%]  rounded-[20px] doorCards"
-        style={{
-          width: "400px",
-          height: "234px",
+          <div
+            className="overflow-hidden w-[100%]  rounded-[20px] doorCards"
+            style={{
+              width: "400px",
+              height: "234px",
 
-          backgroundColor: "rgb(69, 129, 168)", 
-          backgroundSize: "cover",
-          backgroundRepeat: "no-repeat",
-        }}
-      >
-        <div className="ml-[20px] mt-[25px] relative">
-          <img
-            className=" absolute w-[200px] h-[160px]  right-0 bottom-[-117px] "
-            src="/assets/images/cardGroup.png"
-            alt=""
-          />
-          <p className="text-[#054fb9] w-[60%] p-[8px] font-medium text-[20px] bg-[#fff] rounded-r-[10px] rounded-l-[10px]">
-            All Customer:
-            {/* {card.type} */}
-          </p>
-          <p className="flex text-white text-[24px] font-bold text-30">
-            {/* {card.count} */}
-          </p>
-          <p className="flex Receipt font-bold">{users}</p>
-        </div>
-      </div>
-      <div
-        className="overflow-hidden w-[100%]  rounded-[20px] doorCards"
-        style={{
-          width: "400px",
-          height: "234px",
+              backgroundColor: "rgb(69, 129, 168)", // Updated background color
+              backgroundSize: "cover",
+              backgroundRepeat: "no-repeat",
+            }}
+          >
+            <div className="ml-[20px] mt-[25px] relative">
+              <img
+                className=" absolute w-[200px] h-[160px]  right-0 bottom-[-117px]"
+                src="/assets/images/cardGroup.png"
+                alt=""
+              />
+              <p className="text-[#054fb9] w-[60%] p-[8px] font-medium text-[20px] bg-[#fff] rounded-r-[10px] rounded-l-[10px]">
+                All Contractor:
+              </p>
+              <p className="flex text-white text-[24px] font-bold text-30">
+                {/* {card.count} */}
+              </p>
+              <p className="flex   Receipt font-bold">{contractor}</p>
+            </div>
+          </div>
+          <div
+            className="overflow-hidden w-[100%]  rounded-[20px] doorCards"
+            style={{
+              width: "400px",
+              height: "234px",
 
-          backgroundColor: "rgb(69, 129, 168)", // Updated background color
-          backgroundSize: "cover",
-          backgroundRepeat: "no-repeat",
-        }}
-      >
-        <div className="ml-[20px] mt-[25px] relative">
-          <img
-            className=" absolute w-[200px] h-[160px]  right-0 bottom-[-117px] "
-            src="/assets/images/cardGroup.png"
-            alt=""
-          />
-          <p className="text-[#054fb9] w-[60%] p-[8px] font-medium text-[20px] bg-[#fff] rounded-r-[10px] rounded-l-[10px]">
-           Pending Jobs:
-            {/* {card.type} */}
-          </p>
-          <p className="flex text-white text-[24px] font-bold text-30">
-            {/* {card.count} */}
-          </p>
-          <p className="flex Receipt font-bold">{pendingJobs}</p>
-        </div>
-      </div>
-      <div
-        className="overflow-hidden w-[100%]  rounded-[20px] doorCards"
-        style={{
-          width: "400px",
-          height: "234px",
+              backgroundColor: "rgb(69, 129, 168)",
+              backgroundSize: "cover",
+              backgroundRepeat: "no-repeat",
+            }}
+          >
+            <div
+          
+              className="ml-[20px] mt-[25px] relative cursor-pointer"
+            >
+              <img
+                className=" absolute w-[200px] h-[160px]  right-0 bottom-[-117px] "
+                src="/assets/images/cardGroup.png"
+                alt=""
+              />
+              <p className="text-[#054fb9] w-[60%] p-[8px] font-medium text-[20px] bg-[#fff] rounded-r-[10px] rounded-l-[10px]">
+                All Customer:
+                {/* {card.type} */}
+              </p>
+              <p className="flex text-white text-[24px] font-bold text-30">
+                {/* {card.count} */}
+              </p>
+              <p className="flex Receipt font-bold">{users}</p>
+            </div>
+          </div>
+          <div
+            className="overflow-hidden w-[100%]  rounded-[20px] doorCards"
+            style={{
+              width: "400px",
+              height: "234px",
 
-          backgroundColor: "rgb(69, 129, 168)", // Updated background color
-          backgroundSize: "cover",
-          backgroundRepeat: "no-repeat",
-        }}
-      >
-        <div className="ml-[20px] mt-[25px] relative">
-          <img
-            className=" absolute w-[200px] h-[160px]  right-0 bottom-[-117px] "
-            src="/assets/images/cardGroup.png"
-            alt=""
-          />
-          <p className="text-[#054fb9] w-[60%] p-[8px] font-medium text-[20px] bg-[#fff] rounded-r-[10px] rounded-l-[10px]">
-             Complete Jobs:
-            {/* {card.type} */}
-          </p>
-          <p className="flex text-white text-[24px] font-bold text-30">
-            {/* {card.count} */}
-          </p>
-          <p className="flex Receipt font-bold">{completedJobs}</p>
+              backgroundColor: "rgb(69, 129, 168)", // Updated background color
+              backgroundSize: "cover",
+              backgroundRepeat: "no-repeat",
+            }}
+          >
+            <div
+             
+              className="ml-[20px] mt-[25px] relative cursor-pointer"
+            >
+              <img
+                className=" absolute w-[200px] h-[160px]  right-0 bottom-[-117px] "
+                src="/assets/images/cardGroup.png"
+                alt=""
+              />
+              <p className="text-[#054fb9] w-[60%] p-[8px] font-medium text-[20px] bg-[#fff] rounded-r-[10px] rounded-l-[10px]">
+                Pending Jobs:
+                {/* {card.type} */}
+              </p>
+              <p className="flex text-white text-[24px] font-bold text-30">
+                {/* {card.count} */}
+              </p>
+              <p className="flex Receipt font-bold">{pendingJobs}</p>
+            </div>
+          </div>
+          <div
+            className="overflow-hidden w-[100%]  rounded-[20px] doorCards"
+            style={{
+              width: "400px",
+              height: "234px",
+
+              backgroundColor: "rgb(69, 129, 168)", // Updated background color
+              backgroundSize: "cover",
+              backgroundRepeat: "no-repeat",
+            }}
+          >
+            <div className="ml-[20px] mt-[25px] relative">
+              <img
+                className=" absolute w-[200px] h-[160px]  right-0 bottom-[-117px] "
+                src="/assets/images/cardGroup.png"
+                alt=""
+              />
+              <p className="text-[#054fb9] w-[60%] p-[8px] font-medium text-[20px] bg-[#fff] rounded-r-[10px] rounded-l-[10px]">
+                Complete Jobs:
+                {/* {card.type} */}
+              </p>
+              <p className="flex text-white text-[24px] font-bold text-30">
+                {/* {card.count} */}
+              </p>
+              <p className="flex Receipt font-bold">{completedJobs}</p>
+            </div>
+          </div>
+
+          {/* ); */}
+          {/* })} */}
         </div>
-      </div>
-      
-      {/* ); */}
-      {/* })} */}
+     
     </div>
   );
 };

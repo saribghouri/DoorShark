@@ -38,6 +38,8 @@ import AddCategories from "../AddCategory";
 import Jobs from "../jobs";
 import PendingJobs from "../pendingJobs";
 import CompletedJobs from "../completedJobs";
+import Customer from "../customer";
+import Contractor from "../contractor";
 const { Header, Sider } = Layout;
 const App = () => {
   const router = useRouter();
@@ -62,7 +64,8 @@ const App = () => {
   const [userProfileImage, setUserProfileImage] = useState(
     userDetails.profile || null
   );
-  console.log(userDetails);
+  console.log(card + "++++++++++++cards+++++++++++");
+
   console.log(userProfileImage);
   const [imageUrl, setImageUrl] = useState();
   console.log(imageUrl);
@@ -189,7 +192,6 @@ const App = () => {
   const handleJobs = () => {
     setjobs(true);
     setCard(false);
-    
 
     setAddPayment(false);
     setPaymentCard(false);
@@ -268,18 +270,16 @@ const App = () => {
   };
   const handleCard = () => {
     setCard(true);
-    setUserSubscription(false);
-    setjobs(false);
-    setCompletedjobs(false);
-    setPendingjobs(false);
-
-    setAddPayment(false);
-    setPaymentCard(false);
+    setShowUser(false);
     setActiveUser(false);
     setInactiveUser(false);
-    setShowUser(false);
-
+    setAddPayment(false);
+    setPaymentCard(false);
+    setUserSubscription(false);
+    setPendingjobs(false);
+    setCompletedjobs(false);
     setProfileView(false);
+    setjobs(false);
     setProfileEdit(false);
   };
 
@@ -319,8 +319,14 @@ const App = () => {
 
         <button
           onClick={handleCard}
-          className="w-[250px] h-[50px] !ml-[-24px] !text-center !text-[#005eca] !bg-[#ffff] "
+          className="w-[250px] h-[50px] !ml-[-24px] flex item-center !text-center !text-[#005eca] !bg-[#ffff] "
         >
+           <Image
+          src={"/assets/icon/dashboard-ic.png"}
+          width={30}
+          height={30}
+          alt=""
+        />
           <h1 className="!w-full text-center text-[18px]">Dashboard</h1>
         </button>
       ),
@@ -493,7 +499,7 @@ const App = () => {
     try {
       setLoading(true);
       const token = Cookies.get("apiToken");
-  
+
       const res = await fetch(
         "https://doorshark.blownclouds.com/api/adminRoute/updateProfile",
         {
@@ -504,17 +510,21 @@ const App = () => {
           }),
           body: JSON.stringify({
             profile: imageUrl,
-            name: form.getFieldValue("name"), 
+            name: form.getFieldValue("name"),
           }),
         }
       );
-  
+
       if (!res.ok) throw new Error("Failed to upload!");
-  
+
       const resData = await res.json();
-  
-      setUserDetails({ ...userDetails, name: form.getFieldValue("name"), profile: imageUrl });
-  
+
+      setUserDetails({
+        ...userDetails,
+        name: form.getFieldValue("name"),
+        profile: imageUrl,
+      });
+
       setShowProfileEditModal(false);
       console.log("The operation was a resounding achievement!", resData);
     } catch (error) {
@@ -578,12 +588,14 @@ const App = () => {
         width="300px"
         style={siderStyle}
         collapsible
+        collapsedWidth="110px"
         collapsed={false}
         onCollapse={handleCollapse}
       >
-        <div className="p-[30px] text-[22px]">
-          <h1 className="text-white text-center">
+        <div className="p-[30px] text-[22px] " onClick={handleCard}>
+          <h1 className="text-white text-center cursor-pointer ">
             <Image
+              // onClick={() => handleCard()}
               width={1000}
               height={1000}
               alt=""
@@ -811,8 +823,8 @@ const App = () => {
         </Header>
         <div>
           {showUser && <AllUsers />}
-          {activeUser && <ActiveUsers />}
-          {inActiveUser && <InActiveUsers />}
+          {activeUser && <Contractor />}
+          {inActiveUser && <Customer />}
           {addPayment && <Category handlePaymentCard={handlePaymentCard} />}
           {paymentCard && <SubCategory />}
           {pendingjobs && <PendingJobs />}
@@ -823,7 +835,7 @@ const App = () => {
           )}
           {userSubscription && <UserSubscription />}
           {profileView && <ProfileView />}
-          {card && <Cards />}
+          {card && <Cards handlePendingJobs={handlePendingJobs} />}
           {!showUser &&
             !activeUser &&
             !inActiveUser &&

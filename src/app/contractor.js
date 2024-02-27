@@ -10,7 +10,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import UserProfile from "./userProfile";
 
-const ActiveUsers = () => {
+const Contractor = () => {
 
   const [searchText, setSearchText] = useState("");
 
@@ -31,6 +31,7 @@ const ActiveUsers = () => {
   const columns = [
     { title: "Sr", dataIndex: "key", key: "serialNumber" },
     { title: "Name", dataIndex: "name", key: "userName" },
+    { title: "Category", dataIndex: "catOfwork", key: "catOfwork" },
     { title: "Email", dataIndex: "address", key: "emailAddress" },
     { title: "Phone No:", dataIndex: "contact", key: "Phone" },
     {
@@ -138,6 +139,7 @@ const ActiveUsers = () => {
         contact: user.phonenumber,
         address: user.email,
         status: user.isActive,
+        catOfwork: user.catOfwork,
         id: user._id,
         profileImage: user.profileImage,
       }))
@@ -264,4 +266,4 @@ const ActiveUsers = () => {
   );
 };
 
-export default ActiveUsers;
+export default Contractor;
