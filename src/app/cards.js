@@ -200,9 +200,9 @@ const Cards = ({ handlePendingJobs }) => {
               backgroundRepeat: "no-repeat",
             }}
           >
-            <div className="ml-[20px] mt-[25px] relative">
+            <div className="ml-[20px] mt-[25px] relative h-[287px] ">
               <img
-                className=" absolute w-[200px] h-[160px]  right-0 bottom-[-117px]"
+                className=" absolute w-[200px] bottom-0 right-0 flex justify-end flex-col"
                 src="/assets/images/cardGroup.png"
                 alt=""
               />
@@ -228,10 +228,10 @@ const Cards = ({ handlePendingJobs }) => {
           >
             <div
           
-              className="ml-[20px] mt-[25px] relative "
+              className="ml-[20px] mt-[25px] relative h-[287px] "
             >
               <img
-                className=" absolute w-[200px] h-[160px]  right-0 bottom-[-117px] "
+                className=" absolute w-[200px] bottom-0 right-0 flex justify-end flex-col"
                 src="/assets/images/cardGroup.png"
                 alt=""
               />
@@ -258,10 +258,10 @@ const Cards = ({ handlePendingJobs }) => {
           >
             <div
              
-              className="ml-[20px] mt-[25px] relative "
+              className="ml-[20px] mt-[25px] relative  h-[287px] "
             >
               <img
-                className=" absolute w-[200px] h-[160px]  right-0 bottom-[-117px] "
+                className=" absolute w-[200px] bottom-0 right-0 flex justify-end flex-col"
                 src="/assets/images/cardGroup.png"
                 alt=""
               />
@@ -286,9 +286,9 @@ const Cards = ({ handlePendingJobs }) => {
               backgroundRepeat: "no-repeat",
             }}
           >
-            <div className="ml-[20px] mt-[25px] relative">
+            <div className="ml-[20px] mt-[25px] relative h-[287px]  ">
               <img
-                className=" absolute w-[200px] h-[160px]  right-0 bottom-[-117px] "
+                className=" absolute w-[200px] bottom-0 right-0 flex justify-end flex-col"
                 src="/assets/images/cardGroup.png"
                 alt=""
               />

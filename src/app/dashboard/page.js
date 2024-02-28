@@ -73,7 +73,11 @@ const App = () => {
   const [form] = Form.useForm();
 
   const handleForgetPassword = async (values) => {
+    console.log(values)
     try {
+      const formData = new FormData();
+      formData.append("oldPassword", values.oldPassword);
+      formData.append("newPassword", values.newPassword);
       setLoadingUpdateProfile(true);
       const token = Cookies.get("apiToken");
       const response = await fetch(
@@ -320,15 +324,15 @@ const App = () => {
 
         <button
           onClick={handleCard}
-          className="w-[248px] h-[40px] !ml-[-24px] justify-center flex item-center pl-[10px] pr-[10px] !text-center !text-[#005eca] !bg-[#ffff] "
+          className="w-[248px] h-[40px] !ml-[-24px] justify-center flex item-center pl-[10px] pr-[10px] !text-center !text-[#ffffff] "
         >
            <Image className=""
-          src={"/assets/icon/dashboard-ic.png"}
+          src={"/assets/icon/whitedashboard.png"}
           width={30}
           height={30}
           alt=""
         />
-          <h1 className="!w-[81%] text-center text-[18px]">Dashboard</h1>
+          <h1 className="!w-[100%] ml-[-47px] text-[18px]">Dashboard</h1>
         </button>
       ),
 
@@ -609,7 +613,7 @@ const App = () => {
         width: "auto",
       }}
     >
-        <Sider
+        <Sider className=""
         width="300px"
         style={siderStyle}
         collapsible
@@ -666,7 +670,7 @@ const App = () => {
                 onCancel={handleCloseChangePasswordModal}
                 footer={null}
               >
-                <Form
+              <Form
                   form={form}
                   name="changePasswordForm"
                   onFinish={handleForgetPassword}
@@ -779,7 +783,7 @@ const App = () => {
                       extra=" "
                       rules={[
                         {
-                          required: true,
+                        
                           message: "Please upload your doctor image!",
                         },
                       ]}
