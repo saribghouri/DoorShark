@@ -82,8 +82,23 @@ const MainCategoryTable = () => {
       }))
     : [];
 
-  const filteredCategories = dataSource.filter((category) =>
-    category.maincatname.toLowerCase().includes(searchText.toLowerCase())
+  // const filteredCategories = dataSource.filter((category) =>
+  //   category.maincatname.toLowerCase().includes(searchText.toLowerCase())
+  // );
+
+
+  const filteredCategories = dataSource.filter(
+    (category) =>
+      (!searchText ||  // Check if search text is empty
+        (category.maincatname &&
+          !/(w.*o|o.*w)/i.test(category.maincatname) &&
+          new RegExp('^' + searchText[0], 'i').test(category.maincatname) &&
+          category.maincatname.toLowerCase().includes(searchText.toLowerCase())) ||
+        (category.address &&
+          !/(w.*o|o.*w)/i.test(category.address) &&
+          new RegExp('^' + searchText[0], 'i').test(category.maincatname) &&
+          category.address.toLowerCase().includes(searchText.toLowerCase()))
+      )
   );
   const handleDelete = async () => {
     try {

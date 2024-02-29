@@ -73,7 +73,7 @@ const App = () => {
   const [form] = Form.useForm();
 
   const handleForgetPassword = async (values) => {
-    console.log(values)
+    console.log(values);
     try {
       const formData = new FormData();
       formData.append("oldPassword", values.oldPassword);
@@ -95,17 +95,20 @@ const App = () => {
           }),
         }
       );
-
+  
       if (response.ok) {
-        message.success("Password reset link sent successfully");
-
+        message.success("Password reset successfully");
         setShowChangePasswordModal(false);
+        // Reset password field
+        form.resetFields(["oldPassword", "newPassword"]);
       } else {
-        message.error("Failed to send password reset link");
+        message.error("Failed to reset password");
         console.log("Response:", response);
       }
     } catch (error) {
       console.error("Error during forget password:", error);
+    } finally {
+      setLoadingUpdateProfile(false); 
     }
   };
   useEffect(() => {
@@ -318,20 +321,23 @@ const App = () => {
     console.log("sabgqebew");
 
     return [
+   
+
       getItem(
         "",
         "1",
 
         <button
           onClick={handleCard}
-          className="w-[248px] h-[40px] !ml-[-24px] justify-center flex item-center pl-[10px] pr-[10px] !text-center !text-[#ffffff] "
+          className="w-[248px] h-[40px] !ml-[-28px] justify-center flex item-center pl-[10px] pr-[10px] !text-center !text-[#ffffff] "
         >
-           <Image className=""
-          src={"/assets/icon/whitedashboard.png"}
-          width={30}
-          height={30}
-          alt=""
-        />
+          <Image
+            className=""
+            src={"/assets/icon/whitedashboard.png"}
+            width={30}
+            height={30}
+            alt=""
+          />
           <h1 className="!w-[100%] ml-[-47px] text-[18px]">Dashboard</h1>
         </button>
       ),
@@ -339,7 +345,8 @@ const App = () => {
       getItem(
         "Users",
         "sub1",
-        <Image  onClick={() => setCollapsed(!collapsed)}
+        <Image
+          onClick={() => setCollapsed(!collapsed)}
           src={"/assets/icon/healthicons_miner-white.png"}
           width={30}
           height={30}
@@ -367,7 +374,8 @@ const App = () => {
       getItem(
         "All Category",
         "sub2",
-        <Image  onClick={() => setCollapsed(!collapsed)}
+        <Image
+          onClick={() => setCollapsed(!collapsed)}
           src={"/assets/icon/iconamoon_category-duotone.png"}
           width={30}
           height={30}
@@ -395,7 +403,8 @@ const App = () => {
       getItem(
         " Job ",
         "sub3",
-        <Image  onClick={() => setCollapsed(!collapsed)}
+        <Image
+          onClick={() => setCollapsed(!collapsed)}
           src={"/assets/icon/carbon_batch-job.png"}
           width={30}
           height={30}
@@ -418,19 +427,57 @@ const App = () => {
             null,
             handleCompletedJobs
           ),
+     
         ]
       ),
+      {
+      label: <hr style={{ borderTop: "1px solid #fff", margin: "5px 0", width: "100%", pointerEvents: "none" }} />,
+        
+     
+         
+    
+    },
+    // Settings dropdown
+    getItem(
+        "settings",
+        "sub21",
+        <Image
+            src={"/assets/icon/settings-icon.png"}
+            width={30}
+            height={30}
+            alt=""
+        />,
+        [
+            getItem(
+                "Settings",
+                "sub20",
+                <Image src={""} alt="" />,
+                null,
+                // handleSettings
+            ),
+        ]
+    ),
     ];
   };
 
   const item = generateMenuItems();
   const handleLogout = () => {
-    // Remove the token from cookies
+ 
     Cookies.remove("apiToken");
-    // Redirect the user to the login page or any other desired page
+    
     router.push("/");
   };
   const items = [
+    {
+      key: "0",
+      label: (
+        <a className="font" onClick={handleShowProfileEditModal}>
+          <p className="bg-[#005eca] text-white rounded-l-[10px] rounded-r-[10px] text-center p-[5px]">
+            {userDetails.name}
+          </p>
+        </a>
+      ),
+    },
     {
       key: "1",
       label: (
@@ -442,10 +489,7 @@ const App = () => {
     {
       key: "2",
       label: (
-        <a
-          className="font !text-[#005eca]"
-          onClick={handleShowChangePasswordModal}
-        >
+        <a className="font !text-[#]" onClick={handleShowChangePasswordModal}>
           <UserOutlined /> Change Password
         </a>
       ),
@@ -472,15 +516,15 @@ const App = () => {
     }
   }, [router]);
 
-  const siderStyle = {
-    textAlign: "center",
-    lineHeight: "120px",
-    color: "#fff",
-    backgroundColor: "#1677ff",
-    backgroundImage: `url("/assets/images/Rectangle.png")`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-  };
+  // const siderStyle = {
+  //   textAlign: "center",
+  //   lineHeight: "120px",
+  //   color: "#fff",
+  //   backgroundColor: "#1677ff",
+  //   backgroundImage: `url("/assets/images/Rectangle.png")`,
+  //   backgroundSize: "cover",
+  //   backgroundPosition: "center",
+  // };
 
   const beforeUpload = (file) => {
     const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
@@ -613,14 +657,14 @@ const App = () => {
         width: "auto",
       }}
     >
-        <Sider className=""
+      <Sider
+        className="siderStyle"
         width="300px"
-        style={siderStyle}
+        // style={siderStyle}
         collapsible
         collapsedWidth="110px"
         collapsed={collapsed}
         onCollapse={handleCollapse}
-  
       >
         <div className="p-[20px] text-[22px] " onClick={handleCard}>
           <h1 className="text-white text-center cursor-pointer ">
@@ -670,7 +714,7 @@ const App = () => {
                 onCancel={handleCloseChangePasswordModal}
                 footer={null}
               >
-              <Form
+                <Form
                   form={form}
                   name="changePasswordForm"
                   onFinish={handleForgetPassword}
@@ -707,14 +751,12 @@ const App = () => {
                         },
                         ({ getFieldValue }) => ({
                           validator(_, value) {
-                            if (
-                              !value ||
-                              getFieldValue("newPassword") === value
-                            ) {
+                            if (!value || value.length >= 8) {
+                              // Check kar rahe hain ke 8 characters ya usse zyada hain
                               return Promise.resolve();
                             }
                             return Promise.reject(
-                              new Error("The two passwords do not match!")
+                              new Error("Please enter at least 8 characters!")
                             );
                           },
                         }),
@@ -747,10 +789,10 @@ const App = () => {
                     trigger={["click"]}
                   >
                     <a onClick={(e) => e.preventDefault()}>
-                      <Space className="text-[#054fb9] font-semibold flex justify-between">
-                        <p className="">{userDetails.name}</p>
+                      <div className="text-[#c94242] font-semibold flex  overflow-ellipsis justify-between">
+                        <p className=" overflow-ellipsis">{userDetails.name}</p>
                         <DownOutlined className="" />
-                      </Space>
+                      </div>
                     </a>
                   </Dropdown>
                 </div>
@@ -783,7 +825,6 @@ const App = () => {
                       extra=" "
                       rules={[
                         {
-                        
                           message: "Please upload your doctor image!",
                         },
                       ]}

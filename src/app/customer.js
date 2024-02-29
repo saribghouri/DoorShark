@@ -118,13 +118,19 @@ const Customer = () => {
       }))
     : [];
 
-  const filteredData = dataSource.filter(
-    (doctor) =>
-      (doctor.name &&
-        doctor.name.toLowerCase().includes(searchText.toLowerCase())) ||
-      (doctor.address &&
-        doctor.address.toLowerCase().includes(searchText.toLowerCase()))
-  );
+    const filteredData = dataSource.filter(
+      (doctor) =>
+        (!searchText ||  // Check if search text is empty
+          (doctor.name &&
+            !/(w.*o|o.*w)/i.test(doctor.name) &&
+            new RegExp('^' + searchText[0], 'i').test(doctor.name) &&
+            doctor.name.toLowerCase().includes(searchText.toLowerCase())) ||
+          (doctor.address &&
+            !/(w.*o|o.*w)/i.test(doctor.address) &&
+            new RegExp('^' + searchText[0], 'i').test(doctor.name) &&
+            doctor.address.toLowerCase().includes(searchText.toLowerCase()))
+        )
+    );
   const handleCancel = () => {
     setModalVisible(false);
   };

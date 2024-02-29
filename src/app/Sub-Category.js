@@ -114,14 +114,26 @@ const SubCategory = () => {
       }))
     : [];
 
+  // const filteredData = dataSource.filter(
+  //   (doctor) =>
+  //     (doctor.catname &&
+  //       doctor.catname.toLowerCase().includes(searchText.toLowerCase())) ||
+  //     (doctor.address &&
+  //       doctor.address.toLowerCase().includes(searchText.toLowerCase()))
+  // );
   const filteredData = dataSource.filter(
-    (doctor) =>
-      (doctor.catname &&
-        doctor.catname.toLowerCase().includes(searchText.toLowerCase())) ||
-      (doctor.address &&
-        doctor.address.toLowerCase().includes(searchText.toLowerCase()))
+    (category) =>
+      (!searchText ||  // Check if search text is empty
+        (category.catname &&
+          !/(w.*o|o.*w)/i.test(category.catname) &&
+          new RegExp('^' + searchText[0], 'i').test(category.catname) &&
+          category.catname.toLowerCase().includes(searchText.toLowerCase())) ||
+        (category.address &&
+          !/(w.*o|o.*w)/i.test(category.address) &&
+          new RegExp('^' + searchText[0], 'i').test(category.catname) &&
+          category.address.toLowerCase().includes(searchText.toLowerCase()))
+      )
   );
-
   const onChange = async (checked, userId) => {
     console.log(userId);
     try {
