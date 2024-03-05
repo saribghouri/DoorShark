@@ -421,36 +421,100 @@ const handleUpload = async (file) => {
 //   {selectedPlace && <Marker position={searchLngLat} />}
 // </GoogleMap>
 // </div>
-const onSaveClick = async (faqId, event) => {
-  try {
-    const token = Cookies.get("apiToken");
-    const response = await fetch(
-      `https://doorshark.blownclouds.com/api/adminRoute/editFaqs${editingItemId}`,
-      {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
+// const onSaveClick = async (faqId, event) => {
+//   try {
+//     const token = Cookies.get("apiToken");
+//     const response = await fetch(
+//       `https://doorshark.blownclouds.com/api/adminRoute/editFaqs${editingItemId}`,
+//       {
+//         method: "PATCH",
+//         headers: {
+//           Authorization: `Bearer ${token}`,
+//           "Content-Type": "application/json",
+//         },
+//         body: JSON.stringify({
     
-          question: items.question, 
-          answer: items.answer, 
-        }),
-      }
-    );
-    if (response.ok) {
+//           question: items.question, 
+//           answer: items.answer, 
+//         }),
+//       }
+//     );
+//     if (response.ok) {
     
-      const data = await response.json();
-      setItems(data.data);
-      message.success("FAQ edited successfully");
+//       const data = await response.json();
+//       setItems(data.data);
+//       message.success("FAQ edited successfully");
      
-      setEditMode(false);
-    } else {
-      message.error("Failed to edit FAQ");
+//       setEditMode(false);
+//     } else {
+//       message.error("Failed to edit FAQ");
+//     }
+//   } catch (error) {
+//     console.error("Error editing FAQ:", error);
+//     message.error("Failed to edit FAQ");
+//   }
+// };
+import React, { useState } from "react";
+import { Button, Divider, Form, message } from "antd";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css"; // import styles
+
+const AddPolicy = () => {
+  const [loading, setLoading] = useState(false);
+  const [policy, setPolicy] = useState("");
+
+  const onFinish = async (values) => {
+    setLoading(true);
+    try {
+      // Your existing code
+    } catch (error) {
+      console.error("Error during policy registration:", error);
+      setLoading(false);
     }
-  } catch (error) {
-    console.error("Error editing FAQ:", error);
-    message.error("Failed to edit FAQ");
-  }
+  };
+
+  const onFinishFailed = (errorInfo) => {};
+
+  return (
+    <div>
+      {/* Your existing JSX */}
+      <div className=" bg-[#fff] w-[60%] mx-auto rounded-[10px] mt-[40px] mb-[20px]">
+        <Form
+          className="pl-[50px] pr-[50px]"
+          name="loginForm"
+          initialValues={{ remember: true }}
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+        >
+          <Form.Item
+            className="w-[100%]"
+            name="policy"
+            rules={[{ required: true, message: "Please enter your policy!" }]}
+          >
+            <ReactQuill
+              theme="snow" // Specify theme
+              value={policy}
+              onChange={setPolicy}
+              placeholder="Add Privacy Policy Here"
+            />
+          </Form.Item>
+
+          <div className=" flex justify-between mt-[80px]">
+            <Form.Item></Form.Item>
+            <Form.Item>
+              <Button
+                loading={loading}
+                className="bg-[#054fb9] w-[150px] !text-white"
+                htmlType="submit"
+              >
+                Add
+              </Button>
+            </Form.Item>
+          </div>
+        </Form>
+      </div>
+    </div>
+  );
 };
+
+export default AddPolicy;

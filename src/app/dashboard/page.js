@@ -42,6 +42,8 @@ import Customer from "../customer";
 import Contractor from "../contractor";
 import AddFaqs from "../addfaqs";
 import Faqs from "../faqs";
+import AddPolicy from "../addPrivacyPolicy";
+import PrivacyPolicy from "../privacyPolicy";
 const { Header, Sider } = Layout;
 const App = () => {
   const router = useRouter();
@@ -58,6 +60,7 @@ const App = () => {
   const [categories, setCategories] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [addFaqs, setAddFaqs] = useState(false);
+  const [addPolicy, setAddPolicy] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showProfileEditModal, setShowProfileEditModal] = useState(false);
   const [userSubscription, setUserSubscription] = useState(false);
@@ -163,6 +166,7 @@ const App = () => {
     setUserSubscription(false);
     setInactiveUser(false);
     setAddPayment(false);
+    setAddPolicy(false)
     setPaymentCard(false);
     setProfileView(false);
     setCompletedjobs(false);
@@ -176,6 +180,7 @@ const App = () => {
     setInactiveUser(true);
     setPaymentCard(false);
     setShowUser(false);
+    setAddPolicy(false)
     setUserSubscription(false);
     setAddPayment(false);
     setPendingjobs(false);
@@ -192,6 +197,7 @@ const App = () => {
     setPaymentCard(false);
     setInactiveUser(false);
     setShowUser(false);
+    setAddPolicy(false)
     setCompletedjobs(false);
     setAddFaqs(false)
     setUserSubscription(false);
@@ -203,6 +209,7 @@ const App = () => {
   const handleJobs = () => {
     setjobs(true);
     setCard(false);
+    setAddPolicy(false)
     setAddFaqs(false)
     setAddPayment(false);
     setPaymentCard(false);
@@ -221,6 +228,7 @@ const App = () => {
     setPendingjobs(true);
     setjobs(false);
     setCard(false);
+    setAddPolicy(false)
     setAddPayment(false);
     setPaymentCard(false);
     setActiveUser(false);
@@ -245,6 +253,7 @@ const App = () => {
     setShowUser(false);
     setUserSubscription(false);
     setAddFaqs(false)
+    setAddPolicy(false)
     setProfileView(false);
     setProfileEdit(false);
     setCard(false);
@@ -255,7 +264,7 @@ const App = () => {
     setPaymentCard(true);
     setActiveUser(false);
     setCompletedjobs(false);
-
+    setAddPolicy(false)
     setInactiveUser(false);
     setShowUser(false);
     setUserSubscription(false);
@@ -272,7 +281,7 @@ const App = () => {
     setPaymentCard(false);
     setActiveUser(false);
     setCompletedjobs(false);
-
+    setAddPolicy(false)
     setInactiveUser(false);
     setShowUser(false);
     setUserSubscription(false);
@@ -285,6 +294,23 @@ const App = () => {
 
   const handleCard = () => {
     setCard(true);
+    setAddFaqs(false)
+    setShowUser(false);
+    setActiveUser(false);
+    setInactiveUser(false);
+    setAddPayment(false);
+    setPaymentCard(false);
+    setUserSubscription(false);
+    setPendingjobs(false);
+    setCompletedjobs(false);
+    setProfileView(false);
+    setjobs(false);
+    setAddPolicy(false)
+    setProfileEdit(false);
+  };
+  const handleAddPolicy = () => {
+    setAddPolicy(true)
+    setCard(false);
     setAddFaqs(false)
     setShowUser(false);
     setActiveUser(false);
@@ -468,8 +494,7 @@ const App = () => {
                 "sub22",
                 <Image src={""} alt="" />,
                 null,
-                // handleSettings
-            ),
+                handleAddPolicy            ),
         ]
     ),
     ];
@@ -908,6 +933,7 @@ const App = () => {
           {addPayment && <Category handlePaymentCard={handlePaymentCard} />}
           {paymentCard && <SubCategory />}
           {pendingjobs && <PendingJobs />}
+          {addPolicy && <PrivacyPolicy />}
           {completedjobs && <CompletedJobs />}
           {addFaqs && <Faqs />}
           {jobs && <Jobs />}
@@ -925,6 +951,7 @@ const App = () => {
             !userSubscription &&
             !pendingjobs &&
             !completedjobs &&
+            !addPolicy &&
             !addFaqs &&
             !profileView &&
             !jobs &&

@@ -337,3 +337,7 @@ background-color: none !important;
 .ant-collapse-header{
  border-radius: none !important;
 }
+
+.placeholder-textarea ::placeholder {
+  font-size: 24px !important;
+}
