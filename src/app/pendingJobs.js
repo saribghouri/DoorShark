@@ -16,12 +16,10 @@ const PendingJobs = () => {
 
   const [searchText, setSearchText] = useState("");
 
-  const [selectedUserId, setSelectedUserId] = useState(null);
-  const [selectedUser, setSelectedUser] = useState([]);
-  const [isEditing, setIsEditing] = useState(false);
+
   const [items, setItems] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(0);
+
   const [isLoading, setIsLoading] = useState(false);
   console.log(items);
   const columns = [
@@ -30,44 +28,7 @@ const PendingJobs = () => {
     { title: "Description", dataIndex: "desc", key: "desc" },
     { title: "Due Date", dataIndex: "duedate", key: "duedate" },
     { title: "Job Status", dataIndex: "job_status", key: "job_status" },
-    // {
-    //   title: "Status",
-    //   dataIndex: "status",
-    //   key: "status",
-    //   render: (status, record) => (
-    //     <Switch
-    //       checked={status === true} 
-    //       onChange={(checked) => onChange(checked, record.id)}
-    //     />
-    //   ),
-    // },
-    // {
-    //   title: "Action",
-    //   dataIndex: "id",
-    //   key: "action",
-    //   render: (id, record) => (
-    //     <div>
-    //       <DeleteOutlined
-    //         className="text-[#ffffff] bg-[#054fb9] p-[5px] rounded-[50%] ml-[10px] text-[18px]"
-    //         type="link"
-    //         danger
-    //         onClick={() => {
-    //           setSelectedUser(record);
-    //           showModal();
-    //         }}
-    //       />
-    //       <EyeOutlined
-    //         className="text-[#ffffff] bg-[#054fb9] p-[5px] rounded-[50%] ml-[10px] text-[18px]"
-    //         type="link"
-    //         onClick={() => {
-    //           setSelectedUser(record);
-    //           setIsEditing(true);
-    //           setSelectedUserId(record._id);
-    //         }}
-    //       />
-    //     </div>
-    //   ),
-    // },
+
   ];
 
   const fetchItems = async (page) => {
@@ -88,7 +49,7 @@ const PendingJobs = () => {
         setItems(response.data.data.pendingJobs);
         console.log(response.data.data)
         setCurrentPage(page);
-        setTotalPages(Math.ceil(response.data.total / response.data.per_page));
+
       } else {
         console.error("Invalid response data format:", response.data);
       }
@@ -125,53 +86,10 @@ const PendingJobs = () => {
         doctor.address.toLowerCase().includes(searchText.toLowerCase()))
   );
 
-  const onChange = async (checked, userId) => {
-    try {
-      const token = Cookies.get("apiToken");
-      const status = checked ? "ACTIVE" : "NOT ACTIVE";
-
-      const requestBody = {
-        _id: userId,
-        status: status,
-      };
-
-      const response = await axios.patch(
-        `https://doorshark.blownclouds.com/api/adminRoute/toggleStatus`,
-        requestBody,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (response.status === 200) {
-        const updatedUsers = items.map((user) => {
-          if (user._id === userId) {
-            return { ...user, isActive: checked };
-          }
-          return user;
-        });
-        setItems(updatedUsers);
-        message.success(`User set to ${status.toLowerCase()} successfully`);
-      } else {
-        message.error("Failed to update user status");
-      }
-    } catch (error) {
-      console.error("Error updating user status: ", error);
-      message.error("An error occurred while updating user status");
-    }
-  };
 
   return (
-    <div>
-      {isEditing ? (
-        <UserProfile
-          user={selectedUser}
-          onCancel={() => setSelectedUser(null)}
-        />
-      ) : (
+
+
         <div>
           <div className="flex justify-between  pl-[10px] pr-[10px] ml-[16px] mr-[16px] items-center mt-[20px] mb-[20px]">
             <h1 className="Doctors text-[22px] text-[#054fb9] font-sans">
@@ -195,8 +113,8 @@ const PendingJobs = () => {
           />
        
         </div>
-      )}
-    </div>
+    
+ 
   );
 };
 

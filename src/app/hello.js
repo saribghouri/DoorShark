@@ -315,3 +315,142 @@ const handleUpload = async (file) => {
 //   )}
 // </div>
 
+// const [selectedPlace, setSelectedPlace] = useState(null);
+// const [searchLngLat, setSearchLngLat] = useState(null);
+// const autocompleteRef = useRef(null);
+// const [currentLocation, setCurrentLocation] = useState(null);
+// const [address, setAddress] = useState("");
+
+// // laod script for google map
+// const { isLoaded } = useLoadScript({
+//   googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
+//   libraries: ["places"],
+// });
+
+// if (!isLoaded) return <div>Loading....</div>;
+
+// // static lat and lng
+// const center = { lat: 23.3441, lng: 85.3096 }; // Example latitude and longitude
+
+// // handle place change on search
+// const handlePlaceChanged = () => {
+//   const place = autocompleteRef.current.getPlace();
+//   setSelectedPlace(place);
+//   setSearchLngLat({
+//     lat: place.geometry.location.lat(),
+//     lng: place.geometry.location.lng(),
+//   });
+//   setCurrentLocation(null);
+// };
+// const onMapLoad = (map) => {
+//   const controlDiv = document.createElement("div");
+//   const controlUI = document.createElement("div");
+//   controlUI.innerHTML = "Get Location";
+//   controlUI.style.backgroundColor = "white";
+//   controlUI.style.color = "black";
+//   controlUI.style.border = "2px solid #ccc";
+//   controlUI.style.borderRadius = "3px";
+//   controlUI.style.boxShadow = "0 2px 6px rgba(0,0,0,.3)";
+//   controlUI.style.cursor = "pointer";
+//   controlUI.style.marginBottom = "22px";
+//   controlUI.style.textAlign = "center";
+//   controlUI.style.width = "100%";
+//   controlUI.style.padding = "8px 0";
+//   controlUI.addEventListener("click", handleGetLocationClick);
+//   controlDiv.appendChild(controlUI);
+
+//   // const centerControl = new window.google.maps.ControlPosition(
+//   //   window.google.maps.ControlPosition.TOP_CENTER,
+//   //   0,
+//   //   10
+//   // );
+//   map.controls[window.google.maps.ControlPosition.TOP_CENTER].push(
+//     controlDiv
+//   )
+// }
+
+
+// import { Autocomplete, GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
+
+// const handleGetLocationClick = () => {
+//   if (navigator.geolocation) {
+//     navigator.geolocation.getCurrentPosition(
+//       (position) => {
+//         const { latitude, longitude } = position.coords;
+//         setSelectedPlace(null);
+//         setSearchLngLat(null);
+//         setCurrentLocation({ lat: latitude, lng: longitude });
+//       },
+//       (error) => {
+//         console.log(error);
+//       }
+//     );
+//   } else {
+//     console.log("Geolocation is not supported by this browser.");
+//   }
+// };
+// <div
+// style={{
+//   display: "flex",
+//   flexDirection: "column",
+//   justifyContent: "center",
+//   alignItems: "center",
+//   gap: "20px",
+// }}
+// >
+// {/* search component  */}
+// <Autocomplete
+//   onLoad={(autocomplete) => {
+//     console.log("Autocomplete loaded:", autocomplete);
+//     autocompleteRef.current = autocomplete;
+//   }}
+//   onPlaceChanged={handlePlaceChanged}
+//   options={{ fields: ["address_components", "geometry", "name"] }}
+// >
+//   <input type="text" placeholder="Search for a location" />
+// </Autocomplete>
+
+// {/* map component  */}
+// <GoogleMap
+//   zoom={currentLocation || selectedPlace ? 18 : 12}
+//   center={currentLocation || searchLngLat || center}
+//   mapContainerClassName="map"
+//   mapContainerStyle={{ width: "80%", height: "600px", margin: "auto" }}
+//   onLoad={onMapLoad}
+// >
+//   {selectedPlace && <Marker position={searchLngLat} />}
+// </GoogleMap>
+// </div>
+const onSaveClick = async (faqId, event) => {
+  try {
+    const token = Cookies.get("apiToken");
+    const response = await fetch(
+      `https://doorshark.blownclouds.com/api/adminRoute/editFaqs${editingItemId}`,
+      {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+    
+          question: items.question, 
+          answer: items.answer, 
+        }),
+      }
+    );
+    if (response.ok) {
+    
+      const data = await response.json();
+      setItems(data.data);
+      message.success("FAQ edited successfully");
+     
+      setEditMode(false);
+    } else {
+      message.error("Failed to edit FAQ");
+    }
+  } catch (error) {
+    console.error("Error editing FAQ:", error);
+    message.error("Failed to edit FAQ");
+  }
+};

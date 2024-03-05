@@ -355,6 +355,7 @@ const MainCategoryTable = () => {
             <h1 className="Doctors text-[#054fb9]  text-[22px] font-sans">
               Category
             </h1>
+            
             <div className=" flex gap-[5px]">
               <Input
                 className="w-[300px] rounded-[40px]"

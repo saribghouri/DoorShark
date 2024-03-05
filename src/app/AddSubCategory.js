@@ -1,5 +1,5 @@
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
-import { Button, Form, Input, Select, Upload, message } from "antd";
+import { Button, Divider, Form, Input, Select, Upload, message } from "antd";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
@@ -122,6 +122,14 @@ console.log(mainCategories)
       {category ? (
         <SubCategory />
       ) : (
+<div>
+<div className="flex justify-between  pl-[10px] pr-[10px] ml-[16px] mr-[16px] items-center mt-[20px] mb-[40px]">
+        <h1 className="Doctors text-[22px] text-[#054fb9] font-sans">
+          Add Sub Category
+        </h1>
+
+      </div>
+        <Divider className="!w-[97%] text-[#054fb9] mt-[20px] flex justify-center mx-auto bg-[#054fb9] min-w-0" />
         <div className="border bg-[#fff] w-[60%] mx-auto rounded-[10px] mt-[40px] mb-[20px]">
           <div className=" justify-between flex items-center addCategory h-[100px] mb-[20px] rounded-t-[10px] w-[100%]">
             <h1 className="text-white font-bold text-[24px] ml-[20px] categorie">
@@ -175,6 +183,7 @@ console.log(mainCategories)
               </Form.Item>
             </div>
           </Form>
+        </div>
         </div>
       )}
     </div>

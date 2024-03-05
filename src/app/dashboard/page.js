@@ -40,6 +40,8 @@ import PendingJobs from "../pendingJobs";
 import CompletedJobs from "../completedJobs";
 import Customer from "../customer";
 import Contractor from "../contractor";
+import AddFaqs from "../addfaqs";
+import Faqs from "../faqs";
 const { Header, Sider } = Layout;
 const App = () => {
   const router = useRouter();
@@ -55,6 +57,7 @@ const App = () => {
   const [card, setCard] = useState(false);
   const [categories, setCategories] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [addFaqs, setAddFaqs] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showProfileEditModal, setShowProfileEditModal] = useState(false);
   const [userSubscription, setUserSubscription] = useState(false);
@@ -163,7 +166,7 @@ const App = () => {
     setPaymentCard(false);
     setProfileView(false);
     setCompletedjobs(false);
-
+    setAddFaqs(false)
     setCard(false);
     setProfileEdit(false);
   };
@@ -177,7 +180,7 @@ const App = () => {
     setAddPayment(false);
     setPendingjobs(false);
     setCompletedjobs(false);
-
+    setAddFaqs(false)
     setProfileView(false);
     setProfileEdit(false);
     setCard(false);
@@ -190,7 +193,7 @@ const App = () => {
     setInactiveUser(false);
     setShowUser(false);
     setCompletedjobs(false);
-
+    setAddFaqs(false)
     setUserSubscription(false);
     setPendingjobs(false);
     setProfileView(false);
@@ -200,7 +203,7 @@ const App = () => {
   const handleJobs = () => {
     setjobs(true);
     setCard(false);
-
+    setAddFaqs(false)
     setAddPayment(false);
     setPaymentCard(false);
     setActiveUser(false);
@@ -225,7 +228,7 @@ const App = () => {
     setShowUser(false);
     setUserSubscription(false);
     setCompletedjobs(false);
-
+    setAddFaqs(false)
     setProfileView(false);
     setProfileEdit(false);
     setCard(false);
@@ -241,7 +244,7 @@ const App = () => {
     setInactiveUser(false);
     setShowUser(false);
     setUserSubscription(false);
-
+    setAddFaqs(false)
     setProfileView(false);
     setProfileEdit(false);
     setCard(false);
@@ -256,28 +259,33 @@ const App = () => {
     setInactiveUser(false);
     setShowUser(false);
     setUserSubscription(false);
-
+    setAddFaqs(false)
     setProfileView(false);
     setProfileEdit(false);
     setCard(false);
   };
-
-  const handleSubscription = () => {
+  const handleFaqs = () => {
+    setAddFaqs(true)
+    setCard(false);
     setjobs(false);
-    setUserSubscription(true);
-
     setAddPayment(false);
     setPaymentCard(false);
     setActiveUser(false);
+    setCompletedjobs(false);
+
     setInactiveUser(false);
     setShowUser(false);
+    setUserSubscription(false);
 
     setProfileView(false);
     setProfileEdit(false);
-    setCard(false);
+  
   };
+
+
   const handleCard = () => {
     setCard(true);
+    setAddFaqs(false)
     setShowUser(false);
     setActiveUser(false);
     setInactiveUser(false);
@@ -442,15 +450,22 @@ const App = () => {
         "settings",
         "sub21",
         <Image
-            src={"/assets/icon/settings-icon.png"}
+            src={"/assets/icon/Vector (1).png"}
             width={30}
             height={30}
             alt=""
         />,
         [
             getItem(
-                "Settings",
+                "FAQS",
                 "sub20",
+                <Image src={""} alt="" />,
+                null,
+                handleFaqs
+            ),
+            getItem(
+                "Privacy Policy",
+                "sub22",
                 <Image src={""} alt="" />,
                 null,
                 // handleSettings
@@ -894,6 +909,7 @@ const App = () => {
           {paymentCard && <SubCategory />}
           {pendingjobs && <PendingJobs />}
           {completedjobs && <CompletedJobs />}
+          {addFaqs && <Faqs />}
           {jobs && <Jobs />}
           {categories && (
             <AddCategories handleShowCategories={handleShowCategories} />
@@ -909,6 +925,7 @@ const App = () => {
             !userSubscription &&
             !pendingjobs &&
             !completedjobs &&
+            !addFaqs &&
             !profileView &&
             !jobs &&
             !card &&
