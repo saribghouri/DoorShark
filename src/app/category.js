@@ -202,14 +202,14 @@ const MainCategoryTable = () => {
     try {
       const token = Cookies.get("apiToken");
       
-      // Prepare updated category data
+    
       const updatedCategoryData = {
         ...editedCategory,
-        maincatpic: imageUrl, // Update image URL
+        maincatpic: imageUrl, 
         maincatname: form.getFieldValue("name"),
       };
       
-      // Send request to update category data
+      
       await axios.patch(
         `https://doorshark.blownclouds.com/api/adminRoute/editMainCat/${selectedCategory.id}`,
         updatedCategoryData,
@@ -221,10 +221,9 @@ const MainCategoryTable = () => {
         }
       );
   
-      // Update UI with the new category data
+     
       setMainCategories(mainCategories.map((cat) => cat._id === selectedCategory.id ? updatedCategoryData : cat));
-      
-      // Close edit modal
+    
       setEditModalVisible(false);
     } catch (error) {
       console.error("Error editing main category:", error);

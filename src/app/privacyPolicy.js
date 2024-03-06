@@ -105,13 +105,13 @@ const PrivacyPolicy = () => {
               value={editedPolicy}
               onChange={setEditedPolicy} // No need for e.target.value here
             />
-            <Button type="primary" onClick={handleSave}>
+            <Button className="text" onClick={handleSave}>
               Save
             </Button>
           </Form.Item>
         ) : (
           <div
-            className="border"
+            className="border p-[22px] rounded-[28px]"
             dangerouslySetInnerHTML={{ __html: policyResponse }}
           />
         )}

@@ -829,7 +829,7 @@ const App = () => {
                     trigger={["click"]}
                   >
                     <a onClick={(e) => e.preventDefault()}>
-                      <div className="text-[#c94242] font-semibold flex  overflow-ellipsis justify-between">
+                      <div className="text-[#054fb9] font-semibold flex  overflow-ellipsis justify-between">
                         <p className=" overflow-ellipsis">{userDetails.name}</p>
                         <DownOutlined className="" />
                       </div>
