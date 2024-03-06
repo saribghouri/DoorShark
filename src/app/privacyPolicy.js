@@ -1,17 +1,17 @@
-import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
-import { Button, Divider, Form, Input, Upload, message } from "antd";
+
+import { Button, Divider, Form,  message } from "antd";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
-import Image from "next/image";
+
 import axios from "axios";
-import MainCategoryTable from "./category";
+
 import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css"; // import styles
+import "react-quill/dist/quill.snow.css"; 
 const PrivacyPolicy = () => {
   const [loading, setLoading] = useState(false);
 
   const [policyResponse, setPolicyResponse] = useState(null);
-  const [policy, setPolicy] = useState(false);
+
   const [editMode, setEditMode] = useState(false);
 
   const [editedPolicy, setEditedPolicy] = useState("");
@@ -45,11 +45,7 @@ const PrivacyPolicy = () => {
 
     fetchPolicy();
   }, []);
-  const onFinishFailed = (errorInfo) => {};
-  const handleEdit = () => {
-    setEditedPolicy(policyResponse);
-    setEditMode(true);
-  };
+
 
   const handleSave = async () => {
     try {
@@ -94,16 +90,12 @@ const PrivacyPolicy = () => {
       <div className="bg-[#fff] w-[60%] mx-auto rounded-[10px] mt-[40px] mb-[20px]">
         {editMode ? (
           <Form.Item>
-            {/* <Input.TextArea
-              rows={10}
-              value={editedPolicy}
-              onChange={(e) => setEditedPolicy(e.target.value)}
-            /> */}
+       
             <ReactQuill
               className="h-auto"
               theme="snow"
               value={editedPolicy}
-              onChange={setEditedPolicy} // No need for e.target.value here
+              onChange={setEditedPolicy} 
             />
             <Button className="text" onClick={handleSave}>
               Save

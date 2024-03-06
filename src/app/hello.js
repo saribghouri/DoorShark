@@ -262,33 +262,33 @@
 
 
 
-const handleUpload = async (file) => {
-    try {
-      const formData = new FormData();
-      formData.append("image", file);
+// const handleUpload = async (file) => {
+//     try {
+//       const formData = new FormData();
+//       formData.append("image", file);
 
-      const token = Cookies.get("apiToken"); // Retrieve API token from cookies
+//       const token = Cookies.get("apiToken"); // Retrieve API token from cookies
 
-      const response = await axios.post(
-        "https://doorshark.blownclouds.com/api/cloudinary/UploadDocumentToCloudinaryAndGetPublicUrl",
-        formData,
+//       const response = await axios.post(
+//         "https://doorshark.blownclouds.com/api/cloudinary/UploadDocumentToCloudinaryAndGetPublicUrl",
+//         formData,
       
-      );
+//       );
 
-      setImageUrl(response.data.url);
-      message.success("Image uploaded successfully");
-    } catch (error) {
-      console.error("Error uploading image:", error);
-      message.error("Failed to upload image");
-    }
-  };
+//       setImageUrl(response.data.url);
+//       message.success("Image uploaded successfully");
+//     } catch (error) {
+//       console.error("Error uploading image:", error);
+//       message.error("Failed to upload image");
+//     }
+//   };
 
-  const customRequest = ({ file, onSuccess }) => {
-    setTimeout(() => {
-      onSuccess("ok");
-      handleUpload(file);
-    }, 0);
-  };
+//   const customRequest = ({ file, onSuccess }) => {
+//     setTimeout(() => {
+//       onSuccess("ok");
+//       handleUpload(file);
+//     }, 0);
+//   };
 
 
 
@@ -454,67 +454,67 @@ const handleUpload = async (file) => {
 //     message.error("Failed to edit FAQ");
 //   }
 // };
-import React, { useState } from "react";
-import { Button, Divider, Form, message } from "antd";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css"; // import styles
+// import React, { useState } from "react";
+// import { Button, Divider, Form, message } from "antd";
+// import ReactQuill from "react-quill";
+// import "react-quill/dist/quill.snow.css"; // import styles
 
-const AddPolicy = () => {
-  const [loading, setLoading] = useState(false);
-  const [policy, setPolicy] = useState("");
+// const AddPolicy = () => {
+//   const [loading, setLoading] = useState(false);
+//   const [policy, setPolicy] = useState("");
 
-  const onFinish = async (values) => {
-    setLoading(true);
-    try {
-      // Your existing code
-    } catch (error) {
-      console.error("Error during policy registration:", error);
-      setLoading(false);
-    }
-  };
+//   const onFinish = async (values) => {
+//     setLoading(true);
+//     try {
+//       // Your existing code
+//     } catch (error) {
+//       console.error("Error during policy registration:", error);
+//       setLoading(false);
+//     }
+//   };
 
-  const onFinishFailed = (errorInfo) => {};
+//   const onFinishFailed = (errorInfo) => {};
 
-  return (
-    <div>
-      {/* Your existing JSX */}
-      <div className=" bg-[#fff] w-[60%] mx-auto rounded-[10px] mt-[40px] mb-[20px]">
-        <Form
-          className="pl-[50px] pr-[50px]"
-          name="loginForm"
-          initialValues={{ remember: true }}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-        >
-          <Form.Item
-            className="w-[100%]"
-            name="policy"
-            rules={[{ required: true, message: "Please enter your policy!" }]}
-          >
-            <ReactQuill
-              theme="snow" // Specify theme
-              value={policy}
-              onChange={setPolicy}
-              placeholder="Add Privacy Policy Here"
-            />
-          </Form.Item>
+//   return (
+//     <div>
+//       {/* Your existing JSX */}
+//       <div className=" bg-[#fff] w-[60%] mx-auto rounded-[10px] mt-[40px] mb-[20px]">
+//         <Form
+//           className="pl-[50px] pr-[50px]"
+//           name="loginForm"
+//           initialValues={{ remember: true }}
+//           onFinish={onFinish}
+//           onFinishFailed={onFinishFailed}
+//         >
+//           <Form.Item
+//             className="w-[100%]"
+//             name="policy"
+//             rules={[{ required: true, message: "Please enter your policy!" }]}
+//           >
+//             <ReactQuill
+//               theme="snow" // Specify theme
+//               value={policy}
+//               onChange={setPolicy}
+//               placeholder="Add Privacy Policy Here"
+//             />
+//           </Form.Item>
 
-          <div className=" flex justify-between mt-[80px]">
-            <Form.Item></Form.Item>
-            <Form.Item>
-              <Button
-                loading={loading}
-                className="bg-[#054fb9] w-[150px] !text-white"
-                htmlType="submit"
-              >
-                Add
-              </Button>
-            </Form.Item>
-          </div>
-        </Form>
-      </div>
-    </div>
-  );
-};
+//           <div className=" flex justify-between mt-[80px]">
+//             <Form.Item></Form.Item>
+//             <Form.Item>
+//               <Button
+//                 loading={loading}
+//                 className="bg-[#054fb9] w-[150px] !text-white"
+//                 htmlType="submit"
+//               >
+//                 Add
+//               </Button>
+//             </Form.Item>
+//           </div>
+//         </Form>
+//       </div>
+//     </div>
+//   );
+// };
 
-export default AddPolicy;
+// export default AddPolicy;

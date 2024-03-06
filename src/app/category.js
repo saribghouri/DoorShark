@@ -179,12 +179,7 @@ const MainCategoryTable = () => {
               }}
               className="text-[#ffffff] bg-[#054fb9] p-[5px] rounded-[50%] ml-[10px] text-[18px]"
             />
-            {/* <Button
-            type="link"
-            // Handle edit action
-          >
-            Edit
-          </Button> */}
+      
           </div>
         )
       ),
@@ -245,23 +240,7 @@ const MainCategoryTable = () => {
     }
     return isJpgOrPng && isLt2M;
   };
-  const handleChange = (info) => {
-    if (info.file.status === "uploading") {
-      setLoading(true);
-      return;
-    }
-    if (info.file.status === "done") {
-      getBase64(info.file.originFileObj, (imageUrl) => {
-        setLoading(false);
-        setImageUrl(imageUrl);
 
-        setEditedCategory((prevState) => ({
-          ...prevState,
-          maincatpic: imageUrl,
-        }));
-      });
-    }
-  };
 
   const onChange = async (checked, userId) => {
     console.log(userId);
@@ -314,8 +293,7 @@ const MainCategoryTable = () => {
       );
 
       setImageUrl(response.data.image_url[0]);
-      // setUserProfileImage(response.data.image_url[0]);
-      // message.success("Image uploaded successfully");
+
     } catch (error) {
       console.error("Error uploading image:", error);
       message.error("Failed to upload image");
