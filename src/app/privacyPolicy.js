@@ -1,23 +1,29 @@
 
 import { Button, Divider, Form,  message } from "antd";
 import Cookies from "js-cookie";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import axios from "axios";
+import dynamic from "next/dynamic";
 
+
+import "react-quill/dist/quill.snow.css"; 
 // import ReactQuill from "react-quill";
-// import "react-quill/dist/quill.snow.css"; 
 const PrivacyPolicy = () => {
   const [loading, setLoading] = useState(false);
 
   const [policyResponse, setPolicyResponse] = useState(null);
+  const ReactQuill = useMemo(() => dynamic(() => import('react-quill'), { ssr: false }),[]);
 
   const [editMode, setEditMode] = useState(false);
 
   const [editedPolicy, setEditedPolicy] = useState("");
 
   console.log(policyResponse);
-
+  const handleEdit = () => {
+    setEditedPolicy(policyResponse);
+    setEditMode(true);
+  };
   useEffect(() => {
     const fetchPolicy = async () => {
       try {
@@ -91,12 +97,12 @@ const PrivacyPolicy = () => {
         {editMode ? (
           <Form.Item>
        
-            {/* <ReactQuill
+            <ReactQuill
               className="h-auto"
               theme="snow"
               value={editedPolicy}
               onChange={setEditedPolicy} 
-            /> */}
+            />
             <Button className="text" onClick={handleSave}>
               Save
             </Button>

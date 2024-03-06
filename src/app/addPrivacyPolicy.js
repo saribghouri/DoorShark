@@ -1,16 +1,19 @@
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, Divider, Form, Input, Upload, message } from "antd";
 import Cookies from "js-cookie";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import Image from "next/image";
 import axios from "axios";
 import MainCategoryTable from "./category";
 import PrivacyPolicy from "./privacyPolicy";
-
+// import ReactQuill from "react-quill";
+// import "react-quill/dist/quill.snow.css"; 
+import dynamic from "next/dynamic";
 // import "../../node_modules/react-quill/dist/quill.snow.css";
 // import { ReactQuill } from "react-quill";
 const AddPolicy = () => {
   const [loading, setLoading] = useState(false);
+  const ReactQuill = useMemo(() => dynamic(() => import('react-quill'), { ssr: false }),[]);
 
   const [policyResponse, setPolicyResponse] = useState(null);
   const [policy, setPolicy] = useState(false);
@@ -87,13 +90,13 @@ const AddPolicy = () => {
             name="policy"
             rules={[{ required: true, message: "Please enter your policy!" }]}
           >
-            {/* <ReactQuill
+            <ReactQuill 
             className="h-auto"
               theme="snow" 
               value={policyName}
               onChange={setPolicyName}
               placeholder="Add Privacy Policy Here"
-            /> */}
+            />
           </Form.Item>
 
           <div className=" flex justify-between mt-[80px]">
