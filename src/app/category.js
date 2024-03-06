@@ -201,28 +201,30 @@ const MainCategoryTable = () => {
   const handleSaveEdit = async () => {
     try {
       const token = Cookies.get("apiToken");
-      console.log(token);
+      
+      // Prepare updated category data
+      const updatedCategoryData = {
+        ...editedCategory,
+        maincatpic: imageUrl, // Update image URL
+        maincatname: form.getFieldValue("name"),
+      };
+      
+      // Send request to update category data
       await axios.patch(
         `https://doorshark.blownclouds.com/api/adminRoute/editMainCat/${selectedCategory.id}`,
-        editedCategory,
+        updatedCategoryData,
         {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({
-           
-            maincatpic: imageUrl,
-            maincatname: form.getFieldValue("name"),
-          }),
         }
       );
-
-      setMainCategories(
-        mainCategories.map((cat) =>
-          cat._id === selectedCategory.id ? editedCategory : cat
-        )
-      );
+  
+      // Update UI with the new category data
+      setMainCategories(mainCategories.map((cat) => cat._id === selectedCategory.id ? updatedCategoryData : cat));
+      
+      // Close edit modal
       setEditModalVisible(false);
     } catch (error) {
       console.error("Error editing main category:", error);
