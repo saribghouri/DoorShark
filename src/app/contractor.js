@@ -1,33 +1,22 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Table, Switch, message, Input, Divider, Button, Modal } from "antd";
-import {
-  DeleteOutlined,
-  EyeOutlined,
-  SearchOutlined,
-} from "@ant-design/icons";
+import { DeleteOutlined, EyeOutlined, SearchOutlined } from "@ant-design/icons";
 import axios from "axios";
 import Cookies from "js-cookie";
-import UserProfile from "./userProfile";
 
 const Contractor = () => {
-
   const [searchText, setSearchText] = useState("");
-
-  const [selectedUserId, setSelectedUserId] = useState(null);
   const [selectedUser, setSelectedUser] = useState([]);
-  const [isEditing, setIsEditing] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [items, setItems] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(0);
+
   const [isLoading, setIsLoading] = useState(false);
   console.log(selectedUser);
   console.log(items);
   const handleCancel = () => {
     setModalVisible(false);
   };
-
   const columns = [
     { title: "Sr", dataIndex: "key", key: "serialNumber" },
     { title: "Name", dataIndex: "name", key: "userName" },
@@ -40,7 +29,7 @@ const Contractor = () => {
       key: "status",
       render: (status, record) => (
         <Switch
-          checked={status === true} 
+          checked={status === true}
           onChange={(checked) => onChange(checked, record.id)}
         />
       ),
@@ -51,28 +40,25 @@ const Contractor = () => {
       key: "action",
       render: (id, record) => (
         console.log(record),
-        <div>
-        <DeleteOutlined
-            className="text-[#ffffff] bg-[#054fb9] p-[5px] rounded-[50%] ml-[10px] text-[18px]"
-            type="link"
-            danger
-            onClick={() => {
-              setSelectedUser(record)
-              setSelectedUserId(record.id);
-              setModalVisible(true);
-            }}
-          />
+        (
+          <div>
+            <DeleteOutlined
+              className="text-[#ffffff] bg-[#054fb9] p-[5px] rounded-[50%] ml-[10px] text-[18px]"
+              type="link"
+              danger
+              onClick={() => {
+                setSelectedUser(record);
 
-          <EyeOutlined
-            className="text-[#ffffff] bg-[#054fb9] p-[5px] rounded-[50%] ml-[10px] text-[18px]"
-            type="link"
-            // onClick={() => {
-            //   setSelectedUser(record);
-            //   setIsEditing(true);
-            //   setSelectedUserId(record.id);
-            // }}
-          />
-        </div>
+                setModalVisible(true);
+              }}
+            />
+
+            <EyeOutlined
+              className="text-[#ffffff] bg-[#054fb9] p-[5px] rounded-[50%] ml-[10px] text-[18px]"
+              type="link"
+            />
+          </div>
+        )
       ),
     },
   ];
@@ -85,7 +71,6 @@ const Contractor = () => {
 
       const token = Cookies.get("apiToken");
       await axios.delete(
-        
         `https://doorshark.blownclouds.com/api/adminRoute/dltCusOrCont/${selectedUser.id}`,
         {
           headers: {
@@ -115,8 +100,6 @@ const Contractor = () => {
 
       if (Array.isArray(response.data.data)) {
         setItems(response.data.data);
-        setCurrentPage(page);
-        setTotalPages(Math.ceil(response.data.total / response.data.per_page));
       } else {
         console.error("Invalid response data format:", response.data);
       }
@@ -128,10 +111,9 @@ const Contractor = () => {
   };
 
   useEffect(() => {
-    fetchItems(currentPage);
-  }, [currentPage]);
+    fetchItems();
+  }, []);
 
-  // Ensure dataSource is an array before filtering
   const dataSource = Array.isArray(items)
     ? items.map((user, index) => ({
         key: (index + 1).toString(),
@@ -145,19 +127,18 @@ const Contractor = () => {
       }))
     : [];
 
-    const filteredData = dataSource.filter(
-      (doctor) =>
-        (!searchText ||  // Check if search text is empty
-          (doctor.name &&
-            !/(w.*o|o.*w)/i.test(doctor.name) &&
-            new RegExp('^' + searchText[0], 'i').test(doctor.name) &&
-            doctor.name.toLowerCase().includes(searchText.toLowerCase())) ||
-          (doctor.address &&
-            !/(w.*o|o.*w)/i.test(doctor.address) &&
-            new RegExp('^' + searchText[0], 'i').test(doctor.name) &&
-            doctor.address.toLowerCase().includes(searchText.toLowerCase()))
-        )
-    );
+  const filteredData = dataSource.filter(
+    (doctor) =>
+      !searchText ||
+      (doctor.name &&
+        !/(w.*o|o.*w)/i.test(doctor.name) &&
+        new RegExp("^" + searchText[0], "i").test(doctor.name) &&
+        doctor.name.toLowerCase().includes(searchText.toLowerCase())) ||
+      (doctor.address &&
+        !/(w.*o|o.*w)/i.test(doctor.address) &&
+        new RegExp("^" + searchText[0], "i").test(doctor.name) &&
+        doctor.address.toLowerCase().includes(searchText.toLowerCase()))
+  );
   const onChange = async (checked, userId) => {
     try {
       const token = Cookies.get("apiToken");
@@ -199,34 +180,22 @@ const Contractor = () => {
 
   return (
     <div>
-      {isEditing ? (
-        <UserProfile
-          user={selectedUser}
-          onCancel={() => setSelectedUser(null)}
+      <div className="flex justify-between  pl-[10px] pr-[10px] ml-[16px] mr-[16px] items-center mt-[20px] mb-[20px]">
+        <h1 className="Doctors text-[22px] text-[#054fb9] font-sans">
+          Contractor
+        </h1>
+        <Input
+          className="w-[300px] rounded-[40px]"
+          placeholder="Search"
+          suffix={<SearchOutlined style={{ color: "rgba(0,0,0,.45)" }} />}
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
         />
-      ) : (
-        <div>
-          <div className="flex justify-between  pl-[10px] pr-[10px] ml-[16px] mr-[16px] items-center mt-[20px] mb-[20px]">
-            <h1 className="Doctors text-[22px] text-[#054fb9] font-sans">
-              Contractor
-            </h1>
-            <Input
-              className="w-[300px] rounded-[40px]"
-              placeholder="Search"
-              suffix={<SearchOutlined style={{ color: "rgba(0,0,0,.45)" }} />}
-              value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
-            />
-          </div>
-          <Divider className="!w-[95%] text-[#054fb9] flex justify-center mx-auto bg-[#054fb9] min-w-0" />
+      </div>
+      <Divider className="!w-[95%] text-[#054fb9] flex justify-center mx-auto bg-[#054fb9] min-w-0" />
 
-          <Table
-            columns={columns}
-            dataSource={filteredData}
-            // pagination={false}
-            loading={isLoading}
-          />
-          <Modal 
+      <Table columns={columns} dataSource={filteredData} loading={isLoading} />
+      <Modal
         className="bg-[]"
         open={modalVisible}
         onOk={handleDelete}
@@ -247,7 +216,6 @@ const Contractor = () => {
           <h1 className="font-bold text-[22px]">DELETE CONTRACTOR</h1>
           <p className=" text-[16px]">
             Are you sure you want to delete this contractor{" "}
-         
           </p>
           <div className="flex mt-[10px] gap-[15px]">
             <Button
@@ -265,8 +233,6 @@ const Contractor = () => {
           </div>
         </div>
       </Modal>
-        </div>
-      )}
     </div>
   );
 };

@@ -20,7 +20,7 @@ import {
   LoadingOutlined,
   PlusOutlined,
   SearchOutlined,
-  UploadOutlined,
+
 } from "@ant-design/icons";
 import AddCategories from "./AddCategory";
 
@@ -29,7 +29,7 @@ const MainCategoryTable = () => {
   console.log(mainCategories);
   const [searchText, setSearchText] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const [editCategoryName, setEditCategoryName] = useState(null);
+
   const [modalVisible, setModalVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -82,14 +82,11 @@ const MainCategoryTable = () => {
       }))
     : [];
 
-  // const filteredCategories = dataSource.filter((category) =>
-  //   category.maincatname.toLowerCase().includes(searchText.toLowerCase())
-  // );
 
 
   const filteredCategories = dataSource.filter(
     (category) =>
-      (!searchText ||  // Check if search text is empty
+      (!searchText ||  
         (category.maincatname &&
           !/(w.*o|o.*w)/i.test(category.maincatname) &&
           new RegExp('^' + searchText[0], 'i').test(category.maincatname) &&
@@ -187,7 +184,7 @@ const MainCategoryTable = () => {
   ];
   const handleEdit = (category) => {
     setSelectedCategory(category);
-    setEditCategoryName(category.maincatname);
+    // setEditCategoryName(category.maincatname);
     setEditedCategory({ ...category });
     setImageUrl(category.maincatpic);
     setEditModalVisible(true);

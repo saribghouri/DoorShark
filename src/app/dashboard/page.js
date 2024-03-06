@@ -283,7 +283,7 @@ const App = () => {
     setCompletedjobs(false);
     setAddPolicy(false);
     setInactiveUser(false);
-    setShowUser(false);
+ 
     setUserSubscription(false);
 
     setProfileView(false);
@@ -459,23 +459,12 @@ const App = () => {
           ),
         ]
       ),
-      {
-        label: (
-          <hr
-            style={{
-              borderTop: "1px solid #fff",
-              margin: "5px 0",
-              width: "100%",
-              pointerEvents: "none",
-            }}
-          />
-        ),
-      },
-      // Settings dropdown
+
       getItem(
         "settings",
         "sub21",
         <Image
+        onClick={() => setCollapsed(!collapsed)}
           src={"/assets/icon/Vector (1).png"}
           width={22}
           height={22}
@@ -503,9 +492,8 @@ const App = () => {
   };
   const items = [
     {
-      key: "0",
       label: (
-        <a className="font" onClick={handleShowProfileEditModal}>
+        <a className="font">
           <p className="bg-[#005eca] text-white rounded-l-[10px] rounded-r-[10px] text-center p-[5px]">
             {userDetails.name}
           </p>
@@ -765,19 +753,45 @@ const App = () => {
                           required: true,
                           message: "Please enter your old password!",
                         },
-                        9,
                       ]}
                     >
                       <Input.Password
-                        className="w-[300px]  rounded-r-[20px] rounded-l-[20px]"
+                        className="w-[300px] rounded-r-[20px] rounded-l-[20px]"
                         placeholder="Old Password"
                       />
                     </Form.Item>
 
                     <Form.Item
                       name="newPassword"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please enter your new password!",
+                        },
+                        ({ getFieldValue }) => ({
+                          validator(_, value) {
+                            if (
+                              !value ||
+                              getFieldValue("oldPassword") !== value
+                            ) {
+                              return Promise.resolve();
+                            }
+                            return Promise.reject(
+                              "New password must be different from old"
+                            );
+                          },
+                        }),
+                      ]}
+                    >
+                      <Input.Password
+                        className="w-[300px] rounded-r-[20px] rounded-l-[20px]"
+                        placeholder="New Password"
+                      />
+                    </Form.Item>
+
+                    <Form.Item
+                      name="confirmPassword"
                       dependencies={["newPassword"]}
-                      hasFeedback
                       rules={[
                         {
                           required: true,
@@ -785,22 +799,23 @@ const App = () => {
                         },
                         ({ getFieldValue }) => ({
                           validator(_, value) {
-                            if (!value || value.length >= 8) {
-                              // Check kar rahe hain ke 8 characters ya usse zyada hain
+                            if (
+                              !value ||
+                              getFieldValue("newPassword") === value
+                            ) {
                               return Promise.resolve();
                             }
-                            return Promise.reject(
-                              new Error("Please enter at least 8 characters!")
-                            );
+                            return Promise.reject("Password does not match!");
                           },
                         }),
                       ]}
                     >
                       <Input.Password
-                        className="w-[300px]  rounded-r-[20px] rounded-l-[20px]"
+                        className="w-[300px] rounded-r-[20px] rounded-l-[20px]"
                         placeholder="Confirm Password"
                       />
                     </Form.Item>
+
                     <Form.Item>
                       <Button
                         className="bg-[#005eca] !border-none w-[200px] !text-white rounded-r-[20px] rounded-l-[20px]"

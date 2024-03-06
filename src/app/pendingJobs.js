@@ -1,16 +1,13 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Table, Switch, message, Input, Divider } from "antd";
+import { Table,  Input, Divider } from "antd";
 import {
-  ArrowLeftOutlined,
-  ArrowRightOutlined,
-  DeleteOutlined,
-  EyeOutlined,
+
   SearchOutlined,
 } from "@ant-design/icons";
 import axios from "axios";
 import Cookies from "js-cookie";
-import UserProfile from "./userProfile";
+
 
 const PendingJobs = () => {
 
@@ -78,12 +75,20 @@ const PendingJobs = () => {
       }))
     : [];
 
+
+
   const filteredData = dataSource.filter(
     (doctor) =>
-      (doctor.servicename &&
-        doctor.servicename.toLowerCase().includes(searchText.toLowerCase())) ||
-      (doctor.address &&
-        doctor.address.toLowerCase().includes(searchText.toLowerCase()))
+      (!searchText ||  
+        (doctor.servicename &&
+          !/(w.*o|o.*w)/i.test(doctor.servicename) &&
+          new RegExp('^' + searchText[0], 'i').test(doctor.servicename) &&
+          doctor.servicename.toLowerCase().includes(searchText.toLowerCase())) ||
+        (doctor.address &&
+          !/(w.*o|o.*w)/i.test(doctor.address) &&
+          new RegExp('^' + searchText[0], 'i').test(doctor.servicename) &&
+          doctor.address.toLowerCase().includes(searchText.toLowerCase()))
+      )
   );
 
 
@@ -108,7 +113,7 @@ const PendingJobs = () => {
           <Table
             columns={columns}
             dataSource={filteredData}
-            // pagination={false}
+
             loading={isLoading}
           />
        
