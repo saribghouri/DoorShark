@@ -5,8 +5,8 @@ import React, { useEffect, useState } from "react";
 
 import axios from "axios";
 
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css"; 
+// import ReactQuill from "react-quill";
+// import "react-quill/dist/quill.snow.css"; 
 const PrivacyPolicy = () => {
   const [loading, setLoading] = useState(false);
 
@@ -91,12 +91,12 @@ const PrivacyPolicy = () => {
         {editMode ? (
           <Form.Item>
        
-            <ReactQuill
+            {/* <ReactQuill
               className="h-auto"
               theme="snow"
               value={editedPolicy}
               onChange={setEditedPolicy} 
-            />
+            /> */}
             <Button className="text" onClick={handleSave}>
               Save
             </Button>

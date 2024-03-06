@@ -101,7 +101,7 @@ const App = () => {
           }),
         }
       );
-  
+
       if (response.ok) {
         message.success("Password reset successfully");
         setShowChangePasswordModal(false);
@@ -114,7 +114,7 @@ const App = () => {
     } catch (error) {
       console.error("Error during forget password:", error);
     } finally {
-      setLoadingUpdateProfile(false); 
+      setLoadingUpdateProfile(false);
     }
   };
   useEffect(() => {
@@ -166,11 +166,11 @@ const App = () => {
     setUserSubscription(false);
     setInactiveUser(false);
     setAddPayment(false);
-    setAddPolicy(false)
+    setAddPolicy(false);
     setPaymentCard(false);
     setProfileView(false);
     setCompletedjobs(false);
-    setAddFaqs(false)
+    setAddFaqs(false);
     setCard(false);
     setProfileEdit(false);
   };
@@ -180,12 +180,12 @@ const App = () => {
     setInactiveUser(true);
     setPaymentCard(false);
     setShowUser(false);
-    setAddPolicy(false)
+    setAddPolicy(false);
     setUserSubscription(false);
     setAddPayment(false);
     setPendingjobs(false);
     setCompletedjobs(false);
-    setAddFaqs(false)
+    setAddFaqs(false);
     setProfileView(false);
     setProfileEdit(false);
     setCard(false);
@@ -197,9 +197,9 @@ const App = () => {
     setPaymentCard(false);
     setInactiveUser(false);
     setShowUser(false);
-    setAddPolicy(false)
+    setAddPolicy(false);
     setCompletedjobs(false);
-    setAddFaqs(false)
+    setAddFaqs(false);
     setUserSubscription(false);
     setPendingjobs(false);
     setProfileView(false);
@@ -209,8 +209,8 @@ const App = () => {
   const handleJobs = () => {
     setjobs(true);
     setCard(false);
-    setAddPolicy(false)
-    setAddFaqs(false)
+    setAddPolicy(false);
+    setAddFaqs(false);
     setAddPayment(false);
     setPaymentCard(false);
     setActiveUser(false);
@@ -228,7 +228,7 @@ const App = () => {
     setPendingjobs(true);
     setjobs(false);
     setCard(false);
-    setAddPolicy(false)
+    setAddPolicy(false);
     setAddPayment(false);
     setPaymentCard(false);
     setActiveUser(false);
@@ -236,7 +236,7 @@ const App = () => {
     setShowUser(false);
     setUserSubscription(false);
     setCompletedjobs(false);
-    setAddFaqs(false)
+    setAddFaqs(false);
     setProfileView(false);
     setProfileEdit(false);
     setCard(false);
@@ -252,8 +252,8 @@ const App = () => {
     setInactiveUser(false);
     setShowUser(false);
     setUserSubscription(false);
-    setAddFaqs(false)
-    setAddPolicy(false)
+    setAddFaqs(false);
+    setAddPolicy(false);
     setProfileView(false);
     setProfileEdit(false);
     setCard(false);
@@ -264,37 +264,35 @@ const App = () => {
     setPaymentCard(true);
     setActiveUser(false);
     setCompletedjobs(false);
-    setAddPolicy(false)
+    setAddPolicy(false);
     setInactiveUser(false);
     setShowUser(false);
     setUserSubscription(false);
-    setAddFaqs(false)
+    setAddFaqs(false);
     setProfileView(false);
     setProfileEdit(false);
     setCard(false);
   };
   const handleFaqs = () => {
-    setAddFaqs(true)
+    setAddFaqs(true);
     setCard(false);
     setjobs(false);
     setAddPayment(false);
     setPaymentCard(false);
     setActiveUser(false);
     setCompletedjobs(false);
-    setAddPolicy(false)
+    setAddPolicy(false);
     setInactiveUser(false);
     setShowUser(false);
     setUserSubscription(false);
 
     setProfileView(false);
     setProfileEdit(false);
-  
   };
-
 
   const handleCard = () => {
     setCard(true);
-    setAddFaqs(false)
+    setAddFaqs(false);
     setShowUser(false);
     setActiveUser(false);
     setInactiveUser(false);
@@ -305,13 +303,13 @@ const App = () => {
     setCompletedjobs(false);
     setProfileView(false);
     setjobs(false);
-    setAddPolicy(false)
+    setAddPolicy(false);
     setProfileEdit(false);
   };
   const handleAddPolicy = () => {
-    setAddPolicy(true)
+    setAddPolicy(true);
     setCard(false);
-    setAddFaqs(false)
+    setAddFaqs(false);
     setShowUser(false);
     setActiveUser(false);
     setInactiveUser(false);
@@ -355,8 +353,6 @@ const App = () => {
     console.log("sabgqebew");
 
     return [
-   
-
       getItem(
         "",
         "1",
@@ -461,50 +457,48 @@ const App = () => {
             null,
             handleCompletedJobs
           ),
-     
         ]
       ),
       {
-      label: <hr style={{ borderTop: "1px solid #fff", margin: "5px 0", width: "100%", pointerEvents: "none" }} />,
-        
-     
-         
-    
-    },
-    // Settings dropdown
-    getItem(
+        label: (
+          <hr
+            style={{
+              borderTop: "1px solid #fff",
+              margin: "5px 0",
+              width: "100%",
+              pointerEvents: "none",
+            }}
+          />
+        ),
+      },
+      // Settings dropdown
+      getItem(
         "settings",
         "sub21",
         <Image
-            src={"/assets/icon/Vector (1).png"}
-            width={30}
-            height={30}
-            alt=""
+          src={"/assets/icon/Vector (1).png"}
+          width={30}
+          height={30}
+          alt=""
         />,
         [
-            getItem(
-                "FAQS",
-                "sub20",
-                <Image src={""} alt="" />,
-                null,
-                handleFaqs
-            ),
-            getItem(
-                "Privacy Policy",
-                "sub22",
-                <Image src={""} alt="" />,
-                null,
-                handleAddPolicy            ),
+          getItem("FAQS", "sub20", <Image src={""} alt="" />, null, handleFaqs),
+          getItem(
+            "Privacy Policy",
+            "sub22",
+            <Image src={""} alt="" />,
+            null,
+            handleAddPolicy
+          ),
         ]
-    ),
+      ),
     ];
   };
 
   const item = generateMenuItems();
   const handleLogout = () => {
- 
     Cookies.remove("apiToken");
-    
+
     router.push("/");
   };
   const items = [

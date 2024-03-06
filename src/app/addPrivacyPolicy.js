@@ -6,8 +6,9 @@ import Image from "next/image";
 import axios from "axios";
 import MainCategoryTable from "./category";
 import PrivacyPolicy from "./privacyPolicy";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css"; // import styles
+
+// import "../../node_modules/react-quill/dist/quill.snow.css";
+// import { ReactQuill } from "react-quill";
 const AddPolicy = () => {
   const [loading, setLoading] = useState(false);
 
@@ -86,13 +87,13 @@ const AddPolicy = () => {
             name="policy"
             rules={[{ required: true, message: "Please enter your policy!" }]}
           >
-            <ReactQuill
+            {/* <ReactQuill
             className="h-auto"
               theme="snow" 
               value={policyName}
               onChange={setPolicyName}
               placeholder="Add Privacy Policy Here"
-            />
+            /> */}
           </Form.Item>
 
           <div className=" flex justify-between mt-[80px]">
