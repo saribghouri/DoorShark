@@ -61,14 +61,22 @@ const Faqs = () => {
   const cancelDelete = () => {};
 
   const toggleEditMode = (id) => {
-    setEditMode((prevState) => ({
-      ...prevState,
-      [id]: !prevState[id],
-    }));
+    setEditMode((prevState) => {
+      const newState = { ...prevState };
+
+      newState[id] = !prevState[id];
+
+      Object.keys(newState).forEach((itemId) => {
+        if (itemId !== id) {
+          newState[itemId] = false;
+        }
+      });
+      return newState;
+    });
   };
 
   const onEditClick = (event, id, initialQuestion, initialAnswer) => {
-    event.stopPropagation(); // Stop event propagation
+    event.stopPropagation(); 
     setEditingItemId(id);
     toggleEditMode(id);
     setEditedQuestion(initialQuestion);
@@ -145,6 +153,7 @@ const Faqs = () => {
       message.error("Failed to delete FAQ");
     }
   };
+ 
   return (
     <div>
       {isEditing ? (
@@ -170,7 +179,7 @@ const Faqs = () => {
             <div className="w-[100%] flex  justify-center mx-auto border-none">
               <Collapse
                 className="!w-[100%] border-none !mb-[50px] "
-                // defaultActiveKey={["0"]}
+                // defaultActiveKey={["-0"]}
                 onChange={onChange}
                 bordered={false}
                 expandIcon={({ isActive }) => (
@@ -188,7 +197,7 @@ const Faqs = () => {
                       header={
                         <div className="flex justify-between items-center">
                           {editMode[item._id] ? (
-                            <Input
+                            <Input className="mr-[10px] rounded-[20px]"
                               value={editedQuestion}
                               onChange={(e) =>
                                 handleQuestionChange(e, item._id)
@@ -252,7 +261,7 @@ const Faqs = () => {
                       collapsed={collapseState[item._id]}
                     >
                       {editMode[item._id] ? (
-                        <Input.TextArea
+                        <Input.TextArea 
                           value={editedAnswer}
                           onChange={handleAnswerChange}
                         />

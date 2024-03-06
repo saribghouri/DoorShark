@@ -477,8 +477,8 @@ const App = () => {
         "sub21",
         <Image
           src={"/assets/icon/Vector (1).png"}
-          width={30}
-          height={30}
+          width={22}
+          height={22}
           alt=""
         />,
         [
