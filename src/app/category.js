@@ -289,7 +289,7 @@ const MainCategoryTable = () => {
         formData
       );
 
-      setImageUrl(response.data.image_url[0]);
+    
 
     } catch (error) {
       console.error("Error uploading image:", error);
