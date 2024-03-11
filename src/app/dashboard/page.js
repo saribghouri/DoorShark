@@ -135,6 +135,7 @@ const App = () => {
           const data = await response.json();
 
           setUserDetails(data.data);
+          setUserProfileImage(data.data.profile)
         } else {
           console.error(
             "Failed to fetch user details:",
