@@ -21,7 +21,7 @@ const Page = () => {
   const onFinish = async (values) => {
     try {
       setLoading(true);
-      const response = await fetch(loginEndpoint, {
+      const response = await fetch(logins, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
