@@ -7,7 +7,7 @@ import { Button, Checkbox, Form, Input, message } from "antd";
 import { useUser } from "./UserContext";
 import { useRouter } from "next/navigation";
 
-const Page = () =>  {
+const Page = () => {
   const router = useRouter();
   const { user } = useUser();
   console.log("user", user);
@@ -134,8 +134,15 @@ const Page = () =>  {
           />
         </Form.Item>
 
-        <Form.Item name="remember" valuePropName="checked">
-          <Checkbox className="text-white mt-[20px]" onChange={handleRememberMeChange}>
+        <Form.Item
+          className="fex justify-start w-[300px]  mt-[-15px] tex"
+          name="remember"
+          valuePropName="checked"
+        >
+          <Checkbox
+            className="text-white mt-[20px]"
+            onChange={handleRememberMeChange}
+          >
             Remember me
           </Checkbox>
         </Form.Item>
