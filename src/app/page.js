@@ -12,6 +12,7 @@ const Page = () =>  {
   const { user } = useUser();
   console.log("user", user);
   const [loading, setLoading] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
   const { login } = useUser();
 
   const baseUrl = "https://doorshark.blownclouds.com/api";
@@ -19,14 +20,11 @@ const Page = () =>  {
   const logins = `${baseUrl}/authRoute/login`;
   const onFinish = async (values) => {
     try {
-      const token = Cookies.get("apiToken");
-      console.log("token", token);
       setLoading(true);
-      const response = await fetch(`${logins}`, {
+      const response = await fetch(loginEndpoint, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           email: values.email,
@@ -38,11 +36,15 @@ const Page = () =>  {
         const data = await response.json();
         Cookies.set("apiToken", data.data.token);
 
+        if (rememberMe) {
+          localStorage.setItem("rememberedUser", JSON.stringify(values));
+        } else {
+          localStorage.removeItem("rememberedUser");
+        }
+
         login(data);
         router.push("/dashboard");
       } else {
-        const errorData = await response.json();
-        console.error("API request failed:", errorData);
         message.error("Failed to login. Invalid Credentials");
       }
     } catch (error) {
@@ -56,7 +58,16 @@ const Page = () =>  {
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
+  useEffect(() => {
+    const isUserLoggedIn = Cookies.get("apiToken");
 
+    if (!isUserLoggedIn) {
+      router.push("/");
+    }
+  }, [router]);
+  const handleRememberMeChange = (e) => {
+    setRememberMe(e.target.checked);
+  };
   return (
     <div
       className="flex min-h-screen flex-col justify-center items-center  "
@@ -129,18 +140,11 @@ const Page = () =>  {
           />
         </Form.Item>
 
-        <Form.Item
-          className="fex justify-start w-[300px]  mt-[-15px] tex"
-          name="rem ember"
-          valuePropName="checked"
-          // wrapperCol={{
-          //   offset: 8,
-          //   span: 16,
-          // }}
-        >
-          <Checkbox className="text-white  ">Remember me</Checkbox>
+        <Form.Item name="remember" valuePropName="checked">
+          <Checkbox className="text-white mt-[20px]" onChange={handleRememberMeChange}>
+            Remember me
+          </Checkbox>
         </Form.Item>
-
         <Form.Item className="w-[100%] flex justify-center">
           <Button
             type="enter"
