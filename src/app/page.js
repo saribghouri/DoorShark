@@ -58,13 +58,7 @@ const Page = () =>  {
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
-  useEffect(() => {
-    const isUserLoggedIn = Cookies.get("apiToken");
 
-    if (!isUserLoggedIn) {
-      router.push("/");
-    }
-  }, [router]);
   const handleRememberMeChange = (e) => {
     setRememberMe(e.target.checked);
   };
