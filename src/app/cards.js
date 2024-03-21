@@ -51,7 +51,7 @@ const Cards = ({ handlePendingJobs }) => {
       try {
         const token = Cookies.get("apiToken");
         const response = await fetch(
-          "https://doorshark.blownclouds.com/api/adminRoute/getCustomerDetails",
+          "https://backend.doorshark.co/api/adminRoute/getCustomerDetails",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -82,7 +82,7 @@ const Cards = ({ handlePendingJobs }) => {
       try {
         const token = Cookies.get("apiToken");
         const response = await fetch(
-          "https://doorshark.blownclouds.com/api/adminRoute/getContractorDetails",
+          "https://backend.doorshark.co/api/adminRoute/getContractorDetails",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -113,7 +113,7 @@ const Cards = ({ handlePendingJobs }) => {
       try {
         const token = Cookies.get("apiToken");
         const response = await fetch(
-          "https://doorshark.blownclouds.com/api/adminRoute/gettingJobs",
+          "https://backend.doorshark.co/api/adminRoute/gettingJobs",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -144,7 +144,7 @@ const Cards = ({ handlePendingJobs }) => {
       try {
         const token = Cookies.get("apiToken");
         const response = await fetch(
-          "https://doorshark.blownclouds.com/api/adminRoute/gettingJobs",
+          "https://backend.doorshark.co/api/adminRoute/gettingJobs",
           {
             headers: {
               Authorization: `Bearer ${token}`,

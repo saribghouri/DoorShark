@@ -45,7 +45,7 @@ const MainCategoryTable = () => {
         const token = Cookies.get("apiToken");
 
         const response = await axios.get(
-          `https://doorshark.blownclouds.com/api/adminRoute/getMainCategory`,
+          `https://backend.doorshark.co/api/adminRoute/getMainCategory`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -106,7 +106,7 @@ const MainCategoryTable = () => {
 
       const token = Cookies.get("apiToken");
       await axios.delete(
-        `https://doorshark.blownclouds.com/api/adminRoute/dltMainCat/${selectedCategory.id}`,
+        `https://backend.doorshark.co/api/adminRoute/dltMainCat/${selectedCategory.id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -203,7 +203,7 @@ const MainCategoryTable = () => {
       
       
       await axios.patch(
-        `https://doorshark.blownclouds.com/api/adminRoute/editMainCat/${selectedCategory.id}`,
+        `https://backend.doorshark.co/api/adminRoute/editMainCat/${selectedCategory.id}`,
         updatedCategoryData,
         {
           headers: {
@@ -251,7 +251,7 @@ const MainCategoryTable = () => {
       };
 
       const response = await axios.patch(
-        `https://doorshark.blownclouds.com/api/adminRoute/toggleCategory`,
+        `https://backend.doorshark.co/api/adminRoute/toggleCategory`,
         requestBody,
         {
           headers: {
@@ -285,7 +285,7 @@ const MainCategoryTable = () => {
       formData.append("image", file);
 
       const response = await axios.post(
-        "https://doorshark.blownclouds.com/api/cloudinary/UploadDocumentToCloudinaryAndGetPublicUrl",
+        "https://backend.doorshark.co/api/cloudinary/UploadDocumentToCloudinaryAndGetPublicUrl",
         formData
       );
 

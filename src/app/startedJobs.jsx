@@ -5,7 +5,7 @@ import { SearchOutlined } from "@ant-design/icons";
 import axios from "axios";
 import Cookies from "js-cookie";
 
-const CompletedJobs = () => {
+const StartedJobs = () => {
   const [searchText, setSearchText] = useState("");
 
   const [items, setItems] = useState([]);
@@ -32,8 +32,8 @@ const CompletedJobs = () => {
         }
       );
 
-      if (Array.isArray(response.data.data.completedJobs)) {
-        setItems(response.data.data.completedJobs);
+      if (Array.isArray(response.data.data.startedJobs)) {
+        setItems(response.data.data.startedJobs);
       } else {
         console.error("Invalid response data format:", response.data);
       }
@@ -78,7 +78,7 @@ const CompletedJobs = () => {
     <div>
       <div className="flex justify-between  pl-[10px] pr-[10px] ml-[16px] mr-[16px] items-center mt-[20px] mb-[20px]">
         <h1 className="Doctors text-[22px] text-[#054fb9] font-sans">
-          Complete Jobs
+         Started Jobs
         </h1>
         <Input
           className="w-[300px] rounded-[40px]"
@@ -95,4 +95,4 @@ const CompletedJobs = () => {
   );
 };
 
-export default CompletedJobs;
+export default StartedJobs;

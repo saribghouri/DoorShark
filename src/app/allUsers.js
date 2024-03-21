@@ -46,7 +46,7 @@ const AllUsers = () => {
       const userIdToDelete = selectedUser.id;
 
       const response = await fetch(
-        `https://mksm.blownclouds.com/api/delete-user/${userIdToDelete}`,
+        `https://backend.doorshark.co/api/delete-user/${userIdToDelete}`,
         {
           method: "DELETE",
           headers: {
@@ -74,7 +74,7 @@ const AllUsers = () => {
     try {
       const token = Cookies.get("apiToken");
       const response = await axios.get(
-        `https://mksm.blownclouds.com/api/all/user?page=${page}`,
+        `https://backend.doorshark.co/api/all/user?page=${page}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

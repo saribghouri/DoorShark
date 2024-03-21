@@ -68,7 +68,7 @@ const SubCategory = () => {
     try {
       const token = Cookies.get("apiToken");
       const response = await axios.get(
-        `https://doorshark.blownclouds.com/api/adminRoute/getSubCategory`,
+        `https://backend.doorshark.co/api/adminRoute/getSubCategory`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -146,7 +146,7 @@ const SubCategory = () => {
       };
 
       const response = await axios.patch(
-        `https://doorshark.blownclouds.com/api/adminRoute/toggleSubCategory`,
+        `https://backend.doorshark.co/api/adminRoute/toggleSubCategory`,
         requestBody,
         {
           headers: {
@@ -182,7 +182,7 @@ const SubCategory = () => {
 
       const token = Cookies.get("apiToken");
       await axios.delete(
-        `https://doorshark.blownclouds.com/api/adminRoute/dltSubCat/${selectedCategory.id}`,
+        `https://backend.doorshark.co/api/adminRoute/dltSubCat/${selectedCategory.id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -205,7 +205,7 @@ const SubCategory = () => {
     try {
       const token = Cookies.get("apiToken");
       await axios.patch(
-        `https://doorshark.blownclouds.com/api/adminRoute/editSubCat/${selectedCategory.id}`,
+        `https://backend.doorshark.co/api/adminRoute/editSubCat/${selectedCategory.id}`,
         { catname: editedCategory.catname },
         {
           headers: {

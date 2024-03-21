@@ -56,12 +56,10 @@ const Faqs = () => {
     event.stopPropagation();
   };
 
-
-
   const cancelDelete = () => {};
 
   const toggleEditMode = (id) => {
-    setEditMode((prevState) => {
+    setEditMode((prevState) => { 
       const newState = { ...prevState };
 
       newState[id] = !prevState[id];
@@ -76,7 +74,7 @@ const Faqs = () => {
   };
 
   const onEditClick = (event, id, initialQuestion, initialAnswer) => {
-    event.stopPropagation(); 
+    event.stopPropagation();
     setEditingItemId(id);
     toggleEditMode(id);
     setEditedQuestion(initialQuestion);
@@ -128,9 +126,8 @@ const Faqs = () => {
     console.log(e.target.value);
     setEditedAnswer(e.target.value);
   };
-  const confirmDelete = async (event,id) => {
+  const confirmDelete = async (event, id) => {
     try {
-    
       const token = Cookies.get("apiToken");
       const response = await fetch(
         `https://doorshark.blownclouds.com/api/adminRoute/dltFaqs/${id}`,
@@ -142,8 +139,7 @@ const Faqs = () => {
         }
       );
       if (response.ok) {
-
-        setItems(items.filter(item => item._id !== id));
+        setItems(items.filter((item) => item._id !== id));
         message.success("FAQ deleted successfully");
       } else {
         message.error("Failed to delete FAQ");
@@ -153,7 +149,7 @@ const Faqs = () => {
       message.error("Failed to delete FAQ");
     }
   };
- 
+
   return (
     <div>
       {isEditing ? (
@@ -197,7 +193,8 @@ const Faqs = () => {
                       header={
                         <div className="flex justify-between items-center">
                           {editMode[item._id] ? (
-                            <Input className="mr-[10px] rounded-[20px]"
+                            <Input
+                              className="mr-[10px] rounded-[20px]"
                               value={editedQuestion}
                               onChange={(e) =>
                                 handleQuestionChange(e, item._id)
@@ -205,8 +202,8 @@ const Faqs = () => {
                             />
                           ) : (
                             <p
-                              className="!text-white !rounded-[20px]"
-                              onClick={() => toggleCollapseState(item._id)}
+                              className="!text-white !rounded-[20px] over"
+                              // onClick={() => toggleCollapseState(item._id)}
                               style={{ cursor: "pointer" }}
                             >
                               {item.question}{" "}
@@ -241,14 +238,24 @@ const Faqs = () => {
                             <Popconfirm
                               title="Delete the task"
                               description="Are you sure to delete this task?"
-                              onConfirm={(event) => confirmDelete( event,item._id)}
+                              onConfirm={(event) =>
+                                confirmDelete(event, item._id)
+                              }
                               onCancel={cancelDelete}
                               okText="Yes"
                               cancelText="No"
+                              okButtonProps={{
+                                style: {
+                                  backgroundColor: "#054fb9",
+                                  color: "#ffff",
+                                },
+                              }} // Green background color
                             >
                               <Button
                                 className="!text-[#dc4545] font-semibold !bg-[#ffff] rounded-l-[20px] rounded-r-[20px]"
-                                onClick={(event) => onDeleteClick(event,item._id)}
+                                onClick={(event) =>
+                                  onDeleteClick(event, item._id)
+                                }
                               >
                                 Delete
                               </Button>
@@ -261,12 +268,12 @@ const Faqs = () => {
                       collapsed={collapseState[item._id]}
                     >
                       {editMode[item._id] ? (
-                        <Input.TextArea 
+                        <Input.TextArea
                           value={editedAnswer}
                           onChange={handleAnswerChange}
                         />
                       ) : (
-                        <p className="!bg-[#ffffff] p-[20px] rounded-[10px]">
+                        <p className="!bg-[#ffffff] over p-[20px] rounded-[10px]">
                           {item.answer}
                         </p>
                       )}

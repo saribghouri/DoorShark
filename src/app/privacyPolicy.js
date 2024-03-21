@@ -30,7 +30,7 @@ const PrivacyPolicy = () => {
       try {
         const token = Cookies.get("apiToken");
         const response = await fetch(
-          "https://doorshark.blownclouds.com/api/user/getPrivacyPolicy",
+          "https://backend.doorshark.co/api/user/getPrivacyPolicy",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -57,7 +57,7 @@ const PrivacyPolicy = () => {
     try {
       const token = Cookies.get("apiToken");
       await axios.post(
-        "https://doorshark.blownclouds.com/api/adminRoute/privacyPolicy",
+        "https://backend.doorshark.co/api/adminRoute/privacyPolicy",
         {
           policy: editedPolicy,
         },

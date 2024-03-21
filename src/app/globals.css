@@ -341,3 +341,6 @@ background-color: none !important;
 .placeholder-textarea ::placeholder {
   font-size: 24px !important;
 }
+.over {
+  overflow-wrap: anywhere;
+}

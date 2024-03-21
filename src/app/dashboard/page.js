@@ -44,6 +44,7 @@ import AddFaqs from "../addfaqs";
 import Faqs from "../faqs";
 import AddPolicy from "../addPrivacyPolicy";
 import PrivacyPolicy from "../privacyPolicy";
+import StartedJobs from "../startedJobs";
 const { Header, Sider } = Layout;
 const App = () => {
   const router = useRouter();
@@ -64,6 +65,7 @@ const App = () => {
   const [loading, setLoading] = useState(false);
   const [showProfileEditModal, setShowProfileEditModal] = useState(false);
   const [userSubscription, setUserSubscription] = useState(false);
+  const [startedjobs, setStartedjobs] = useState(false);
   const [profileView, setProfileView] = useState(false);
   const [userDetails, setUserDetails] = useState([]);
   const [loadingUpdateProfile, setLoadingUpdateProfile] = useState(false);
@@ -135,7 +137,7 @@ const App = () => {
           const data = await response.json();
 
           setUserDetails(data.data);
-          setUserProfileImage(data.data.profile)
+          setUserProfileImage(data.data.profile);
         } else {
           console.error(
             "Failed to fetch user details:",
@@ -227,6 +229,24 @@ const App = () => {
   };
   const handlePendingJobs = () => {
     setPendingjobs(true);
+    setjobs(false);
+    setCard(false);
+    setAddPolicy(false);
+    setAddPayment(false);
+    setPaymentCard(false);
+    setActiveUser(false);
+    setInactiveUser(false);
+    setShowUser(false);
+    setUserSubscription(false);
+    setCompletedjobs(false);
+    setAddFaqs(false);
+    setProfileView(false);
+    setProfileEdit(false);
+    setCard(false);
+  };
+  const handleStartedJobs = () => {
+    setPendingjobs(false);
+    setStartedjobs(true);
     setjobs(false);
     setCard(false);
     setAddPolicy(false);
@@ -445,6 +465,13 @@ const App = () => {
         [
           getItem("Jobs", "sub17", <Image src={""} alt="" />, null, handleJobs),
           getItem(
+            "Started",
+            "sub23",
+            <Image src={""} alt="" />,
+            null,
+            handleStartedJobs
+          ),
+          getItem(
             "Pending",
             "sub18",
             <Image src={""} alt="" />,
@@ -566,7 +593,7 @@ const App = () => {
         "https://doorshark.blownclouds.com/api/adminRoute/updateProfile",
         {
           method: "PATCH",
-          headers:{
+          headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
@@ -859,44 +886,39 @@ const App = () => {
                   onFinishFailed={onFinishFailed}
                 >
                   <div className="w-full flex justify-center items-center flex-col mt-[20px]">
-
-                  <Form.Item
-                    className="h-[50px] mb-[80px] !w-[100%]"
-                    name="upload"
-                    valuePropName="fileList"
-                    getValueFromEvent={(e) => e.fileList}
-               
-              
-                  >
-                  
-                    <Upload
+                    <Form.Item
+                      className="h-[50px] mb-[80px] !w-[100%]"
                       name="upload"
-                      listType="picture-card"
-                      className="avatar-uploader !w-[100%] mb-[20px]"
-                      showUploadList={false}
-                      action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
-                      beforeUpload={beforeUpload}
-                      customRequest={customRequest}
+                      valuePropName="fileList"
+                      getValueFromEvent={(e) => e.fileList}
                     >
-                      {imageUrl && typeof imageUrl === "string" ? (
-                        <img
-                          alt=""
-                          className="w-[70px] h-[70px] rounded-[50%]"
-                          src={imageUrl}
-                        />
-                      ) : userProfileImage ? (
-                        <img
-                          alt=""
-                          className="w-[70px] h-[70px] rounded-[50%]"
-                          src={userProfileImage}
-                        />
-                      ) : (
-                        uploadButton
-                      )}
-                    </Upload>
-                  </Form.Item>
+                      <Upload
+                        name="upload"
+                        listType="picture-card"
+                        className="avatar-uploader !w-[100%] mb-[20px]"
+                        showUploadList={false}
+                        action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
+                        beforeUpload={beforeUpload}
+                        customRequest={customRequest}
+                      >
+                        {imageUrl && typeof imageUrl === "string" ? (
+                          <img
+                            alt=""
+                            className="w-[70px] h-[70px] rounded-[50%]"
+                            src={imageUrl}
+                          />
+                        ) : userProfileImage ? (
+                          <img
+                            alt=""
+                            className="w-[70px] h-[70px] rounded-[50%]"
+                            src={userProfileImage}
+                          />
+                        ) : (
+                          uploadButton
+                        )}
+                      </Upload>
+                    </Form.Item>
                   </div>
-               
 
                   <Form.Item
                     className="mt-[70px]"
@@ -912,7 +934,7 @@ const App = () => {
                   </Form.Item>
 
                   <Form.Item>
-                  <div className=" flex w-[100%] justify-center mt-[10px]">
+                    <div className=" flex w-[100%] justify-center mt-[10px]">
                       <Button
                         className="bg-[#ffffff] !border-none w-[200px] !text-[#005eca] font-semibold rounded-r-[20px] rounded-l-[20px]"
                         htmlType="submit"
@@ -936,6 +958,7 @@ const App = () => {
           {pendingjobs && <PendingJobs />}
           {addPolicy && <PrivacyPolicy />}
           {completedjobs && <CompletedJobs />}
+          {startedjobs && <StartedJobs />}
           {addFaqs && <Faqs />}
           {jobs && <Jobs />}
           {categories && (
@@ -950,6 +973,7 @@ const App = () => {
             !addPayment &&
             !paymentCard &&
             !userSubscription &&
+            !startedjobs &&
             !pendingjobs &&
             !completedjobs &&
             !addPolicy &&
