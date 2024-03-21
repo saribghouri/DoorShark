@@ -25,11 +25,10 @@ import {
   PlusOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import AllUsers from "../allUsers";
+
 import ActiveUsers from "../contractor";
 import InActiveUsers from "../customer";
 import ProfileView from "../profileView";
-import UserSubscription from "../userSubscription";
 import Cards from "../cards";
 import Category from "../category";
 import SubCategory from "../Sub-Category";
@@ -48,7 +47,7 @@ import StartedJobs from "../startedJobs";
 const { Header, Sider } = Layout;
 const App = () => {
   const router = useRouter();
-  const [showUser, setShowUser] = useState(false);
+
   const [activeUser, setActiveUser] = useState(false);
   const [inActiveUser, setInactiveUser] = useState(false);
   const [profileEdit, setProfileEdit] = useState(false);
@@ -64,7 +63,7 @@ const App = () => {
   const [addPolicy, setAddPolicy] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showProfileEditModal, setShowProfileEditModal] = useState(false);
-  const [userSubscription, setUserSubscription] = useState(false);
+
   const [startedjobs, setStartedjobs] = useState(false);
   const [profileView, setProfileView] = useState(false);
   const [userDetails, setUserDetails] = useState([]);
@@ -73,11 +72,9 @@ const App = () => {
   const [userProfileImage, setUserProfileImage] = useState(
     userDetails.profile || null
   );
-  console.log(card + "++++++++++++cards+++++++++++");
 
-  console.log(userProfileImage);
   const [imageUrl, setImageUrl] = useState("");
-  console.log(imageUrl);
+
   const [form] = Form.useForm();
 
   const handleForgetPassword = async (values) => {
@@ -164,9 +161,9 @@ const App = () => {
   const handleActiveUser = () => {
     setjobs(false);
     setActiveUser(true);
-    setShowUser(false);
+
     setPendingjobs(false);
-    setUserSubscription(false);
+
     setInactiveUser(false);
     setAddPayment(false);
     setAddPolicy(false);
@@ -182,9 +179,9 @@ const App = () => {
     setjobs(false);
     setInactiveUser(true);
     setPaymentCard(false);
-    setShowUser(false);
+
     setAddPolicy(false);
-    setUserSubscription(false);
+
     setAddPayment(false);
     setPendingjobs(false);
     setCompletedjobs(false);
@@ -199,11 +196,11 @@ const App = () => {
     setActiveUser(false);
     setPaymentCard(false);
     setInactiveUser(false);
-    setShowUser(false);
+
     setAddPolicy(false);
     setCompletedjobs(false);
     setAddFaqs(false);
-    setUserSubscription(false);
+
     setPendingjobs(false);
     setProfileView(false);
     setProfileEdit(false);
@@ -218,8 +215,7 @@ const App = () => {
     setPaymentCard(false);
     setActiveUser(false);
     setInactiveUser(false);
-    setShowUser(false);
-    setUserSubscription(false);
+
     setPendingjobs(false);
     setCompletedjobs(false);
 
@@ -236,8 +232,7 @@ const App = () => {
     setPaymentCard(false);
     setActiveUser(false);
     setInactiveUser(false);
-    setShowUser(false);
-    setUserSubscription(false);
+
     setCompletedjobs(false);
     setAddFaqs(false);
     setProfileView(false);
@@ -254,8 +249,7 @@ const App = () => {
     setPaymentCard(false);
     setActiveUser(false);
     setInactiveUser(false);
-    setShowUser(false);
-    setUserSubscription(false);
+
     setCompletedjobs(false);
     setAddFaqs(false);
     setProfileView(false);
@@ -271,8 +265,7 @@ const App = () => {
     setPaymentCard(false);
     setActiveUser(false);
     setInactiveUser(false);
-    setShowUser(false);
-    setUserSubscription(false);
+
     setAddFaqs(false);
     setAddPolicy(false);
     setProfileView(false);
@@ -287,8 +280,7 @@ const App = () => {
     setCompletedjobs(false);
     setAddPolicy(false);
     setInactiveUser(false);
-    setShowUser(false);
-    setUserSubscription(false);
+
     setAddFaqs(false);
     setProfileView(false);
     setProfileEdit(false);
@@ -304,8 +296,6 @@ const App = () => {
     setCompletedjobs(false);
     setAddPolicy(false);
     setInactiveUser(false);
-    setShowUser(false);
-    setUserSubscription(false);
 
     setProfileView(false);
     setProfileEdit(false);
@@ -314,12 +304,12 @@ const App = () => {
   const handleCard = () => {
     setCard(true);
     setAddFaqs(false);
-    setShowUser(false);
+
     setActiveUser(false);
     setInactiveUser(false);
     setAddPayment(false);
     setPaymentCard(false);
-    setUserSubscription(false);
+
     setPendingjobs(false);
     setCompletedjobs(false);
     setProfileView(false);
@@ -331,12 +321,12 @@ const App = () => {
     setAddPolicy(true);
     setCard(false);
     setAddFaqs(false);
-    setShowUser(false);
+
     setActiveUser(false);
     setInactiveUser(false);
     setAddPayment(false);
     setPaymentCard(false);
-    setUserSubscription(false);
+
     setPendingjobs(false);
     setCompletedjobs(false);
     setProfileView(false);
@@ -950,7 +940,6 @@ const App = () => {
           </div>
         </Header>
         <div>
-          {showUser && <AllUsers />}
           {activeUser && <Contractor />}
           {inActiveUser && <Customer />}
           {addPayment && <Category handlePaymentCard={handlePaymentCard} />}
@@ -964,15 +953,13 @@ const App = () => {
           {categories && (
             <AddCategories handleShowCategories={handleShowCategories} />
           )}
-          {userSubscription && <UserSubscription />}
+
           {profileView && <ProfileView />}
           {card && <Cards handlePendingJobs={handlePendingJobs} />}
-          {!showUser &&
-            !activeUser &&
+          {!activeUser &&
             !inActiveUser &&
             !addPayment &&
             !paymentCard &&
-            !userSubscription &&
             !startedjobs &&
             !pendingjobs &&
             !completedjobs &&
