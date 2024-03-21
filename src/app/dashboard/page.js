@@ -160,6 +160,7 @@ const App = () => {
 
   const handleActiveUser = () => {
     setjobs(false);
+     setStartedjobs(false);
     setActiveUser(true);
 
     setPendingjobs(false);
@@ -177,6 +178,7 @@ const App = () => {
   const handleInactiveUser = () => {
     setActiveUser(false);
     setjobs(false);
+     setStartedjobs(false);
     setInactiveUser(true);
     setPaymentCard(false);
 
@@ -193,6 +195,7 @@ const App = () => {
   const handleAddPayment = () => {
     setAddPayment(true);
     setjobs(false);
+     setStartedjobs(false);
     setActiveUser(false);
     setPaymentCard(false);
     setInactiveUser(false);
@@ -208,7 +211,8 @@ const App = () => {
   };
   const handleJobs = () => {
     setjobs(true);
-    setCard(false);
+
+ setStartedjobs(false);    setCard(false);
     setAddPolicy(false);
     setAddFaqs(false);
     setAddPayment(false);
@@ -226,6 +230,7 @@ const App = () => {
   const handlePendingJobs = () => {
     setPendingjobs(true);
     setjobs(false);
+     setStartedjobs(false);
     setCard(false);
     setAddPolicy(false);
     setAddPayment(false);
@@ -243,6 +248,7 @@ const App = () => {
     setPendingjobs(false);
     setStartedjobs(true);
     setjobs(false);
+     setStartedjobs(false);
     setCard(false);
     setAddPolicy(false);
     setAddPayment(false);
@@ -260,6 +266,7 @@ const App = () => {
     setCompletedjobs(true);
     setPendingjobs(false);
     setjobs(false);
+     setStartedjobs(false);
     setCard(false);
     setAddPayment(false);
     setPaymentCard(false);
@@ -274,6 +281,7 @@ const App = () => {
   };
   const handlePaymentCard = () => {
     setjobs(false);
+     setStartedjobs(false);
     setAddPayment(false);
     setPaymentCard(true);
     setActiveUser(false);
@@ -290,6 +298,7 @@ const App = () => {
     setAddFaqs(true);
     setCard(false);
     setjobs(false);
+     setStartedjobs(false);
     setAddPayment(false);
     setPaymentCard(false);
     setActiveUser(false);
@@ -314,6 +323,7 @@ const App = () => {
     setCompletedjobs(false);
     setProfileView(false);
     setjobs(false);
+     setStartedjobs(false);
     setAddPolicy(false);
     setProfileEdit(false);
   };
@@ -331,6 +341,7 @@ const App = () => {
     setCompletedjobs(false);
     setProfileView(false);
     setjobs(false);
+     setStartedjobs(false);
     setProfileEdit(false);
   };
 
@@ -522,7 +533,7 @@ const App = () => {
       key: "1",
       label: (
         <a className="font" onClick={handleShowProfileEditModal}>
-          <UserOutlined /> Profile edit
+          <UserOutlined /> Profile Edit
         </a>
       ),
     },
