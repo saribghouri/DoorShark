@@ -78,7 +78,7 @@ const App = () => {
   const [form] = Form.useForm();
 
   const handleForgetPassword = async (values) => {
-    console.log(values);
+
     try {
       const formData = new FormData();
       formData.append("oldPassword", values.oldPassword);
@@ -121,7 +121,7 @@ const App = () => {
       try {
         // const token = localStorage.getItem("apiToken");
         const token = localStorage.getItem("apiToken");
-        console.log(`Bearer ${token}`);
+   
         const response = await fetch(
           "https://backend.doorshark.co/api/adminRoute/adminInfo",
           {
@@ -374,7 +374,7 @@ const App = () => {
   };
   const generateMenuItems = () => {
     // if (userDetails.userRole === userDetails.userRole) {
-    console.log("sabgqebew");
+
 
     return [
       getItem(
@@ -618,7 +618,7 @@ const App = () => {
       });
 
       setShowProfileEditModal(false);
-      console.log("The operation was a resounding achievement!", resData);
+ 
     } catch (error) {
       console.error(
         "Could not confidently conclude the application request.",
@@ -640,7 +640,7 @@ const App = () => {
       );
 
       setImageUrl(response.data.image_url[0]);
-      console.log(response.data.image_url[0]);
+
       setUserProfileImage(response.data.image_url[0]);
       // message.success("Image uploaded successfully");
     } catch (error) {

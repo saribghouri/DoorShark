@@ -21,7 +21,7 @@ const AddFaqs = ({ handleShowCategories, id }) => {
   const [selectedOptionId, setSelectedOptionId] = useState(null);
   const selectedId = selectedOptionId;
   const [mainCategories, setMainCategories] = useState([]);
-  console.log(mainCategories);
+
   const [category, setCategory] = useState(false);
 
   const onFinish = async (values) => {

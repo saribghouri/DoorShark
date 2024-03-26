@@ -12,8 +12,7 @@ const Contractor = () => {
   const [items, setItems] = useState([]);
 
   const [isLoading, setIsLoading] = useState(false);
-  console.log(selectedUser);
-  console.log(items);
+
   const handleCancel = () => {
     setModalVisible(false);
   };
@@ -39,7 +38,7 @@ const Contractor = () => {
       dataIndex: "id",
       key: "action",
       render: (id, record) => (
-        console.log(record),
+    
         (
           <div>
             <DeleteOutlined

@@ -25,7 +25,7 @@ import AddCategories from "./AddCategory";
 
 const MainCategoryTable = () => {
   const [mainCategories, setMainCategories] = useState([]);
-  console.log(mainCategories);
+
   const [searchText, setSearchText] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(null);
 
@@ -36,9 +36,9 @@ const MainCategoryTable = () => {
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [editedCategory, setEditedCategory] = useState(null);
   const [editCategoryName, setEditCategoryName] = useState(null);
-  console.log(editedCategory);
+
   const [form] = Form.useForm();
-  console.log(form.getFieldValue);
+
   useEffect(() => {
     const fetchMainCategories = async () => {
       setLoading(true);
@@ -128,7 +128,7 @@ const MainCategoryTable = () => {
       dataIndex: "maincatpic",
       key: "maincatpic",
       render: (text, record) => (
-        console.log(record),
+    
         (
           <img
             src={text}
@@ -191,7 +191,7 @@ const MainCategoryTable = () => {
   const handleSaveEdit = async () => {
     try {
       const token = localStorage.getItem("apiToken");
-      console.log(imageUrl, "+++++++++++++++++++++++++++++++++++++")
+
       const updatedCategoryData = {
         ...editedCategory,
         maincatpic: imageUrl,
@@ -241,7 +241,7 @@ const MainCategoryTable = () => {
   };
 
   const onChange = async (checked, userId) => {
-    console.log(userId);
+  
     try {
       // const token = Cookies.get("apiToken");
       const token = localStorage.getItem("apiToken");

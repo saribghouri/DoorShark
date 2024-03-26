@@ -15,7 +15,7 @@ const AddSubCategories = ({ handleShowCategories, id }) => {
   const [selectedOptionId, setSelectedOptionId] = useState(null);
   const selectedId = selectedOptionId
   const [mainCategories, setMainCategories] = useState([]);
-console.log(mainCategories)
+
   const [category, setCategory] = useState(false);
 
   const getBase64 = (img, callback) => {
@@ -43,7 +43,7 @@ console.log(mainCategories)
   };
   const handleSelectChange = (value) => {
     // yahan option ki ID ko use karke kuch kar sakte hain, jaise state mein store kar dena
-    console.log("Selected Option ID:", value);
+   
     // Agar aapko onFinish mein bhi is ID ko bhejna hai, to usko store kar sakte hain
     setSelectedOptionId(value);
   };

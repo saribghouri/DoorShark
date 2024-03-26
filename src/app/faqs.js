@@ -18,7 +18,7 @@ const Faqs = () => {
       try {
         const token = localStorage.getItem("apiToken");
         const response = await fetch(
-          "https://doorshark.blownclouds.com/api/user/getFaqs",
+          "https://backend.doorshark.co/api/user/getFaqs",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -49,7 +49,7 @@ const Faqs = () => {
   }, []);
 
   const onChange = (key) => {
-    console.log(key);
+
   };
 
   const onDeleteClick = (event) => {
@@ -123,7 +123,7 @@ const Faqs = () => {
   };
 
   const handleAnswerChange = (e) => {
-    console.log(e.target.value);
+  
     setEditedAnswer(e.target.value);
   };
   const confirmDelete = async (event, id) => {

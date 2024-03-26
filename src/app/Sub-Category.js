@@ -20,7 +20,7 @@ const SubCategory = () => {
   const [editCategoryName, setEditCategoryName] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const ids = items.map((item) => item._id);
-  console.log(selectedCategory);
+
   const columns = [
     { title: "Sr", dataIndex: "key", key: "serialNumber" },
     { title: " Sub Category", dataIndex: "catname", key: "catname" },
@@ -135,7 +135,7 @@ const SubCategory = () => {
       )
   );
   const onChange = async (checked, userId) => {
-    console.log(userId);
+   
     try {
       const token = localStorage.getItem("apiToken");
       const status = checked ? true : false;

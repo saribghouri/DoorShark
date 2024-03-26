@@ -92,7 +92,7 @@ const AddCategories = ({ handleShowCategories }) => {
       formData.append("image", file);
 
       const response = await axios.post(
-        "https://doorshark.blownclouds.com/api/cloudinary/UploadDocumentToCloudinaryAndGetPublicUrl",
+        "https://backend.doorshark.co/api/cloudinary/UploadDocumentToCloudinaryAndGetPublicUrl",
         formData
       );
 

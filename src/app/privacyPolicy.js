@@ -20,7 +20,7 @@ const PrivacyPolicy = () => {
 
   const [editedPolicy, setEditedPolicy] = useState("");
 
-  console.log(policyResponse);
+
   const handleEdit = () => {
     setEditedPolicy(policyResponse);
     setEditMode(true);

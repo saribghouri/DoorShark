@@ -15,7 +15,7 @@ const Customer = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const ids = items.map((item) => item._id);
-  console.log(ids);
+
   const columns = [
     { title: "Sr", dataIndex: "key", key: "serialNumber" },
     { title: "Name", dataIndex: "name", key: "userName" },

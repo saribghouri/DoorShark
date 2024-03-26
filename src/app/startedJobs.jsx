@@ -10,7 +10,7 @@ const StartedJobs = () => {
 
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  console.log(items);
+
   const columns = [
     { title: "Sr", dataIndex: "key", key: "serialNumber" },
     { title: "Service Name", dataIndex: "servicename", key: "servicename" },

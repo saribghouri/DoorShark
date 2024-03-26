@@ -18,7 +18,7 @@ const PendingJobs = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const [isLoading, setIsLoading] = useState(false);
-  console.log(items);
+
   const columns = [
     { title: "Sr", dataIndex: "key", key: "serialNumber" },
     { title: "Service Name", dataIndex: "servicename", key: "servicename" },
@@ -44,7 +44,7 @@ const PendingJobs = () => {
 
       if (Array.isArray(response.data.data.pendingJobs)) {
         setItems(response.data.data.pendingJobs);
-        console.log(response.data.data)
+       
         setCurrentPage(page);
 
       } else {

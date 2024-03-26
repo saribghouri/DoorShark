@@ -14,7 +14,7 @@ const Cards = ({ handlePendingJobs }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [isCustomer, setIsCustomer] = useState(false);
   const [completedJobs, setCompleted] = useState(false);
-  console.log(isCustomer+"++++++isCustomer+++++");
+
   const cardData = [
     {
       backgroundImage: "/assets/images/Group.png",
@@ -62,7 +62,7 @@ const Cards = ({ handlePendingJobs }) => {
 
         if (response.ok) {
           const data = await response.json();
-          console.log("Doctors fetched successfully:", data);
+      
 
           setUsers(data.data.length);
         } else {
@@ -93,7 +93,7 @@ const Cards = ({ handlePendingJobs }) => {
 
         if (response.ok) {
           const data = await response.json();
-          console.log("Doctors fetched successfully:", data);
+
 
           setContractor(data.data.length);
         } else {
@@ -124,7 +124,7 @@ const Cards = ({ handlePendingJobs }) => {
 
         if (response.ok) {
           const data = await response.json();
-          console.log("Doctors fetched successfully:", data);
+       
 
           setPendingJobs(data.data.pendingJobs.length);
         } else {
@@ -155,7 +155,7 @@ const Cards = ({ handlePendingJobs }) => {
 
         if (response.ok) {
           const data = await response.json();
-          console.log("Doctors fetched successfully:", data);
+       
 
           setCompleted(data.data.completedJobs.length);
         } else {

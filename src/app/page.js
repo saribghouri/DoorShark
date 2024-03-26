@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 const Page = () => {
   const router = useRouter();
   const { user } = useUser();
-  console.log("user", user);
+
   const [loading, setLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const { login } = useUser();
