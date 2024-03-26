@@ -33,7 +33,7 @@ const AddFaqs = ({ handleShowCategories, id }) => {
       formData.append("answer", values.answer);
       formData.append("question", values.question);
 
-      const token = Cookies.get("apiToken");
+      const token = localStorage.getItem("apiToken");
 
       const requestBody = {
         question: values.question,
@@ -42,7 +42,7 @@ const AddFaqs = ({ handleShowCategories, id }) => {
       };
 
       const response = await fetch(
-        "https://doorshark.blownclouds.com/api/adminRoute/createFaqs",
+        "https://backend.doorshark.co/api/adminRoute/createFaqs",
         {
           method: "POST",
           headers: {
@@ -76,10 +76,10 @@ const AddFaqs = ({ handleShowCategories, id }) => {
   useEffect(() => {
     const fetchMainCategories = async () => {
       try {
-        const token = Cookies.get("apiToken");
+        const token = localStorage.getItem("apiToken");
 
         const response = await axios.get(
-          `https://doorshark.blownclouds.com/api/adminRoute/getMainCategory`,
+          `https://backend.doorshark.co/api/adminRoute/getMainCategory`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

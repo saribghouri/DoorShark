@@ -16,7 +16,7 @@ const Faqs = () => {
   useEffect(() => {
     const fetchFaqs = async () => {
       try {
-        const token = Cookies.get("apiToken");
+        const token = localStorage.getItem("apiToken");
         const response = await fetch(
           "https://doorshark.blownclouds.com/api/user/getFaqs",
           {
@@ -84,9 +84,9 @@ const Faqs = () => {
   const onSaveClick = async (event, faqId) => {
     try {
       event.stopPropagation(); // Stop event propagation
-      const token = Cookies.get("apiToken");
+      const token = localStorage.getItem("apiToken");
       const response = await fetch(
-        `https://doorshark.blownclouds.com/api/adminRoute/editFaqs/${faqId}`,
+        `https://backend.doorshark.co/api/adminRoute/editFaqs/${faqId}`,
         {
           method: "PATCH",
           headers: {
@@ -128,9 +128,9 @@ const Faqs = () => {
   };
   const confirmDelete = async (event, id) => {
     try {
-      const token = Cookies.get("apiToken");
+      const token = localStorage.getItem("apiToken");
       const response = await fetch(
-        `https://doorshark.blownclouds.com/api/adminRoute/dltFaqs/${id}`,
+        `https://backend.doorshark.co/api/adminRoute/dltFaqs/${id}`,
         {
           method: "DELETE",
           headers: {

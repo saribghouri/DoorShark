@@ -1,7 +1,7 @@
 // const onChange = async (checked, userId) => {
 //     console.log("userId", userId);
 //     try {
-//       const token = Cookies.get("apiToken");
+//       const token = localStorage.getItem("apiToken");
 //       const response = await fetch(
 //         `https://mksm.blownclouds.com/api/all/user?userId=${userId}&isActives=${checked ? 'active' : 'inactive'}`,
 //         {
@@ -197,7 +197,7 @@
 //   // Function to delete a category
 //   const deleteCategory = async (categoryId) => {
 //     try {
-//       const token = Cookies.get("apiToken");
+//       const token = localStorage.getItem("apiToken");
 //       await axios.delete(http://localhost:8000/api/adminRoute/dltMainCat/${categoryId}, {
 //         headers: {
 //           Authorization: Bearer ${token},
@@ -267,7 +267,7 @@
 //       const formData = new FormData();
 //       formData.append("image", file);
 
-//       const token = Cookies.get("apiToken"); // Retrieve API token from cookies
+//       const token = localStorage.getItem("apiToken"); // Retrieve API token from cookies
 
 //       const response = await axios.post(
 //         "https://doorshark.blownclouds.com/api/cloudinary/UploadDocumentToCloudinaryAndGetPublicUrl",
@@ -423,9 +423,9 @@
 // </div>
 // const onSaveClick = async (faqId, event) => {
 //   try {
-//     const token = Cookies.get("apiToken");
+//     const token = localStorage.getItem("apiToken");
 //     const response = await fetch(
-//       `https://doorshark.blownclouds.com/api/adminRoute/editFaqs${editingItemId}`,
+//       `https://backend.doorshark.co/api/adminRoute/editFaqs${editingItemId}`,
 //       {
 //         method: "PATCH",
 //         headers: {
@@ -605,9 +605,9 @@ const App = () => {
       formData.append("oldPassword", values.oldPassword);
       formData.append("newPassword", values.newPassword);
       setLoadingUpdateProfile(true);
-      const token = Cookies.get("apiToken");
+      const token = localStorage.getItem("apiToken");
       const response = await fetch(
-        "https://doorshark.blownclouds.com/api/adminRoute/changePass",
+        "https://backend.doorshark.co/api/adminRoute/changePass",
         {
           method: "PATCH",
           headers: {
@@ -640,9 +640,9 @@ const App = () => {
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
-        const token = Cookies.get("apiToken");
+        const token = localStorage.getItem("apiToken");
         const response = await fetch(
-          "https://doorshark.blownclouds.com/api/adminRoute/adminInfo",
+          "https://backend.doorshark.co/api/adminRoute/adminInfo",
           {
             method: "GET",
             headers: {
@@ -1051,7 +1051,7 @@ const App = () => {
   ];
 
   useEffect(() => {
-    const isUserLoggedIn = Cookies.get("apiToken");
+    const isUserLoggedIn = localStorage.getItem("apiToken");
 
     if (!isUserLoggedIn) {
       router.push("/");
@@ -1089,10 +1089,10 @@ const App = () => {
   const handleProfileEdit = async () => {
     try {
       setLoading(true);
-      const token = Cookies.get("apiToken");
+      const token = localStorage.getItem("apiToken");
 
       const res = await fetch(
-        "https://doorshark.blownclouds.com/api/adminRoute/updateProfile",
+        "https://backend.doorshark.co/api/adminRoute/updateProfile",
         {
           method: "PATCH",
           headers: new Headers({

@@ -27,14 +27,14 @@ const AddPolicy = () => {
 
       formData.append("policy", values.policy);
 
-      const token = Cookies.get("apiToken");
+      const token = localStorage.getItem("apiToken");
 
       const requestBody = {
         policy: values.policy,
       };
 
       const response = await fetch(
-        "https://doorshark.blownclouds.com/api/adminRoute/privacyPolicy",
+        "https://backend.doorshark.co/api/adminRoute/privacyPolicy",
         {
           method: "POST",
           headers: {

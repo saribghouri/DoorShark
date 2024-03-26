@@ -22,7 +22,7 @@ const StartedJobs = () => {
   const fetchItems = async (page) => {
     setIsLoading(true);
     try {
-      const token = Cookies.get("apiToken");
+      const token = localStorage.getItem("apiToken");
       const response = await axios.get(
         `https://backend.doorshark.co/api/adminRoute/gettingJobs`,
         {

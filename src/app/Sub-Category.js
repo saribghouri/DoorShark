@@ -66,7 +66,7 @@ const SubCategory = () => {
   const fetchItems = async (page) => {
     setIsLoading(true);
     try {
-      const token = Cookies.get("apiToken");
+      const token = localStorage.getItem("apiToken");
       const response = await axios.get(
         `https://backend.doorshark.co/api/adminRoute/getSubCategory`,
         {
@@ -137,7 +137,7 @@ const SubCategory = () => {
   const onChange = async (checked, userId) => {
     console.log(userId);
     try {
-      const token = Cookies.get("apiToken");
+      const token = localStorage.getItem("apiToken");
       const status = checked ? true : false;
 
       const requestBody = {
@@ -180,7 +180,7 @@ const SubCategory = () => {
         return;
       }
 
-      const token = Cookies.get("apiToken");
+      const token = localStorage.getItem("apiToken");
       await axios.delete(
         `https://backend.doorshark.co/api/adminRoute/dltSubCat/${selectedCategory.id}`,
         {
@@ -203,7 +203,7 @@ const SubCategory = () => {
   };
   const handleSaveEdit = async () => {
     try {
-      const token = Cookies.get("apiToken");
+      const token = localStorage.getItem("apiToken");
       await axios.patch(
         `https://backend.doorshark.co/api/adminRoute/editSubCat/${selectedCategory.id}`,
         { catname: editedCategory.catname },

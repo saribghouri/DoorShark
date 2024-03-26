@@ -17,7 +17,7 @@ const ProfileView = () => {
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
-        const token = Cookies.get("apiToken");
+        const token = localStorage.getItem("apiToken");
         const response = await fetch(
           "https://mksm.blownclouds.com/api/user/details",
           {

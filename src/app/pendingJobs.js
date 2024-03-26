@@ -31,10 +31,10 @@ const PendingJobs = () => {
   const fetchItems = async (page) => {
     setIsLoading(true);
     try {
-      const token = Cookies.get("apiToken");
+      const token = localStorage.getItem("apiToken");
       const response = await axios.get(
         
-        `https://doorshark.blownclouds.com/api/adminRoute/gettingJobs`,
+        `https://backend.doorshark.co/api/adminRoute/gettingJobs`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

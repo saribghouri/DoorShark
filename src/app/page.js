@@ -34,8 +34,8 @@ const Page = () => {
 
       if (response.ok) {
         const data = await response.json();
-        Cookies.set("apiToken", data.data.token);
-
+        // Cookies.set("apiToken", data.data.token);
+        localStorage.setItem("apiToken", (data.data.token));
         if (rememberMe) {
           localStorage.setItem("rememberedUser", JSON.stringify(values));
         } else {

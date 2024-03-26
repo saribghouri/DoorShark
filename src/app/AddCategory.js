@@ -48,7 +48,7 @@ const AddCategories = ({ handleShowCategories }) => {
         formData.append("maincatpic", values.upload[0].originFileObj);
       }
 
-      const token = Cookies.get("apiToken");
+      const token = localStorage.getItem("apiToken");
 
       const requestBody = {
         maincatname: values.maincatname, 
@@ -57,7 +57,7 @@ const AddCategories = ({ handleShowCategories }) => {
       };
 
       const response = await fetch(
-        "https://doorshark.blownclouds.com/api/adminRoute/addMainCategory",
+        "https://backend.doorshark.co/api/adminRoute/addMainCategory",
         {
           method: "POST",
           headers: {

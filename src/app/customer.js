@@ -47,10 +47,10 @@ const Customer = () => {
               setModalVisible(true);
             }}
           />
-          <EyeOutlined
+          {/* <EyeOutlined
             className="text-[#ffffff] bg-[#054fb9] p-[5px] rounded-[50%] ml-[10px] text-[18px]"
             type="link"
-          />
+          /> */}
         </div>
       ),
     },
@@ -59,9 +59,9 @@ const Customer = () => {
   const fetchItems = async (page) => {
     setIsLoading(true);
     try {
-      const token = Cookies.get("apiToken");
+      const token = localStorage.getItem("apiToken");
       const response = await axios.get(
-        `https://doorshark.blownclouds.com/api/adminRoute/getCustomerDetails`,
+        `https://backend.doorshark.co/api/adminRoute/getCustomerDetails`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -121,7 +121,7 @@ const Customer = () => {
   };
   const onChange = async (checked, userId) => {
     try {
-      const token = Cookies.get("apiToken");
+      const token = localStorage.getItem("apiToken");
       const status = checked ? "ACTIVE" : "NOT ACTIVE";
 
       const requestBody = {
@@ -130,7 +130,7 @@ const Customer = () => {
       };
 
       const response = await axios.patch(
-        `https://doorshark.blownclouds.com/api/adminRoute/toggleStatus`,
+        `https://backend.doorshark.co/api/adminRoute/toggleStatus`,
         requestBody,
         {
           headers: {
@@ -164,9 +164,9 @@ const Customer = () => {
         return;
       }
 
-      const token = Cookies.get("apiToken");
+      const token = localStorage.getItem("apiToken");
       await axios.delete(
-        `https://doorshark.blownclouds.com/api/adminRoute/dltCusOrCont/${selectedUser.id}`,
+        `https://backend.doorshark.co/api/adminRoute/dltCusOrCont/${selectedUser.id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

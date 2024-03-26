@@ -49,7 +49,7 @@ const Cards = ({ handlePendingJobs }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const token = Cookies.get("apiToken");
+        const token = localStorage.getItem("apiToken");
         const response = await fetch(
           "https://backend.doorshark.co/api/adminRoute/getCustomerDetails",
           {
@@ -80,7 +80,7 @@ const Cards = ({ handlePendingJobs }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const token = Cookies.get("apiToken");
+        const token = localStorage.getItem("apiToken");
         const response = await fetch(
           "https://backend.doorshark.co/api/adminRoute/getContractorDetails",
           {
@@ -111,7 +111,7 @@ const Cards = ({ handlePendingJobs }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const token = Cookies.get("apiToken");
+        const token = localStorage.getItem("apiToken");
         const response = await fetch(
           "https://backend.doorshark.co/api/adminRoute/gettingJobs",
           {
@@ -142,7 +142,7 @@ const Cards = ({ handlePendingJobs }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const token = Cookies.get("apiToken");
+        const token = localStorage.getItem("apiToken");
         const response = await fetch(
           "https://backend.doorshark.co/api/adminRoute/gettingJobs",
           {

@@ -36,14 +36,16 @@ const MainCategoryTable = () => {
   const [imageUrl, setImageUrl] = useState();
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [editedCategory, setEditedCategory] = useState(null);
-  console.log(selectedCategory);
+  const [editCategoryName, setEditCategoryName] = useState(null);
+  console.log(editedCategory);
   const [form] = Form.useForm();
+  console.log(form.getFieldValue)
   useEffect(() => {
     const fetchMainCategories = async () => {
       setLoading(true);
       try {
-        const token = Cookies.get("apiToken");
-
+        // const token = Cookies.get("apiToken");
+        const token = localStorage.getItem("apiToken");
         const response = await axios.get(
           `https://backend.doorshark.co/api/adminRoute/getMainCategory`,
           {
@@ -103,8 +105,8 @@ const MainCategoryTable = () => {
         console.error("No category selected for deletion");
         return;
       }
-
-      const token = Cookies.get("apiToken");
+      const token = localStorage.getItem("apiToken");
+      // const token = Cookies.get("apiToken");
       await axios.delete(
         `https://backend.doorshark.co/api/adminRoute/dltMainCat/${selectedCategory.id}`,
         {
@@ -156,7 +158,6 @@ const MainCategoryTable = () => {
       title: "Action",
       key: "action",
       render: (text, record) => (
-        console.log(record),
         (
           <div>
             <DeleteOutlined
@@ -184,7 +185,7 @@ const MainCategoryTable = () => {
   ];
   const handleEdit = (category) => {
     setSelectedCategory(category);
-    // setEditCategoryName(category.maincatname);
+    setEditCategoryName(category.maincatname);
     setEditedCategory({ ...category });
     setImageUrl(category.maincatpic);
     setEditModalVisible(true);
@@ -192,16 +193,12 @@ const MainCategoryTable = () => {
 
   const handleSaveEdit = async () => {
     try {
-      const token = Cookies.get("apiToken");
-      
+      const token = localStorage.getItem("apiToken");
     
       const updatedCategoryData = {
         ...editedCategory,
-        maincatpic: imageUrl, 
-        maincatname: form.getFieldValue("name"),
+        maincatpic: imageUrl
       };
-      
-      
       await axios.patch(
         `https://backend.doorshark.co/api/adminRoute/editMainCat/${selectedCategory.id}`,
         updatedCategoryData,
@@ -213,8 +210,11 @@ const MainCategoryTable = () => {
         }
       );
   
-     
-      setMainCategories(mainCategories.map((cat) => cat._id === selectedCategory.id ? updatedCategoryData : cat));
+      // Updating mainCategories state
+      updatedCategoryData['isActive'] = editedCategory?.status;
+      updatedCategoryData['_id'] = editedCategory?.id;
+      mainCategories[updatedCategoryData?.key - 1] = updatedCategoryData
+      setMainCategories(mainCategories);
     
       setEditModalVisible(false);
     } catch (error) {
@@ -242,7 +242,8 @@ const MainCategoryTable = () => {
   const onChange = async (checked, userId) => {
     console.log(userId);
     try {
-      const token = Cookies.get("apiToken");
+      // const token = Cookies.get("apiToken");
+      const token = localStorage.getItem("apiToken");
       const status = checked ? true : false;
 
       const requestBody = {

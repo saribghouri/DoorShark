@@ -84,9 +84,9 @@ const App = () => {
       formData.append("oldPassword", values.oldPassword);
       formData.append("newPassword", values.newPassword);
       setLoadingUpdateProfile(true);
-      const token = Cookies.get("apiToken");
+      const token = localStorage.getItem("apiToken");
       const response = await fetch(
-        "https://doorshark.blownclouds.com/api/adminRoute/changePass",
+        "https://backend.doorshark.co/api/adminRoute/changePass",
         {
           method: "PATCH",
           headers: {
@@ -119,9 +119,11 @@ const App = () => {
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
-        const token = Cookies.get("apiToken");
+        // const token = localStorage.getItem("apiToken");
+        const token = localStorage.getItem("apiToken");
+        console.log(`Bearer ${token}`);
         const response = await fetch(
-          "https://doorshark.blownclouds.com/api/adminRoute/adminInfo",
+          "https://backend.doorshark.co/api/adminRoute/adminInfo",
           {
             method: "GET",
             headers: {
@@ -515,7 +517,7 @@ const App = () => {
 
   const item = generateMenuItems();
   const handleLogout = () => {
-    Cookies.remove("apiToken");
+    localStorage.removeItem("apiToken");
 
     router.push("/");
   };
@@ -560,7 +562,7 @@ const App = () => {
   ];
 
   useEffect(() => {
-    const isUserLoggedIn = Cookies.get("apiToken");
+    const isUserLoggedIn = localStorage.getItem("apiToken");
 
     if (!isUserLoggedIn) {
       router.push("/");
@@ -588,10 +590,10 @@ const App = () => {
   const handleProfileEdit = async () => {
     try {
       setLoading(true);
-      const token = Cookies.get("apiToken");
+      const token = localStorage.getItem("apiToken");
 
       const res = await fetch(
-        "https://doorshark.blownclouds.com/api/adminRoute/updateProfile",
+        "https://backend.doorshark.co/api/adminRoute/updateProfile",
         {
           method: "PATCH",
           headers: {
@@ -612,7 +614,7 @@ const App = () => {
       setUserDetails({
         ...userDetails,
         name: form.getFieldValue("name"),
-        profile: imageUrl,
+        profile: userProfileImage,
       });
 
       setShowProfileEditModal(false);
