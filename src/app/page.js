@@ -15,36 +15,74 @@ const Page = () => {
   const [rememberMe, setRememberMe] = useState(false);
   const { login } = useUser();
 
-  const baseUrl = "https://doorshark.blownclouds.com/api";
+  // const baseUrl = "https://doorshark.blownclouds.com/api";
   // const baseUrl = "http://localhost:8000/api/";
-  const logins = `${baseUrl}/authRoute/login`;
+  // const logins = `${baseUrl}/authRoute/login`;
+  // const onFinish = async (values) => {
+  //   try {
+  //     setLoading(true);
+  //     const response = await fetch(logins, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         email: values.email,
+  //         password: values.password,
+  //       }),
+  //     });
+
+  //     if (response.ok) {
+  //       const data = await response.json();
+  //       // Cookies.set("apiToken", data.data.token);
+  //       localStorage.setItem("apiToken", data.data.token);
+  //       // if (rememberMe) {
+  //       //   localStorage.setItem("rememberedUser", JSON.stringify(values));
+  //       // } else {
+  //       //   localStorage.removeItem("rememberedUser");
+  //       // }
+
+  //       login(data);
+  //       router.push("/dashboard");
+  //     } else {
+  //       message.error("Failed to login. Invalid Credentials");
+  //     }
+  //   } catch (error) {
+  //     console.error("Login error:", error);
+  //     message.error("An error occurred during login.");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
   const onFinish = async (values) => {
     try {
+      const token = Cookies.get("apiToken");
       setLoading(true);
-      const response = await fetch(logins, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: values.email,
-          password: values.password,
-        }),
-      });
+
+      const response = await fetch(
+        "https://backend.doorshark.co/api/authRoute/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            email: values.email,
+            password: values.password,
+          }),
+        }
+      );
 
       if (response.ok) {
         const data = await response.json();
-        // Cookies.set("apiToken", data.data.token);
-        localStorage.setItem("apiToken", (data.data.token));
-        if (rememberMe) {
-          localStorage.setItem("rememberedUser", JSON.stringify(values));
-        } else {
-          localStorage.removeItem("rememberedUser");
-        }
-
+        // Cookies.set("apiToken", data.access_token);
+        localStorage.setItem("apiToken", data.data.token);
         login(data);
         router.push("/dashboard");
       } else {
+        const errorData = await response.json();
+        console.error("API request failed:", errorData);
         message.error("Failed to login. Invalid Credentials");
       }
     } catch (error) {
@@ -54,7 +92,6 @@ const Page = () => {
       setLoading(false);
     }
   };
-
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
