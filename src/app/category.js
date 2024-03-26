@@ -20,7 +20,6 @@ import {
   LoadingOutlined,
   PlusOutlined,
   SearchOutlined,
-
 } from "@ant-design/icons";
 import AddCategories from "./AddCategory";
 
@@ -39,7 +38,7 @@ const MainCategoryTable = () => {
   const [editCategoryName, setEditCategoryName] = useState(null);
   console.log(editedCategory);
   const [form] = Form.useForm();
-  console.log(form.getFieldValue)
+  console.log(form.getFieldValue);
   useEffect(() => {
     const fetchMainCategories = async () => {
       setLoading(true);
@@ -84,20 +83,19 @@ const MainCategoryTable = () => {
       }))
     : [];
 
-
-
   const filteredCategories = dataSource.filter(
     (category) =>
-      (!searchText ||  
-        (category.maincatname &&
-          !/(w.*o|o.*w)/i.test(category.maincatname) &&
-          new RegExp('^' + searchText[0], 'i').test(category.maincatname) &&
-          category.maincatname.toLowerCase().includes(searchText.toLowerCase())) ||
-        (category.address &&
-          !/(w.*o|o.*w)/i.test(category.address) &&
-          new RegExp('^' + searchText[0], 'i').test(category.maincatname) &&
-          category.address.toLowerCase().includes(searchText.toLowerCase()))
-      )
+      !searchText ||
+      (category.maincatname &&
+        !/(w.*o|o.*w)/i.test(category.maincatname) &&
+        new RegExp("^" + searchText[0], "i").test(category.maincatname) &&
+        category.maincatname
+          .toLowerCase()
+          .includes(searchText.toLowerCase())) ||
+      (category.address &&
+        !/(w.*o|o.*w)/i.test(category.address) &&
+        new RegExp("^" + searchText[0], "i").test(category.maincatname) &&
+        category.address.toLowerCase().includes(searchText.toLowerCase()))
   );
   const handleDelete = async () => {
     try {
@@ -131,11 +129,13 @@ const MainCategoryTable = () => {
       key: "maincatpic",
       render: (text, record) => (
         console.log(record),
-        <img
-          src={text}
-          style={{ width: 50, height: 50, borderRadius: "50%" }}
-          alt="Category"
-        />
+        (
+          <img
+            src={text}
+            style={{ width: 50, height: 50, borderRadius: "50%" }}
+            alt="Category"
+          />
+        )
       ),
     },
     {
@@ -158,28 +158,25 @@ const MainCategoryTable = () => {
       title: "Action",
       key: "action",
       render: (text, record) => (
-        (
-          <div>
-            <DeleteOutlined
-              className="text-[#ffffff] bg-[#054fb9] p-[5px] rounded-[50%] ml-[10px] text-[18px]"
-              type="link"
-              danger
-              onClick={() => {
-                setSelectedCategory(record);
-                setModalVisible(true);
-              }}
-            />
+        <div>
+          <DeleteOutlined
+            className="text-[#ffffff] bg-[#054fb9] p-[5px] rounded-[50%] ml-[10px] text-[18px]"
+            type="link"
+            danger
+            onClick={() => {
+              setSelectedCategory(record);
+              setModalVisible(true);
+            }}
+          />
 
-            <EyeOutlined
-              onClick={() =>{ 
-                setSelectedCategory(record);
-                handleEdit(record)
-              }}
-              className="text-[#ffffff] bg-[#054fb9] p-[5px] rounded-[50%] ml-[10px] text-[18px]"
-            />
-      
-          </div>
-        )
+          <EyeOutlined
+            onClick={() => {
+              setSelectedCategory(record);
+              handleEdit(record);
+            }}
+            className="text-[#ffffff] bg-[#054fb9] p-[5px] rounded-[50%] ml-[10px] text-[18px]"
+          />
+        </div>
       ),
     },
   ];
@@ -194,10 +191,10 @@ const MainCategoryTable = () => {
   const handleSaveEdit = async () => {
     try {
       const token = localStorage.getItem("apiToken");
-    
+      console.log(imageUrl, "+++++++++++++++++++++++++++++++++++++")
       const updatedCategoryData = {
         ...editedCategory,
-        maincatpic: imageUrl
+        maincatpic: imageUrl,
       };
       await axios.patch(
         `https://backend.doorshark.co/api/adminRoute/editMainCat/${selectedCategory.id}`,
@@ -209,13 +206,18 @@ const MainCategoryTable = () => {
           },
         }
       );
-  
+
       // Updating mainCategories state
-      updatedCategoryData['isActive'] = editedCategory?.status;
-      updatedCategoryData['_id'] = editedCategory?.id;
-      mainCategories[updatedCategoryData?.key - 1] = updatedCategoryData
-      setMainCategories(mainCategories);
-    
+      updatedCategoryData["isActive"] = editedCategory?.status;
+      updatedCategoryData["_id"] = editedCategory?.id;
+      mainCategories[updatedCategoryData?.key - 1] = updatedCategoryData;
+      // setMainCategories(mainCategories);
+      setMainCategories(
+        mainCategories.map((cat) =>
+          cat._id === selectedCategory.id ? updatedCategoryData : cat
+        )
+      );
+
       setEditModalVisible(false);
     } catch (error) {
       console.error("Error editing main category:", error);
@@ -237,7 +239,6 @@ const MainCategoryTable = () => {
     }
     return isJpgOrPng && isLt2M;
   };
-
 
   const onChange = async (checked, userId) => {
     console.log(userId);
@@ -289,9 +290,7 @@ const MainCategoryTable = () => {
         "https://backend.doorshark.co/api/cloudinary/UploadDocumentToCloudinaryAndGetPublicUrl",
         formData
       );
-
-    
-
+      setImageUrl(response?.data ? response.data?.image_url[0] : imageUrl);
     } catch (error) {
       console.error("Error uploading image:", error);
       message.error("Failed to upload image");
@@ -332,7 +331,7 @@ const MainCategoryTable = () => {
             <h1 className="Doctors text-[#054fb9]  text-[22px] font-sans">
               Category
             </h1>
-            
+
             <div className=" flex gap-[5px]">
               <Input
                 className="w-[300px] rounded-[40px]"
