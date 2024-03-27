@@ -44,6 +44,7 @@ import Faqs from "../faqs";
 import AddPolicy from "../addPrivacyPolicy";
 import PrivacyPolicy from "../privacyPolicy";
 import StartedJobs from "../startedJobs";
+
 const { Header, Sider } = Layout;
 const App = () => {
   const router = useRouter();
@@ -134,7 +135,7 @@ const App = () => {
         );
         if (response.ok) {
           const data = await response.json();
-
+console.log(data.data,"=========================");
           setUserDetails(data.data);
           setUserProfileImage(data.data.profile);
         } else {
@@ -227,7 +228,7 @@ const App = () => {
 
     setProfileView(false);
     setProfileEdit(false);
-    setCard(false);
+ 
   };
   const handlePendingJobs = () => {
     setPendingjobs(true);
@@ -244,14 +245,14 @@ const App = () => {
     setAddFaqs(false);
     setProfileView(false);
     setProfileEdit(false);
-    setCard(false);
+   
   };
   const handleStartedJobs = () => {
-    setPendingjobs(false);
     setStartedjobs(true);
+    setPendingjobs(false);
     setjobs(false);
-     setStartedjobs(false);
-    setCard(false);
+   
+
     setAddPolicy(false);
     setAddPayment(false);
     setPaymentCard(false);
@@ -588,6 +589,7 @@ const App = () => {
   };
 
   const handleProfileEdit = async () => {
+
     try {
       setLoading(true);
       const token = localStorage.getItem("apiToken");
@@ -601,7 +603,7 @@ const App = () => {
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
-            profile: imageUrl,
+            profile: imageUrl ?? userProfileImage,
             name: form.getFieldValue("name"),
           }),
         }
